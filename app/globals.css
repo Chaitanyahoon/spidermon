@@ -1,0 +1,114 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a14;
+    --foreground: #ededed;
+  }
+}
+
+@layer base {
+  :root {
+    --theme-bg: #0a0a14;
+    --theme-accent: #e8001c;
+    --theme-accent-alt: #2563eb;
+  }
+
+  .theme-1610 {
+    --theme-bg: #050505;
+    --theme-accent: #ff0055;
+    --theme-accent-alt: #8a2be2;
+  }
+
+  .theme-65 {
+    --theme-bg: #0a0a1a;
+    --theme-accent: #ff66b2;
+    --theme-accent-alt: #00e5ff;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Hide native scrollbar for custom Web-Swing scrollbar */
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+/* ── Spider-Verse glitch on accent words ──────────────────── */
+@keyframes spideyGlitch {
+  0% {
+    text-shadow: 0 0 0 transparent;
+    clip-path: none;
+    transform: none;
+  }
+
+  8% {
+    text-shadow:
+      3px 0 var(--theme-accent-alt),
+      -3px 0 var(--theme-accent);
+    transform: translateX(2px);
+  }
+
+  16% {
+    text-shadow:
+      -3px 0 var(--theme-accent-alt),
+      3px 0 var(--theme-accent);
+    transform: translateX(-2px);
+    clip-path: polygon(0 20%, 100% 20%, 100% 45%, 0 45%);
+  }
+
+  24% {
+    text-shadow:
+      2px 2px var(--theme-accent),
+      -2px -2px var(--theme-accent-alt);
+    transform: translateX(1px);
+    clip-path: none;
+  }
+
+  32% {
+    text-shadow:
+      -2px 2px var(--theme-accent-alt),
+      2px -2px var(--theme-accent);
+    transform: translateX(-1px);
+  }
+
+  40% {
+    text-shadow: 0 0 8px var(--theme-accent);
+    transform: none;
+  }
+
+  100% {
+    text-shadow: 0 0 6px var(--theme-accent);
+    transform: none;
+    clip-path: none;
+  }
+}
+
+.spidey-glitch {
+  animation: spideyGlitch 0.9s ease forwards;
+}
+
+.hover-glitch {
+  display: inline-block;
+  transition: color 0.3s ease;
+}
+
+.hover-glitch:hover {
+  animation: spideyGlitch 0.4s ease forwards;
+  color: var(--theme-accent);
+}
