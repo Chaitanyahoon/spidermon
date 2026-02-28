@@ -8,6 +8,7 @@ import About from "./components/About";
 import Experience from "./components/Experience";
 import Certificates from "./components/Certificates";
 import Contact from "./components/Contact";
+import MarqueeTicker from "./components/MarqueeTicker";
 import Footer from "./components/Footer";
 
 export default function Home() {
@@ -23,6 +24,7 @@ export default function Home() {
       <About />
       <Certificates />
       <Contact />
+      <MarqueeTicker />
       <Footer />
     </main>
   );

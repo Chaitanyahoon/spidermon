@@ -20,13 +20,6 @@ const themes = [
     icon: Palette,
     description: "Miles Morales",
   },
-  {
-    name: "theme-65",
-    label: "Earth-65",
-    color: "#ff66b2",
-    icon: Sun,
-    description: "Spider-Gwen",
-  },
 ];
 
 export function ThemeToggle() {

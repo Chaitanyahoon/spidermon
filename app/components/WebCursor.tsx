@@ -3,12 +3,90 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+// Helper function to generate a classic, recognizable spider web SVG path
+function generateClassicWebSplat(
+  radius: number,
+  numSpokes: number,
+  numRings: number,
+) {
+  let path = "";
+
+  const angleStep = (Math.PI * 2) / numSpokes;
+
+  // Store the actual randomized spoke endpoints and radii to connect the rings perfectly
+  const spokes: { angle: number; r: number; x: number; y: number }[] = [];
+
+  // Generate Spoke data
+  for (let i = 0; i < numSpokes; i++) {
+    const angle = i * angleStep + (Math.random() * 0.3 - 0.15); // Add jitter to angles
+    const spokeRadius = radius * (0.8 + Math.random() * 0.5); // Jagged outer edges
+    const x = Math.cos(angle) * spokeRadius;
+    const y = Math.sin(angle) * spokeRadius;
+    spokes.push({ angle, r: spokeRadius, x, y });
+
+    // Draw the spoke line from center
+    path += `M 0 0 L ${x} ${y} `;
+  }
+
+  // Generate Sagging Concentric Rings
+  for (let r = 1; r <= numRings; r++) {
+    // We go from 0 to numSpokes (closing the loop)
+    for (let i = 0; i < numSpokes; i++) {
+      const spoke1 = spokes[i];
+      const spoke2 = spokes[(i + 1) % numSpokes];
+
+      const distancePercentage = r / (numRings + 1); // e.g., 25%, 50%, 75% along the spoke
+
+      // Nodes on the two adjacent spokes where the ring attaches
+      const x1 = Math.cos(spoke1.angle) * (spoke1.r * distancePercentage);
+      const y1 = Math.sin(spoke1.angle) * (spoke1.r * distancePercentage);
+
+      const x2 = Math.cos(spoke2.angle) * (spoke2.r * distancePercentage);
+      const y2 = Math.sin(spoke2.angle) * (spoke2.r * distancePercentage);
+
+      // Create "sag" by pulling the control point closer to origin
+      let midAngle = (spoke1.angle + spoke2.angle) / 2;
+      // Handle the wrapping angle case (e.g. 350 deg to 10 deg)
+      if (Math.abs(spoke1.angle - spoke2.angle) > Math.PI) {
+        midAngle += Math.PI;
+      }
+
+      const avgRadius = (spoke1.r + spoke2.r) / 2;
+      const sagRadius = avgRadius * distancePercentage * 0.7; // The 0.7 creates the inward droop
+
+      const cx = Math.cos(midAngle) * sagRadius;
+      const cy = Math.sin(midAngle) * sagRadius;
+
+      if (i === 0) {
+        path += `M ${x1} ${y1} `;
+      }
+
+      // Draw quadratic bezier curve from spoke1 to spoke2
+      path += `Q ${cx} ${cy} ${x2} ${y2} `;
+    }
+  }
+
+  // Splatter dots around the web for more realism
+  for (let i = 0; i < 6; i++) {
+    const splatAngle = Math.random() * Math.PI * 2;
+    const splatDist = radius * (1 + Math.random() * 0.5);
+    const sx = Math.cos(splatAngle) * splatDist;
+    const sy = Math.sin(splatAngle) * splatDist;
+    path += `M ${sx} ${sy} A 1.5 1.5 0 1 0 ${sx + 0.1} ${sy} `;
+  }
+
+  return path;
+}
+
 type WebShot = {
   id: number;
-  x: number;
-  y: number;
   originX: number;
   originY: number;
+  targetX: number;
+  targetY: number;
+  splatPath: string;
+  rotation: number;
+  scale: number;
 };
 
 export function WebCursor() {
@@ -23,24 +101,41 @@ export function WebCursor() {
     };
 
     const handleMouseDown = (e: MouseEvent) => {
-      // Don't shoot webs if clicking on a button or link
+      // Ignore if clicking clickable elements
       if ((e.target as HTMLElement).closest("button, a")) return;
+
+      const targetX = e.clientX;
+      const targetY = e.clientY;
+
+      // Shoot from either bottom-left or bottom-right wrist
+      const originX =
+        Math.random() > 0.5 ? window.innerWidth * 0.1 : window.innerWidth * 0.9;
+      const originY = window.innerHeight;
+
+      // Generate a classic spider-web splat
+      const radius = 35 + Math.random() * 25; // 35px - 60px radius
+      const numSpokes = 6 + Math.floor(Math.random() * 3); // 6 - 8 spokes
+      const numRings = 3 + Math.floor(Math.random() * 2); // 3 - 4 rings
+
+      const splatPath = generateClassicWebSplat(radius, numSpokes, numRings);
 
       const newShot: WebShot = {
         id: Date.now(),
-        x: e.clientX,
-        y: e.clientY,
-        // Shoot from bottom corners randomly
-        originX: Math.random() > 0.5 ? 0 : window.innerWidth,
-        originY: window.innerHeight,
+        originX,
+        originY,
+        targetX,
+        targetY,
+        splatPath,
+        rotation: Math.random() * 360,
+        scale: 0.8 + Math.random() * 0.4,
       };
 
       setShots((prev) => [...prev, newShot]);
 
-      // Remove shot after animation finishes (1.2s total to be safe)
+      // Temporary Trace: Stay for 5 seconds total before fully unmounting
       setTimeout(() => {
         setShots((prev) => prev.filter((s) => s.id !== newShot.id));
-      }, 1200);
+      }, 5000);
     };
 
     window.addEventListener("mousemove", handleMouseMove);
@@ -63,43 +158,74 @@ export function WebCursor() {
           backgroundColor: "white",
         }}
       />
+
       <svg className="fixed inset-0 w-full h-full pointer-events-none z-[99]">
         <AnimatePresence>
           {shots.map((shot) => (
-            <motion.line
+            <motion.g
               key={shot.id}
-              x1={shot.originX}
-              y1={shot.originY}
-              x2={shot.x}
-              y2={shot.y}
-              stroke="white"
-              strokeWidth="1.5"
-              strokeOpacity="0.8"
-              initial={{ pathLength: 0, opacity: 1 }}
-              animate={{ pathLength: 1, opacity: 0 }}
+              // Fade out the entire web cluster smoothly at the end of its 5s lifespan
+              initial={{ opacity: 1 }}
+              animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{
-                pathLength: { duration: 0.2, ease: "easeOut" },
-                opacity: { duration: 0.8, delay: 0.3, ease: "easeIn" },
-              }}
-            />
+              transition={{ duration: 0.5 }} // Smooth death animation
+            >
+              {/* 1. The projectile web strand shooting from the "wrist" (bottom corners) */}
+              <motion.line
+                x1={shot.originX}
+                y1={shot.originY}
+                x2={shot.targetX}
+                y2={shot.targetY}
+                stroke="rgba(255, 255, 255, 0.7)"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                style={{ filter: "drop-shadow(0px 1px 2px rgba(0,0,0,0.4))" }}
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ duration: 0.15, ease: "easeOut" }} // Zips to target in 150ms
+              />
+
+              {/* 2. The distinct, realistic Spider-Web "Splat" that bursts open on impact */}
+              <motion.g
+                // FIX: Pass x and y to Framer Motion's geometry pipeline explicitly
+                // so it doesn't get detached from the transform prop
+                initial={{
+                  x: shot.targetX,
+                  y: shot.targetY,
+                  scale: 0,
+                  rotate: shot.rotation,
+                  opacity: 0,
+                }}
+                animate={{
+                  x: shot.targetX,
+                  y: shot.targetY,
+                  scale: shot.scale,
+                  rotate: shot.rotation,
+                  opacity: 1,
+                }}
+                transition={{
+                  delay: 0.15,
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 15,
+                }}
+              >
+                <path
+                  d={shot.splatPath}
+                  fill="none"
+                  stroke="rgba(255,255,255, 0.9)"
+                  strokeWidth="1.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  style={{ filter: "drop-shadow(0px 1px 3px rgba(0,0,0,0.5))" }}
+                />
+                {/* Small central glob holding it together */}
+                <circle cx="0" cy="0" r="3" fill="white" />
+              </motion.g>
+            </motion.g>
           ))}
         </AnimatePresence>
       </svg>
-      {/* Glitch circle on impact */}
-      <AnimatePresence>
-        {shots.map((shot) => (
-          <motion.div
-            key={`impact-${shot.id}`}
-            className="fixed w-8 h-8 rounded-full border border-white opacity-50 pointer-events-none z-[100]"
-            style={{ left: shot.x - 16, top: shot.y - 16 }}
-            initial={{ scale: 0, opacity: 1 }}
-            animate={{ scale: 2, opacity: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-          />
-        ))}
-      </AnimatePresence>
     </>
   );
 }

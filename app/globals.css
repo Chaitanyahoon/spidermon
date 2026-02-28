@@ -24,12 +24,6 @@
     --theme-accent: #ff0055;
     --theme-accent-alt: #8a2be2;
   }
-
-  .theme-65 {
-    --theme-bg: #0a0a1a;
-    --theme-accent: #ff66b2;
-    --theme-accent-alt: #00e5ff;
-  }
 }
 
 html {

@@ -1,207 +1,114 @@
 "use client";
 
 import { motion } from "framer-motion";
+import SpiderParticleBg from "./SpiderParticleBg";
 import SpiderWebBg from "./SpiderWebBg";
 
 export default function Contact() {
   return (
     <section
       id="contact"
-      className="relative bg-[var(--theme-bg)] border-t border-zinc-800/60 overflow-hidden"
+      className="relative bg-[var(--theme-bg)] border-t border-zinc-800/60 py-32 overflow-hidden flex flex-col items-center justify-center text-center"
     >
-      {/* Lime glow blob */}
+      {/* Background Glow */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 60% 40% at 50% 100%, rgba(232,0,28,0.09) 0%, transparent 70%)",
+            "radial-gradient(circle at center, rgba(232,0,28,0.1) 0%, transparent 60%)",
         }}
       />
 
-      {/* Full-section spider web */}
-      <SpiderWebBg className="absolute inset-0" opacity={0.1} />
+      {/* Spider Web Backgrounds */}
+      <SpiderWebBg className="absolute inset-0 z-0" opacity={0.15} />
+      <SpiderParticleBg
+        className="absolute inset-0 z-[1]"
+        opacity={0.5}
+        particleCount={30}
+      />
 
-      {/* Spider web corner — bottom-left */}
-      <svg
-        className="absolute bottom-0 left-0 w-64 h-64 pointer-events-none"
-        viewBox="0 0 256 256"
-        fill="none"
-        style={{ opacity: 0.12, transform: "rotate(180deg)" }}
-        aria-hidden="true"
-      >
-        <line
-          x1="256"
-          y1="0"
-          x2="0"
-          y2="0"
-          stroke="var(--theme-accent)"
-          strokeWidth="0.8"
-        />
-        <line
-          x1="256"
-          y1="0"
-          x2="0"
-          y2="60"
-          stroke="var(--theme-accent)"
-          strokeWidth="0.8"
-        />
-        <line
-          x1="256"
-          y1="0"
-          x2="0"
-          y2="140"
-          stroke="var(--theme-accent)"
-          strokeWidth="0.8"
-        />
-        <line
-          x1="256"
-          y1="0"
-          x2="80"
-          y2="176"
-          stroke="var(--theme-accent)"
-          strokeWidth="0.8"
-        />
-        <line
-          x1="256"
-          y1="0"
-          x2="120"
-          y2="256"
-          stroke="var(--theme-accent)"
-          strokeWidth="0.8"
-        />
-        <line
-          x1="256"
-          y1="0"
-          x2="196"
-          y2="256"
-          stroke="var(--theme-accent)"
-          strokeWidth="0.8"
-        />
-        <line
-          x1="256"
-          y1="0"
-          x2="256"
-          y2="256"
-          stroke="var(--theme-accent)"
-          strokeWidth="0.8"
-        />
-        <path
-          d="M 192 0 A 64 64 0 0 1 256 64"
-          stroke="var(--theme-accent)"
-          strokeWidth="0.8"
-        />
-        <path
-          d="M 128 0 A 128 128 0 0 1 256 128"
-          stroke="var(--theme-accent)"
-          strokeWidth="0.8"
-        />
-        <path
-          d="M 64 0 A 192 192 0 0 1 256 192"
-          stroke="var(--theme-accent)"
-          strokeWidth="0.8"
-        />
-        <path
-          d="M 16 0 A 240 240 0 0 1 256 240"
-          stroke="var(--theme-accent)"
-          strokeWidth="0.8"
-        />
-      </svg>
+      <div className="relative z-10 max-w-4xl mx-auto px-6 mt-10">
+        {/* Top central web strand dropping down to the main box */}
+        <div className="absolute top-[-150px] left-1/2 -translate-x-1/2 w-[2px] h-[150px] bg-gradient-to-b from-transparent via-white/50 to-white/90 shadow-[0_0_8px_white]" />
 
-      <div className="relative px-6 md:px-16 lg:px-24 py-32 flex flex-col items-center text-center">
-        {/* Overline */}
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-[10px] tracking-[0.35em] uppercase text-zinc-600 mb-8 italic"
-          style={{ fontFamily: "var(--font-space-grotesk)" }}
-        >
-          &ldquo;With great power comes great responsibility.&rdquo;
-        </motion.p>
-
-        {/* Big headline */}
-        <motion.h2
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-          className="text-[13vw] md:text-[10vw] lg:text-[8vw] font-bold leading-[0.9] uppercase text-white mb-6"
-          style={{ fontFamily: "var(--font-space-grotesk)" }}
-        >
-          Let&apos;s
-          <br />
-          <span style={{ color: "var(--theme-accent)" }}>Talk.</span>
-        </motion.h2>
-
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.2 }}
-          className="text-zinc-400 text-base max-w-md leading-relaxed mb-12"
-          style={{ fontFamily: "var(--font-inter)" }}
-        >
-          Open to full-time roles, freelance projects, and interesting
-          collaborations. Drop me a line — I reply fast.
-        </motion.p>
-
-        {/* CTA buttons */}
+        {/* The Hanging "Web-Caught" Card */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 50, rotate: -2 }}
+          whileInView={{ opacity: 1, y: 0, rotate: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.3 }}
-          className="flex flex-col sm:flex-row gap-4 items-center"
+          transition={{ type: "spring", stiffness: 100, damping: 15 }}
+          className="relative bg-black/60 backdrop-blur-xl border border-zinc-700/50 p-10 md:p-16 rounded-3xl shadow-2xl overflow-hidden group"
         >
-          <a
-            href="mailto:chaitanyapatil700@gmail.com"
-            className="group flex items-center gap-3 bg-[var(--theme-accent)] text-black font-bold text-sm tracking-widest uppercase px-8 py-4 rounded-full hover:bg-white transition-colors duration-300"
+          {/* Subtle Spider watermark inside the card */}
+          <div className="absolute inset-0 flex items-center justify-center opacity-[0.03] pointer-events-none transition-opacity duration-700 group-hover:opacity-[0.06]">
+            <svg width="300" height="300" viewBox="0 0 100 100" fill="white">
+              <path d="M50 0 L55 20 L70 30 L60 50 L80 60 L60 70 L55 100 L50 80 L45 100 L40 70 L20 60 L40 50 L30 30 L45 20 Z" />
+            </svg>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="mb-6 flex justify-center"
+          >
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[var(--theme-accent)]/80 text-[var(--theme-accent)] text-xs md:text-sm font-bold tracking-widest uppercase bg-[var(--theme-accent)]/10">
+              <span className="w-2 h-2 rounded-full bg-[var(--theme-accent)] animate-ping" />
+              Spider-Sense Tingling
+            </span>
+          </motion.div>
+
+          <h2
+            className="text-4xl md:text-6xl font-black uppercase tracking-tight text-white mb-6 leading-[1.1]"
             style={{ fontFamily: "var(--font-space-grotesk)" }}
           >
-            Send an Email
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 12 12"
-              fill="none"
-              className="group-hover:translate-x-1 transition-transform"
+            Looking for a <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--theme-accent)] to-[#ff4d4d]">
+              Friendly Neighborhood Developer?
+            </span>
+          </h2>
+
+          <p
+            className="text-zinc-400 text-lg md:text-xl font-medium max-w-2xl mx-auto leading-relaxed mb-12"
+            style={{ fontFamily: "var(--font-inter)" }}
+          >
+            Got a project that needs saving? Or a team that needs a web-slinger?
+            I'm currently swinging into new full-time roles, freelance gigs, and
+            exciting collaborations. Send a signal!
+          </p>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-5 relative z-20">
+            <a
+              href="mailto:chaitanyapatil700@gmail.com"
+              className="w-full sm:w-auto flex items-center justify-center gap-3 bg-[var(--theme-accent)] text-black font-black text-sm md:text-base tracking-[0.2em] uppercase px-10 py-5 rounded-full hover:scale-105 hover:bg-white hover:shadow-[0_0_30px_rgba(255,255,255,0.6)] transition-all duration-300"
+              style={{ fontFamily: "var(--font-space-grotesk)" }}
             >
-              <path
-                d="M1 11L11 1M11 1H4M11 1V8"
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
                 stroke="currentColor"
-                strokeWidth="1.5"
+                strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-              />
-            </svg>
-          </a>
-          <a
-            href="https://linkedin.com/in/chaitanyapatil700"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-3 border border-zinc-700 text-zinc-300 font-semibold text-sm tracking-widest uppercase px-8 py-4 rounded-full hover:border-zinc-400 hover:text-white transition-colors duration-300"
-            style={{ fontFamily: "var(--font-space-grotesk)" }}
-          >
-            LinkedIn
-          </a>
-        </motion.div>
+              >
+                <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+              </svg>
+              Shoot a Web
+            </a>
 
-        {/* Availability pill */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="flex items-center gap-2 mt-10"
-        >
-          <span className="w-2 h-2 rounded-full bg-[var(--theme-accent)] animate-pulse" />
-          <span
-            className="text-[11px] tracking-widest uppercase text-zinc-500"
-            style={{ fontFamily: "var(--font-space-grotesk)" }}
-          >
-            Available for opportunities
-          </span>
+            <a
+              href="https://linkedin.com/in/chaitanyapatil700"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full sm:w-auto flex items-center justify-center gap-3 border-2 border-zinc-700 text-white font-bold text-sm tracking-[0.2em] uppercase px-10 py-5 rounded-full hover:border-white hover:bg-white/5 transition-all duration-300"
+              style={{ fontFamily: "var(--font-space-grotesk)" }}
+            >
+              LinkedIn
+            </a>
+          </div>
         </motion.div>
       </div>
     </section>
