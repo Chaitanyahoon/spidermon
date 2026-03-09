@@ -12,8 +12,7 @@ Welcome to my personal portfolio, reimagined through the lens of the **Earth-161
 
 ## 📽️ PREVIEW
 
-<!-- ADD YOUR GIF HERE: Replace the line below with your GIF URL -->
-![Spider-Verse Portfolio Preview](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM2I1ZDUyYjI5ZGY5Zjg5YjU5ZWY5ZWY5ZWY5ZWY5ZWY5ZWY5ZWYmZXA9djFfaW50ZXJuYWxfZ2lmX2J5X2lkJmN0PWc/3o7TKMGV07Y2fGvWCs/giphy.gif)
+![Spider-Verse Portfolio Preview](https://i.pinimg.com/originals/e0/1c/53/e01c53683465d1222380d29e5cc77837.gif)
 *Click anywhere to trigger the Spider-Sense!*
 
 ---
