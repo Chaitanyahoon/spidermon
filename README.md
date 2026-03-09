@@ -1,82 +1,66 @@
-# 🕸️ SPIDER-VERSE PORTFOLIO | EARTH-1610
+<div align="center">
 
-[![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
-[![Framer Motion](https://img.shields.io/badge/Framer_Motion-11-black?style=for-the-badge&logo=framer)](https://www.framer.com/motion/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-black?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
+# 🕸️ THE MULTIVERSE IN A BOX
+### (AKA: Chaitanya's Portfolio)
 
-> "Anyone can wear the mask. You can wear the mask. If you didn't know that before, I hope you do now." — Miles Morales
-
-Welcome to my personal portfolio, reimagined through the lens of the **Earth-1610 (Miles Morales)** Spider-Verse. This isn't just a website; it's a multi-dimensional experience featuring comic-book aesthetics, glitch effects, and street-art flair.
+![Spider-Verse Preview](/demo.gif)
 
 ---
 
-## 📽️ PREVIEW
+### "Anyone can wear the mask... but only I had to debug the CSS." 🕷️
 
-![Spider-Verse Portfolio Preview](/demo.gif)
-*Click anywhere to trigger the Spider-Sense!*
-
----
-
-## ⚡ DIMENSIONAL FEATURES
-
-- **Comic-Book Aesthetic**: Custom halftone patterns (Ben-Day dots) and offset CMYK print error effects.
-- **Dynamic Glitch Animations**: Chromatic aberration (Cyan/Magenta) triggered by scroll velocity and interaction.
-- **Multiverse Theme Engine**: Seamlessly switch between Earth-616 (Classic) and Earth-1610 (Miles Morales) modes.
-- **Street-Art Typography**: Unique graffiti-style fonts (`Sedgwick Ave Display`) paired with bold comic markers (`Bangers`).
-- **Interactive Web UI**: A custom "Web Cursor" and "Spider-Sense" transitions that make the UI feel alive.
+Welcome to a portfolio that spans more dimensions than your average browser tab. 
+Inspired by **Miles Morales**, built by someone who still thinks centering a div is a superpower.
 
 ---
 
-## 🛠️ TECH STACK
+## 🎭 WHAT’S GOING ON HERE?
 
-| Layer | Technology |
-| :--- | :--- |
-| **Framework** | Next.js 15 (App Router) |
-| **Styling** | Tailwind CSS 4 + Vanilla CSS |
-| **Animations** | Framer Motion |
-| **Icons** | Lucide React |
-| **Fonts** | Google Fonts (Bangers, Sedgwick Ave Display, Space Grotesk) |
+**Dimensional Glitches**
+If the screen starts shaking, don't worry. It's not your GPU dying; it's a *feature*. 
+I call it "Chromatic Aberration," but my laptop calls it "Help."
 
----
+**The Spider-Sense**
+Click things. Or don't. But if you click the logo three times, 
+you might just witness a glitch so powerful it would make Miguel O'Hara nervous.
 
-## 🚀 GETTING STARTED
-
-1. **Clone the Dimension**:
-   ```bash
-   git clone https://github.com/Chaitanyahoon/spidermon.git
-   ```
-
-2. **Install Dependencies**:
-   ```bash
-   npm install
-   ```
-
-3. **Run the Portal**:
-   ```bash
-   npm run dev
-   ```
-
-4. **View the Multi-verse**:
-   Open [http://localhost:3000](http://localhost:3000) in your browser.
+**Ben-Day Dots Everywhere**
+I used so many halftone patterns that if you squint hard enough, 
+you might actually start seeing the world in 1960s comic book print.
 
 ---
 
-## 🎨 DESIGN SYSTEM
+## 🎒 WHAT'S IN MY WEB-SHOOTERS?
 
-The Earth-1610 theme uses a strictly curated color palette:
-- `Spider-Verse Cyan`: `#00e5ff`
-- `Spider-Verse Magenta`: `#ff004d`
-- `Comic Yellow`: `#ffe500`
-- `Deep Void`: `#0d0d0d`
+**The "Science" Part:**
+Next.js (The Brains) • Framer Motion (The Style) • Tailwind (The Suit)
 
----
-
-## 🤝 CONTRIBUTIONS
-
-Feel free to open an issue or submit a pull request if you have ideas for new dimensions or optimizations!
+**The "Magic" Part:**
+Excessive Caffeine • Midnight Debug Sessions • Sheer Willpower
 
 ---
 
-<p align="center">
-  MADE BY <a href="https://github.com/Chaitanyahoon">CHAITANYA PATIL</a>
-</p>
+## 🚀 PORTAL SETUP
+
+```bash
+# Clone the dimension
+git clone https://github.com/Chaitanyahoon/spidermon.git
+
+# Feed the spiders
+npm install
+
+# Open the Multiverse
+npm run dev
+```
+
+---
+
+### 🕸️ Swing by and say hi!
+[LinkedIn](https://linkedin.com/in/chaitanyapatil700) • [GitHub](https://github.com/Chaitanyahoon)
+
+---
+
+#### *No spiders were harmed in the making of this website.*
+*(Except the one in the corner of my room. He knows what he did.)*
+
+</div>
