@@ -268,6 +268,47 @@ export default function Hero() {
           {/* Speed-Lines — radiates from blob origin in Miles-verse mode */}
           <div className="hero-speedlines" aria-hidden="true" />
 
+          {/* Floating Action Words — immersive Spider-Verse elements */}
+          {theme === "theme-1610" && (
+            <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden">
+              <motion.div
+                style={{
+                  top: "20%",
+                  left: "15%",
+                  opacity: useTransform(scrollYProgress, [0.1, 0.2, 0.35, 0.5], [0, 1, 1, 0]),
+                  scale: useTransform(scrollYProgress, [0.1, 0.2], [0, 1]),
+                }}
+                className="action-word absolute"
+              >
+                THWIP!
+              </motion.div>
+              <motion.div
+                style={{
+                  top: "60%",
+                  right: "10%",
+                  opacity: useTransform(scrollYProgress, [0.3, 0.45, 0.6, 0.75], [0, 1, 1, 0]),
+                  scale: useTransform(scrollYProgress, [0.3, 0.45], [0, 1]),
+                  rotate: 15,
+                }}
+                className="action-word red absolute"
+              >
+                POW!
+              </motion.div>
+              <motion.div
+                style={{
+                  top: "15%",
+                  right: "20%",
+                  opacity: useTransform(scrollYProgress, [0.5, 0.65, 0.8, 0.95], [0, 1, 1, 0]),
+                  scale: useTransform(scrollYProgress, [0.5, 0.65], [0, 1]),
+                  rotate: -10,
+                }}
+                className="action-word absolute"
+              >
+                BAM!
+              </motion.div>
+            </div>
+          )}
+
           <div className="absolute inset-0">
             <Image
               src={theme === "theme-1610" ? "/Chaitanya_milesmorales.png" : "/Chaitanya.png"}

@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { ThemeToggle } from "./ThemeToggle";
+import { Bug } from "lucide-react"; // Spider-like icon
 const navLinks = [
   { label: "Work", href: "#work" },
   { label: "About", href: "#about-detail" },
@@ -41,25 +42,39 @@ export default function Navbar() {
         }`}
     >
       {/* Name — clicking scrolls to top */}
-      <a
-        href="#"
-        onClick={() => {
-          const newCount = clickCount + 1;
-          setClickCount(newCount);
-          if (newCount >= 3) {
-            window.dispatchEvent(new Event("toggle-camo"));
-            setClickCount(0);
-          }
-        }}
-        className={`hover-glitch text-sm tracking-[0.2em] uppercase text-white comic-title ${clickCount > 0 ? 'animate-pulse' : ''}`}
-        style={{
-          fontFamily: "var(--font-graffiti), var(--font-space-grotesk)",
-          fontSize: "1.75rem",
-          textShadow: clickCount > 0 ? "2px 0 var(--spiderverse-cyan), -2px 0 var(--spiderverse-magenta)" : "none"
-        }}
-      >
-        Chaitanya<span style={{ color: "var(--theme-accent)", fontFamily: "var(--font-bangers)" }}>.</span>
-      </a>
+      <div className="flex items-center gap-3">
+        <motion.div
+          whileHover={{ scale: 1.1, rotate: [0, -10, 10, 0] }}
+          className="text-[var(--theme-accent)]"
+        >
+          <Bug size={24} className={clickCount > 0 ? "animate-pulse" : ""} />
+        </motion.div>
+        <a
+          href="#"
+          onClick={() => {
+            const newCount = clickCount + 1;
+            setClickCount(newCount);
+            if (newCount >= 3) {
+              window.dispatchEvent(new Event("toggle-camo"));
+              setClickCount(0);
+            }
+          }}
+          className={`group relative text-sm tracking-[0.1em] text-white comic-title transition-all duration-300`}
+          style={{
+            fontFamily: "var(--font-graffiti), var(--font-space-grotesk)",
+            fontSize: "1.85rem",
+            transform: "rotate(-2deg)",
+            textShadow: clickCount > 0
+              ? "3px 3px 0px var(--spiderverse-cyan), -3px -3px 0px var(--spiderverse-magenta)"
+              : "2px 2px 0px #000, 4px 4px 0px rgba(0,0,0,0.2)"
+          }}
+        >
+          Chaitanya<span style={{ color: "var(--theme-accent)", fontFamily: "var(--font-bangers)", marginLeft: "-2px" }}>.</span>
+          {/* Spray Drip Effect */}
+          <div className="absolute -bottom-2 left-4 w-1 h-4 bg-[var(--theme-accent)] opacity-0 group-hover:opacity-100 transition-opacity rounded-full animate-bounce" />
+          <div className="absolute -bottom-4 left-10 w-1 h-6 bg-[var(--spiderverse-cyan)] opacity-0 group-hover:opacity-100 transition-opacity rounded-full animate-bounce delay-100" />
+        </a>
+      </div>
 
       {/* Links with active indicator */}
       <div className="flex items-center gap-6">
