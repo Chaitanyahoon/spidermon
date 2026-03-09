@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Inter, Space_Grotesk, Bangers, Sedgwick_Ave_Display } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "./components/ThemeProvider";
 import { WebCursor } from "./components/WebCursor";
@@ -9,18 +9,33 @@ import { WebScrollbar } from "./components/WebScrollbar";
 import { WebPullToTop } from "./components/WebPullToTop";
 import { CamoWrapper } from "./components/CamoWrapper";
 
-// Clean sans-serif for body and subtext - architectural precision
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   display: "swap",
 });
 
-// Strong geometric display font - bold and dominant
+// Strong geometric display font
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
   subsets: ["latin"],
   weight: ["600", "700"],
+  display: "swap",
+});
+
+// Authentic comic book marker font for Earth-1610 Miles Morales mode
+const bangers = Bangers({
+  variable: "--font-bangers",
+  weight: "400",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+// Street art/Graffiti font for Earth-1610 Miles Morales accents
+const sedgwick = Sedgwick_Ave_Display({
+  variable: "--font-graffiti",
+  weight: "400",
+  subsets: ["latin"],
   display: "swap",
 });
 
@@ -47,13 +62,14 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${inter.variable} ${spaceGrotesk.variable} font-sans antialiased`}
+        className={`${inter.variable} ${spaceGrotesk.variable} ${bangers.variable} ${sedgwick.variable} antialiased bg-[var(--theme-bg)]`}
       >
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
           enableSystem={false}
         >
+
           <HalftoneOverlay />
           <SpiderSenseTransition />
           <WebScrollbar />

@@ -313,7 +313,7 @@ function Panel({
 
       {/* Title */}
       <h3
-        className="relative z-10 font-black uppercase leading-[0.88] whitespace-pre-line mb-4"
+        className="relative z-10 font-black uppercase leading-[0.88] whitespace-pre-line mb-4 comic-title"
         style={{
           fontFamily: "var(--font-space-grotesk)",
           fontSize: "clamp(3rem, 6vw, 6.5rem)",
@@ -329,9 +329,8 @@ function Panel({
         style={{ background: accent }}
       />
 
-      {/* Description */}
       <p
-        className="relative z-10 text-zinc-400 text-sm leading-relaxed max-w-sm"
+        className="relative z-10 text-zinc-400 text-sm leading-relaxed max-w-sm comic-body-text"
         style={{ fontFamily: "var(--font-inter)" }}
       >
         {description}

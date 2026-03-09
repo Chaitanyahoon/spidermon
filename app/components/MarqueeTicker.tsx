@@ -15,7 +15,7 @@ const NEWS_ITEMS = [
 
 export default function MarqueeTicker() {
   return (
-    <div className="w-full bg-[var(--theme-accent)] py-3 overflow-hidden border-y border-black relative z-20 flex flex-col justify-center">
+    <div className="comic-ticker w-full bg-[var(--theme-accent)] py-3 overflow-hidden border-y border-black relative z-20 flex flex-col justify-center">
       <div className="flex whitespace-nowrap">
         <motion.div
           className="flex items-center gap-8 whitespace-nowrap"
@@ -30,8 +30,8 @@ export default function MarqueeTicker() {
           {[...NEWS_ITEMS, ...NEWS_ITEMS].map((item, i) => (
             <div key={i} className="flex items-center gap-8">
               <span
-                className="text-black font-black text-sm md:text-base tracking-[0.2em] uppercase"
-                style={{ fontFamily: "var(--font-space-grotesk)" }}
+                className="comic-ticker-text text-black font-black text-sm md:text-base tracking-[0.2em] uppercase"
+                style={{ fontFamily: "var(--font-bangers)" }}
               >
                 {item}
               </span>

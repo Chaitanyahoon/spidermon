@@ -22,9 +22,14 @@ export function WebScrollbar() {
   );
 
   // Scale the web-line vertically tracking the thumb
-  const webScaleY = useTransform(smoothProgress, [0, 1], [0, 1]);
+  const webScaleY = useSpring(useTransform(scrollYProgress, [0, 1], [0, 1]), {
+    stiffness: 150,
+    damping: 30,
+    restDelta: 0.001,
+  });
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
   }, []);
 

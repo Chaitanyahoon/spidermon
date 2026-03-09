@@ -29,7 +29,7 @@ export default function Footer() {
           transition={{ duration: 0.6 }}
         >
           <p
-            className="text-xl font-bold tracking-tight text-white flex items-center gap-2"
+            className="text-xl font-bold tracking-tight text-white flex items-center gap-2 comic-title pb-2"
             style={{ fontFamily: "var(--font-space-grotesk)" }}
           >
             Chaitanya<span style={{ color: "var(--theme-accent)" }}>.</span>

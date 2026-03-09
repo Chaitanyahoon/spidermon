@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useRef, MouseEvent, useEffect } from "react";
+import { useState, useRef, MouseEvent } from "react";
 import Image from "next/image";
+import { useTheme } from "next-themes";
 import {
   motion,
   useScroll,
@@ -25,7 +26,8 @@ function BackgroundTitle({ progress }: { progress: MotionValue<number> }) {
     const intensity = Math.min(Math.abs(v * 30), 50); // intense aberration on fast scroll
     if (intensity < 0.5) return "none";
     const dir = v > 0 ? 1 : -1;
-    return `${dir * intensity}px ${dir * intensity * 0.2}px 0 var(--theme-accent-alt), ${-dir * intensity}px ${-dir * intensity * 0.1}px 0 var(--theme-accent)`;
+    // Inject Spiderverse Neon Cyan/Magenta on fast scroll
+    return `${dir * intensity}px ${dir * intensity * 0.2}px 0 var(--spiderverse-cyan), ${-dir * intensity}px ${-dir * intensity * 0.1}px 0 var(--spiderverse-magenta)`;
   });
 
   const copiesA = Array(8).fill("CHAITANYA");
@@ -46,7 +48,7 @@ function BackgroundTitle({ progress }: { progress: MotionValue<number> }) {
           {[...copiesA, ...copiesA].map((name, i) => (
             <motion.span
               key={i}
-              className="text-[13vw] font-bold leading-none tracking-tighter text-[#e8e8e8] select-none"
+              className="text-[13vw] font-bold leading-none tracking-tighter text-[#e8e8e8] select-none comic-title"
               style={{
                 fontFamily: "var(--font-space-grotesk)",
                 paddingRight: "6vw",
@@ -69,7 +71,7 @@ function BackgroundTitle({ progress }: { progress: MotionValue<number> }) {
           {[...copiesB, ...copiesB].map((name, i) => (
             <motion.span
               key={i}
-              className="text-[13vw] font-bold leading-none tracking-tighter select-none"
+              className="text-[13vw] font-bold leading-none tracking-tighter select-none comic-title"
               style={{
                 fontFamily: "var(--font-space-grotesk)",
                 paddingRight: "6vw",
@@ -175,6 +177,7 @@ export default function Hero() {
   const cardRef = useRef<HTMLDivElement>(null);
   const [isMasked, setIsMasked] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
+  const { theme } = useTheme();
 
   // Scroll Progress
   const { scrollYProgress } = useScroll({
@@ -243,7 +246,7 @@ export default function Hero() {
         {/* Card Container */}
         <motion.div
           ref={cardRef}
-          className="relative z-20 h-full w-full overflow-hidden bg-zinc-800 shadow-2xl cursor-none"
+          className="relative z-20 h-full w-full overflow-hidden bg-zinc-800 shadow-2xl cursor-none comic-border transition-all duration-300"
           style={{ scale, borderRadius }}
           onMouseMove={handleMouseMove}
           onMouseEnter={handleMouseEnter}
@@ -262,11 +265,13 @@ export default function Hero() {
             </defs>
           </svg>
 
-          {/* Base Image */}
+          {/* Speed-Lines — radiates from blob origin in Miles-verse mode */}
+          <div className="hero-speedlines" aria-hidden="true" />
+
           <div className="absolute inset-0">
             <Image
-              src="/Chaitanya.png"
-              alt="Chaitanya Portrait"
+              src={theme === "theme-1610" ? "/Chaitanya_milesmorales.png" : "/Chaitanya.png"}
+              alt="Portrait"
               fill
               className="object-cover object-center"
               priority
@@ -285,8 +290,8 @@ export default function Hero() {
             }}
           >
             <Image
-              src="/Chaitanya_spiderman.png"
-              alt="Chaitanya Spider Reveal"
+              src={theme === "theme-1610" ? "/Chaitanya_milesmorales.png" : "/Chaitanya_spiderman.png"}
+              alt="Spider Reveal"
               fill
               className="object-cover object-center"
               quality={100}
@@ -313,7 +318,7 @@ export default function Hero() {
               className="text-[9px] tracking-[0.4em] uppercase mb-1"
               style={{
                 fontFamily: "var(--font-space-grotesk)",
-                color: "#a1a1aa",
+                color: theme === "theme-1610" ? "rgba(255,229,0,0.75)" : "#a1a1aa",
               }}
             >
               Your Friendly Neighborhood
@@ -328,12 +333,24 @@ export default function Hero() {
               Full-Stack Developer
             </p>
             <h1
-              className="text-5xl md:text-7xl font-black uppercase leading-none text-white"
-              style={{ fontFamily: "var(--font-space-grotesk)" }}
+              className={`leading-none uppercase ${theme === "theme-1610" ? "hover-glitch" : ""}`}
+              style={{
+                fontFamily: theme === "theme-1610" ? "var(--font-bangers)" : "var(--font-space-grotesk)",
+                fontSize: theme === "theme-1610" ? "clamp(4.5rem, 11vw, 10rem)" : "clamp(3rem, 8vw, 7rem)",
+                fontWeight: theme === "theme-1610" ? 400 : 900,
+                letterSpacing: theme === "theme-1610" ? "0.06em" : "-0.02em",
+                color: "#f8fafc",
+                transformOrigin: "bottom left",
+                transform: theme === "theme-1610" ? "rotate(-3deg)" : "none",
+                textShadow: theme === "theme-1610" ? "5px 5px 0 #000, 2px 0 var(--spiderverse-cyan), -2px 0 var(--spiderverse-magenta)" : "0 4px 24px rgba(0,0,0,0.4)",
+              }}
             >
               Chaitanya
               <br />
-              <span style={{ color: "var(--theme-accent)" }}>Patil.</span>
+              <span style={{
+                color: "var(--theme-accent)",
+                textShadow: theme === "theme-1610" ? "5px 5px 0 #000, 2px 0 var(--spiderverse-cyan), -2px 0 var(--spiderverse-magenta)" : "0 0 20px rgba(232,0,28,0.5)"
+              }}>Patil.</span>
             </h1>
 
             {/* Resume download */}
@@ -347,8 +364,11 @@ export default function Hero() {
                 delay: 0.9,
                 ease: [0.16, 1, 0.3, 1],
               }}
-              className="mt-5 inline-flex items-center gap-2 border border-zinc-600 text-zinc-300 hover:border-[var(--theme-accent)] hover:text-white text-[10px] tracking-[0.25em] uppercase px-5 py-2.5 rounded-full transition-all duration-300 pointer-events-auto"
-              style={{ fontFamily: "var(--font-space-grotesk)" }}
+              className={`mt-5 inline-flex items-center gap-2 text-[10px] tracking-[0.25em] uppercase px-5 py-2.5 transition-all duration-300 pointer-events-auto ${theme === "theme-1610"
+                ? "border-2 border-[#FFE500] text-[#FFE500] hover:bg-[#FFE500] hover:text-black"
+                : "border border-zinc-700 bg-black/40 text-zinc-300 hover:border-[var(--theme-accent)] hover:text-white hover:shadow-[0_0_15px_rgba(232,0,28,0.3)] rounded-full"
+                }`}
+              style={{ fontFamily: theme === "theme-1610" ? "var(--font-bangers)" : "var(--font-space-grotesk)", letterSpacing: theme === "theme-1610" ? "0.2em" : "0.25em" }}
             >
               <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
                 <path

@@ -33,15 +33,15 @@ export default function NotFound() {
           {/* Spider drop */}
           <p className="text-5xl mb-2">🕷️</p>
           <h1
-            className="text-3xl md:text-5xl font-black uppercase text-white"
-            style={{ fontFamily: "var(--font-space-grotesk)" }}
+            className="text-3xl sm:text-4xl md:text-[clamp(2.5rem,5vw,4rem)] font-black uppercase text-white tracking-tight"
+            style={{ fontFamily: "var(--font-space-grotesk)", letterSpacing: "-0.03em" }}
           >
             Lost in the{" "}
             <span style={{ color: "var(--theme-accent)" }}>Web.</span>
           </h1>
           <p
-            className="mt-4 text-zinc-500 text-sm tracking-wide max-w-xs mx-auto"
-            style={{ fontFamily: "var(--font-inter)" }}
+            className="mt-4 text-zinc-500 text-sm md:text-base tracking-wide max-w-[50ch] mx-auto leading-relaxed"
+            style={{ fontFamily: "var(--font-inter)", letterSpacing: "-0.01em" }}
           >
             This page swung away. Even your friendly neighbourhood developer
             couldn&apos;t find it.

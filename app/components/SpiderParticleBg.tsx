@@ -44,69 +44,51 @@ export default function SpiderParticleBg({
     const rgbColor = hexToRgb(currentHex) || { r: 232, g: 0, b: 28 };
 
     // --- Web Physics Node ---
-    class WebNode {
+    interface WebNode {
       x: number;
       y: number;
       baseX: number;
       baseY: number;
       vx: number;
       vy: number;
-      ringIndex: number; // which concentric ring this belongs to
-      radialIndex: number; // which spoke this belongs to
-
-      constructor(
-        x: number,
-        y: number,
-        ringIndex: number,
-        radialIndex: number,
-      ) {
-        this.x = x;
-        this.y = y;
-        this.baseX = x;
-        this.baseY = y;
-        this.vx = 0;
-        this.vy = 0;
-        this.ringIndex = ringIndex;
-        this.radialIndex = radialIndex;
-      }
-
-      update() {
-        // 1. Mouse Interaction: "pull" nodes towards mouse
-        const dxMouse = mouseX - this.x;
-        const dyMouse = mouseY - this.y;
-        const distMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
-
-        let targetX = this.baseX;
-        let targetY = this.baseY;
-
-        // If mouse is close (e.g., within 200px), perturb the target position
-        const pullRadius = 300;
-        if (distMouse < pullRadius && mouseX > 0) {
-          const force = (pullRadius - distMouse) / pullRadius; // 0 to 1
-          // Pull node outwards towards the mouse by a fraction
-          targetX = this.baseX + dxMouse * force * 0.15;
-          targetY = this.baseY + dyMouse * force * 0.15;
-        }
-
-        // 2. Spring Physics (calculate acceleration towards target)
-        const springForce = 0.05; // Stiffness
-        const damping = 0.85; // Friction
-
-        const ax = (targetX - this.x) * springForce;
-        const ay = (targetY - this.y) * springForce;
-
-        this.vx += ax;
-        this.vy += ay;
-
-        this.vx *= damping;
-        this.vy *= damping;
-
-        // Subtle ambient drifting
-        this.x += this.vx + Math.sin(Date.now() * 0.001 + this.ringIndex) * 0.2;
-        this.y +=
-          this.vy + Math.cos(Date.now() * 0.001 + this.radialIndex) * 0.2;
-      }
+      ringIndex: number;
+      radialIndex: number;
     }
+
+    const createNode = (x: number, y: number, ringIndex: number, radialIndex: number): WebNode => ({
+      x, y, baseX: x, baseY: y, vx: 0, vy: 0, ringIndex, radialIndex
+    });
+
+    const updateNode = (node: WebNode) => {
+      const dxMouse = mouseX - node.x;
+      const dyMouse = mouseY - node.y;
+      const distMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
+
+      let targetX = node.baseX;
+      let targetY = node.baseY;
+
+      const pullRadius = 300;
+      if (distMouse < pullRadius && mouseX > 0) {
+        const force = (pullRadius - distMouse) / pullRadius;
+        targetX = node.baseX + dxMouse * force * 0.15;
+        targetY = node.baseY + dyMouse * force * 0.15;
+      }
+
+      const springForce = 0.05;
+      const damping = 0.85;
+
+      const ax = (targetX - node.x) * springForce;
+      const ay = (targetY - node.y) * springForce;
+
+      node.vx += ax;
+      node.vy += ay;
+
+      node.vx *= damping;
+      node.vy *= damping;
+
+      node.x += node.vx + Math.sin(Date.now() * 0.001 + node.ringIndex) * 0.2;
+      node.y += node.vy + Math.cos(Date.now() * 0.001 + node.radialIndex) * 0.2;
+    };
 
     let nodes: WebNode[] = [];
     const numSpokes = 12; // 12 radial lines going outwards
@@ -140,7 +122,7 @@ export default function SpiderParticleBg({
           const nx = originX + Math.cos(angle) * (radius + jitter);
           const ny = originY + Math.sin(angle) * (radius + jitter);
 
-          nodes.push(new WebNode(nx, ny, r, s));
+          nodes.push(createNode(nx, ny, r, s));
         }
       }
     };
@@ -174,14 +156,11 @@ export default function SpiderParticleBg({
       ctx.lineWidth = 0.6;
       for (let r = 1; r <= numRings; r++) {
         ctx.beginPath();
-        let firstNode: WebNode | undefined;
-
         for (let s = 0; s < numSpokes; s++) {
           const node = getNode(r, s);
           if (node) {
             if (s === 0) {
               ctx.moveTo(node.x, node.y);
-              firstNode = node;
             } else {
               // Slight curve between nodes for organic sag
               ctx.lineTo(node.x, node.y);
@@ -208,7 +187,7 @@ export default function SpiderParticleBg({
       ctx.clearRect(0, 0, width, height);
 
       // Update physics
-      nodes.forEach((n) => n.update());
+      nodes.forEach((n) => updateNode(n));
 
       // Draw the structured web
       drawWeb();
@@ -261,9 +240,9 @@ function hexToRgb(hex: string) {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result
     ? {
-        r: parseInt(result[1], 16),
-        g: parseInt(result[2], 16),
-        b: parseInt(result[3], 16),
-      }
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16),
+    }
     : null;
 }

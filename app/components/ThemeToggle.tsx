@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useTheme } from "next-themes";
-import { Palette, Moon, Sun, ChevronDown } from "lucide-react";
+import { Palette, Moon, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const themes = [
@@ -107,11 +107,10 @@ export function ThemeToggle() {
                       setTheme(t.name);
                       setIsOpen(false);
                     }}
-                    className={`flex items-center gap-3 w-full p-2.5 rounded-xl transition-all duration-200 cursor-pointer select-none ${
-                      isActive
+                    className={`flex items-center gap-3 w-full p-2.5 rounded-xl transition-all duration-200 cursor-pointer select-none ${isActive
                         ? "bg-zinc-800 border border-zinc-700/50"
                         : "hover:bg-zinc-800/60 border border-transparent"
-                    }`}
+                      }`}
                   >
                     <div
                       className="flex items-center justify-center w-8 h-8 rounded-full transition-colors duration-200 shrink-0"

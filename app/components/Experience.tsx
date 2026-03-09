@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import { useTheme } from "next-themes";
 import SpiderWebBg from "./SpiderWebBg";
 
 const experiences = [
@@ -9,20 +10,20 @@ const experiences = [
     period: "Jan 2025 – May 2025 · 5 months",
     role: "Full-Stack Developer Intern",
     company: "Softweb IT Services",
-    location: "Ahmedabad, India",
+    location: "Vapi, Gujarat",
     description:
-      "Developed features across Java Spring Boot microservices and React frontends over 5 months. Worked on multi-tenant SaaS modules, MySQL schema design, and Docker deployment pipelines.",
-    tags: ["Spring Boot", "Java", "React.js", "MySQL", "Docker"],
+      "Developed scalable web applications using React and Node.js, implemented microservices architecture, and optimised database performance for enterprise clients.",
+    tags: ["React", "Node.js", "MongoDB", "AWS", "Docker", "Microservices"],
     accent: true,
   },
   {
     period: "Jun 2024 – Jul 2024 · 2 months",
-    role: "React.js Developer Intern",
+    role: "React Developer Intern",
     company: "InfoLabz IT Services",
     location: "Ahmedabad, India",
     description:
-      "Built and maintained client-facing React.js dashboards, integrated REST APIs, and contributed to agile sprints. Improved frontend performance by optimising component re-renders and code splitting.",
-    tags: ["React.js", "TypeScript", "REST APIs", "Agile"],
+      "Built responsive user interfaces and optimised application performance. Collaborated with the design team to implement pixel-perfect designs and improve user experience.",
+    tags: ["React", "JavaScript", "CSS", "Redux", "Jest", "Figma"],
     accent: false,
   },
 ];
@@ -30,9 +31,11 @@ const experiences = [
 function RoleCard({
   exp,
   index,
+  isMiles,
 }: {
   exp: (typeof experiences)[0];
   index: number;
+  isMiles: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "0px 0px -80px 0px" });
@@ -49,43 +52,41 @@ function RoleCard({
       <div
         className="absolute left-0 top-3 w-4 h-4 rounded-full border-2 flex items-center justify-center"
         style={{
-          borderColor: exp.accent ? "var(--theme-accent)" : "#52525b",
-          background: exp.accent ? "var(--theme-accent)" : "var(--theme-bg)",
+          borderColor: exp.accent ? (isMiles ? "#FFE500" : "var(--theme-accent)") : "#52525b",
+          background: exp.accent ? (isMiles ? "#FFE500" : "var(--theme-accent)") : "var(--theme-bg)",
         }}
       >
-        {exp.accent && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
+        {exp.accent && <div className="w-1.5 h-1.5 rounded-full" style={{ background: isMiles ? "#000" : "white" }} />}
       </div>
 
       {/* Card */}
       <div
-        className="rounded-2xl border p-6 md:p-8 transition-colors duration-300 hover:border-zinc-600"
-        style={{
-          background: exp.accent
-            ? "rgba(232,0,28,0.05)"
-            : "rgba(255,255,255,0.02)",
+        className={isMiles ? "comic-panel p-6" : "rounded-2xl border p-6 md:p-8 transition-colors duration-300 hover:border-zinc-600"}
+        style={isMiles ? {} : {
+          background: exp.accent ? "rgba(232,0,28,0.05)" : "rgba(255,255,255,0.02)",
           borderColor: exp.accent ? "rgba(232,0,28,0.3)" : "#27272a",
         }}
       >
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-4">
           <div>
             <p
-              className="text-[10px] tracking-[0.35em] uppercase mb-1"
+              className="text-[10px] tracking-[0.25em] uppercase mb-1 font-bold"
               style={{
-                fontFamily: "var(--font-space-grotesk)",
-                color: exp.accent ? "var(--theme-accent)" : "#71717a",
+                fontFamily: isMiles ? "var(--font-bangers)" : "var(--font-space-grotesk)",
+                color: isMiles ? "#FFE500" : (exp.accent ? "var(--theme-accent)" : "#71717a"),
               }}
             >
               {exp.period} · {exp.location}
             </p>
             <h3
-              className="text-xl font-bold text-white"
-              style={{ fontFamily: "var(--font-space-grotesk)" }}
+              className={isMiles ? "text-2xl comic-title" : "text-xl font-bold text-white"}
+              style={{ fontFamily: isMiles ? "var(--font-graffiti), var(--font-bangers)" : "var(--font-space-grotesk)", letterSpacing: isMiles ? "0.04em" : undefined, color: isMiles ? undefined : undefined }}
             >
               {exp.role}
             </h3>
             <p
-              className="text-sm text-zinc-400 mt-0.5"
-              style={{ fontFamily: "var(--font-space-grotesk)" }}
+              className="text-sm mt-0.5"
+              style={{ fontFamily: isMiles ? "var(--font-bangers)" : "var(--font-space-grotesk)", color: isMiles ? "rgba(255,255,255,0.6)" : "#a1a1aa", letterSpacing: isMiles ? "0.05em" : undefined }}
             >
               {exp.company}
             </p>
@@ -93,25 +94,29 @@ function RoleCard({
         </div>
 
         <p
-          className="text-zinc-400 text-sm leading-relaxed mb-5"
-          style={{ fontFamily: "var(--font-inter)" }}
+          className="text-sm leading-relaxed mb-5"
+          style={{ fontFamily: "var(--font-inter)", color: isMiles ? "rgba(255,255,255,0.75)" : "#a1a1aa" }}
         >
           {exp.description}
         </p>
 
         <div className="flex flex-wrap gap-2">
           {exp.tags.map((tag) => (
-            <span
-              key={tag}
-              className="text-[10px] tracking-widest uppercase px-3 py-1 rounded-full border"
-              style={{
-                fontFamily: "var(--font-space-grotesk)",
-                color: exp.accent ? "var(--theme-accent)" : "#71717a",
-                borderColor: exp.accent ? "rgba(232,0,28,0.4)" : "#3f3f46",
-              }}
-            >
-              {tag}
-            </span>
+            isMiles ? (
+              <span key={tag} className="comic-tag">{tag}</span>
+            ) : (
+              <span
+                key={tag}
+                className="text-[10px] tracking-widest uppercase px-3 py-1 rounded-full border"
+                style={{
+                  fontFamily: "var(--font-space-grotesk)",
+                  color: exp.accent ? "var(--theme-accent)" : "#71717a",
+                  borderColor: exp.accent ? "rgba(232,0,28,0.4)" : "#3f3f46",
+                }}
+              >
+                {tag}
+              </span>
+            )
           ))}
         </div>
       </div>
@@ -121,6 +126,8 @@ function RoleCard({
 
 export default function Experience() {
   const ref = useRef<HTMLElement>(null);
+  const { theme } = useTheme();
+  const isMiles = theme === "theme-1610";
 
   return (
     <section
@@ -132,20 +139,35 @@ export default function Experience() {
 
       <div className="relative px-6 md:px-16 lg:px-24 py-24">
         {/* Section header */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="flex items-center gap-6 mb-20"
-        >
-          <span
-            className="text-[11px] tracking-[0.3em] uppercase text-zinc-600"
-            style={{ fontFamily: "var(--font-space-grotesk)" }}
+        {isMiles ? (
+          <motion.div
+            initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+            className="flex items-center gap-4 mb-20 overflow-hidden"
           >
-            02 / Experience
-          </span>
-          <div className="flex-1 h-px bg-zinc-800" />
-        </motion.div>
+            <span
+              className="shrink-0 text-[11px] font-bold uppercase px-3 py-1 border-2 border-black"
+              style={{ fontFamily: "var(--font-bangers)", background: "#FFE500", color: "#000", letterSpacing: "0.2em", boxShadow: "2px 2px 0 #000" }}
+            >
+              03 / EXPERIENCE
+            </span>
+            <div className="flex-1 h-0.5" style={{ background: "#FFE500" }} />
+          </motion.div>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="flex items-center gap-6 mb-20"
+          >
+            <span
+              className="text-[11px] tracking-[0.3em] uppercase text-zinc-600"
+              style={{ fontFamily: "var(--font-space-grotesk)" }}
+            >
+              02 / Experience
+            </span>
+            <div className="flex-1 h-px bg-zinc-800" />
+          </motion.div>
+        )}
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-start">
           {/* Left — large text */}
@@ -157,8 +179,9 @@ export default function Experience() {
               transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
               className="font-black uppercase leading-none text-white"
               style={{
-                fontFamily: "var(--font-space-grotesk)",
+                fontFamily: isMiles ? "var(--font-graffiti), var(--font-bangers)" : "var(--font-space-grotesk)",
                 fontSize: "clamp(3rem, 7vw, 6rem)",
+                letterSpacing: isMiles ? "0.05em" : undefined,
               }}
             >
               WHERE
@@ -190,8 +213,10 @@ export default function Experience() {
               transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
               className="absolute left-1.5 top-0 bottom-0 w-px origin-top"
               style={{
-                background:
-                  "linear-gradient(to bottom, var(--theme-accent), #7f0010, transparent)",
+                background: isMiles
+                  ? "linear-gradient(to bottom, #FFE500, rgba(255,229,0,0.3), transparent)"
+                  : "linear-gradient(to bottom, var(--theme-accent), #7f0010, transparent)",
+                width: isMiles ? "2px" : "1px",
               }}
             />
 
@@ -218,7 +243,7 @@ export default function Experience() {
             {/* Role cards */}
             <div className="flex flex-col gap-8">
               {experiences.map((exp, i) => (
-                <RoleCard key={exp.company} exp={exp} index={i} />
+                <RoleCard key={exp.company} exp={exp} index={i} isMiles={isMiles} />
               ))}
             </div>
 

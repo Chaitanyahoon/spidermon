@@ -1,29 +1,61 @@
 @import "tailwindcss";
 
+/* ═══════════════════════════════════════════════════
+   EARTH-616 — Peter Parker / Default Theme
+   ═══════════════════════════════════════════════════ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --theme-bg: #09090b;
+  /* True deep black/zinc instead of navy */
+  --theme-accent: #e8001c;
+  /* Classic Spider-Man Red */
+  --theme-accent-alt: #2563eb;
+  /* Classic Spider-Man Blue */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a14;
-    --foreground: #ededed;
-  }
+/* Subtle tech/web grid for Earth-616 background */
+body:not(.theme-1610) {
+  background-image:
+    linear-gradient(to right, rgba(232, 0, 28, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(232, 0, 28, 0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
 }
 
-@layer base {
-  :root {
-    --theme-bg: #0a0a14;
-    --theme-accent: #e8001c;
-    --theme-accent-alt: #2563eb;
-  }
+body:not(.theme-1610)::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.08) 0%, transparent 60%);
+}
 
-  .theme-1610 {
-    --theme-bg: #050505;
-    --theme-accent: #ff0055;
-    --theme-accent-alt: #8a2be2;
-  }
+/* ═══════════════════════════════════════════════════
+   EARTH-1610 — MILES MORALES
+   TRUE COMIC BOOK DESIGN SYSTEM
+   
+   RULES:
+   ✦ Four-color process: BLACK · RED · YELLOW · WHITE
+   ✦ Zero gradients on content panels
+   ✦ Thick ink outlines (4-6px) on ALL cards
+   ✦ Visible Ben-Day halftone dots
+   ✦ Bangers font for ALL headings in 1610 mode
+   ✦ Speech bubbles for quotes
+   ✦ Action callouts (THWIP! POW!)
+   ✦ Tilted/mis-registered panel stamps
+   ═══════════════════════════════════════════════════ */
+.theme-1610 {
+  --theme-bg: #141414;
+  /* Off-black instead of pure black */
+  --theme-accent: #e23636;
+  --theme-accent-alt: #00d4ff;
+  /* Miles Morales Spider-Verse Neon Additions */
+  --spiderverse-cyan: #00e5ff;
+  --spiderverse-magenta: #ff004d;
+  --comic-yellow: #FFE500;
+  --comic-ink: #000000;
+  --comic-white: #f5f0e8;
+  --panel-border: 4px solid #000;
+  --ink-shadow: 6px 6px 0 #000;
 }
 
 html {
@@ -31,78 +63,562 @@ html {
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--theme-bg, #0d0d0d);
+  color: #f0f0f0;
   overflow-x: hidden;
 }
 
-/* Hide native scrollbar for custom Web-Swing scrollbar */
 ::-webkit-scrollbar {
-  width: 0px;
-  background: transparent;
+  width: 0;
 }
 
-/* ── Spider-Verse glitch on accent words ──────────────────── */
-@keyframes spideyGlitch {
+/* ═══════════════════════════════════════════════════
+   1. HALFTONE — Offset CMYK Dots
+      Stronger blend mirroring print misregistration
+   ═══════════════════════════════════════════════════ */
+.theme-1610 body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background-image:
+    radial-gradient(circle, rgba(0, 229, 255, 0.04) 1px, transparent 1.5px),
+    radial-gradient(circle, rgba(255, 0, 77, 0.04) 1px, transparent 1.5px),
+    radial-gradient(circle, rgba(255, 229, 0, 0.05) 1px, transparent 1.5px);
+  background-size: 8px 8px;
+  background-position: 0 0, 4px 4px, 2px 2px;
+  /* Offset to feel like a printing error */
+  mix-blend-mode: screen;
+}
+
+/* ═══════════════════════════════════════════════════
+   2. NAVBAR — Flat black ink bar
+   ═══════════════════════════════════════════════════ */
+.theme-1610 nav {
+  background: #0f0f11 !important;
+  border-bottom: 4px solid var(--comic-yellow) !important;
+  backdrop-filter: none !important;
+}
+
+.theme-1610 nav * {
+  color: #fff;
+}
+
+.theme-1610 nav a:hover {
+  color: var(--comic-yellow) !important;
+}
+
+/* ═══════════════════════════════════════════════════
+   3. HERO — Full bleed, action lines overlay
+   ═══════════════════════════════════════════════════ */
+.theme-1610 #hero {
+  border-bottom: 5px solid #000 !important;
+}
+
+/* Speed-lines — conic-gradient radiating from right-center */
+.theme-1610 .hero-speedlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background: conic-gradient(from 0deg at 68% 50%,
+      transparent 0deg,
+      rgba(255, 229, 0, 0.06) 1deg,
+      transparent 3.5deg,
+      transparent 8deg,
+      rgba(226, 54, 54, 0.07) 9deg,
+      transparent 12deg,
+      transparent 20deg,
+      rgba(255, 229, 0, 0.05) 21deg,
+      transparent 24deg,
+      transparent 30deg,
+      rgba(226, 54, 54, 0.06) 31deg,
+      transparent 34deg,
+      transparent 44deg,
+      rgba(255, 229, 0, 0.07) 45deg,
+      transparent 48deg,
+      transparent 56deg,
+      rgba(226, 54, 54, 0.05) 57deg,
+      transparent 60deg,
+      transparent 360deg);
+}
+
+/* EARTH-1610 corner stamp */
+.theme-1610 #hero::after {
+  content: "EARTH-1610";
+  position: absolute;
+  bottom: 16px;
+  right: 18px;
+  background: var(--comic-yellow);
+  color: #000;
+  font-family: var(--font-bangers), cursive;
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  padding: 4px 12px;
+  border: 3px solid #000;
+  box-shadow: 3px 3px 0 #000;
+  z-index: 50;
+  pointer-events: none;
+  text-transform: uppercase;
+}
+
+/* ═══════════════════════════════════════════════════
+   4. MARQUEE — Yellow alert bar with black text
+   ═══════════════════════════════════════════════════ */
+.theme-1610 .comic-ticker {
+  background: var(--comic-yellow) !important;
+  border-top: 4px solid #000 !important;
+  border-bottom: 4px solid #000 !important;
+}
+
+.theme-1610 .comic-ticker-text {
+  color: #000 !important;
+  font-family: var(--font-bangers), cursive !important;
+  font-size: 1rem !important;
+  letter-spacing: 0.2em !important;
+}
+
+.theme-1610 .comic-ticker svg path {
+  fill: #000 !important;
+}
+
+/* ═══════════════════════════════════════════════════
+   5. SECTION GUTTER (Panel Divider)
+      Thick black rule between "panels" like a comic page
+   ═══════════════════════════════════════════════════ */
+.theme-1610 .section-panel-rule {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 2.5rem;
+  overflow: hidden;
+}
+
+.theme-1610 .section-panel-rule .panel-label {
+  font-family: var(--font-bangers), cursive;
+  font-size: 0.8rem;
+  letter-spacing: 0.25em;
+  color: #000;
+  text-transform: uppercase;
+  background: #FFE500;
+  padding: 3px 12px;
+  border: 2px solid #000;
+  box-shadow: 3px 3px 0 #000;
+  flex-shrink: 0;
+}
+
+.theme-1610 .section-panel-rule .panel-line {
+  flex: 1;
+  height: 2px;
+  background: #FFE500;
+  opacity: 0.7;
+}
+
+/* Section-level highlight — yellow top bar in 1610 mode */
+.theme-1610 section {
+  border-top: 4px solid var(--comic-yellow) !important;
+}
+
+
+/* ═══════════════════════════════════════════════════
+   6. COMIC PANEL CARDS
+      60% = #0a0a0a page bg (black)
+      30% = #111 dark panel with YELLOW BORDER + SHADOW
+      10% = yellow tags/labels + red accent panels
+   ═══════════════════════════════════════════════════ */
+.theme-1610 .comic-panel {
+  background: #111111 !important;
+  color: #f0f0f0 !important;
+  border: 4px solid #FFE500 !important;
+  border-radius: 0 !important;
+  box-shadow: 6px 6px 0 #FFE500 !important;
+  position: relative !important;
+  overflow: hidden !important;
+  transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+  cursor: pointer;
+}
+
+/* Subtle yellow gradient top strip — minimal, not intrusive */
+.theme-1610 .comic-panel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #FFE500 0%, rgba(255, 229, 0, 0.4) 60%, transparent 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.theme-1610 .comic-panel:hover {
+  transform: translate(-3px, -3px) !important;
+  box-shadow: 10px 10px 0 #FFE500 !important;
+}
+
+/* Halftone dot texture — comic print look */
+.theme-1610 .comic-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(255, 229, 0, 0.08) 1px, transparent 1px);
+  background-size: 12px 12px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.theme-1610 .comic-panel>* {
+  position: relative;
+  z-index: 1;
+}
+
+/* 10% Red accent panel */
+.theme-1610 .comic-panel.accent-panel {
+  background: #b71c1c !important;
+  color: #fff !important;
+  border-color: #000 !important;
+  box-shadow: 6px 6px 0 #FFE500 !important;
+}
+
+.theme-1610 .comic-panel.accent-panel::before {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.08) 60%, transparent 100%);
+}
+
+.theme-1610 .comic-panel.accent-panel:hover {
+  box-shadow: 10px 10px 0 #FFE500 !important;
+}
+
+/* Tags on red accent panel */
+.theme-1610 .comic-panel.accent-panel .comic-tag {
+  background: rgba(0, 0, 0, 0.4) !important;
+  border-color: rgba(255, 255, 255, 0.45) !important;
+  color: #FFE500 !important;
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5) !important;
+}
+
+/* ═══════════════════════════════════════════════════
+   7. COMIC TITLES — Bangers + ink look
+   ═══════════════════════════════════════════════════ */
+.theme-1610 .comic-title {
+  font-family: var(--font-bangers), cursive !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  color: #fff !important;
+  text-shadow:
+    3px 3px 0 #000,
+    -1px -1px 0 rgba(0, 0, 0, 0.6) !important;
+}
+
+/* Animated glitch on key hero titles */
+@keyframes inkFlicker {
+
+  0%,
+  100% {
+    text-shadow: 3px 3px 0 #000, -1px -1px 0 #000;
+  }
+
+  25% {
+    text-shadow: 4px 3px 0 #000, -2px -1px 0 var(--comic-yellow);
+    color: #fff;
+  }
+
+  75% {
+    text-shadow: 2px 4px 0 var(--theme-accent), -1px -2px 0 #000;
+  }
+}
+
+.theme-1610 .comic-title-animated {
+  font-family: var(--font-bangers), cursive !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  animation: inkFlicker 6s ease-in-out infinite !important;
+}
+
+/* ═══════════════════════════════════════════════════
+   8. SKILL / TECH TAGS
+      Yellow badge on dark panel (yellow bg, black text) — small pops of accent
+      Red accent panel tags: see override above
+   ═══════════════════════════════════════════════════ */
+.theme-1610 .comic-tag {
+  background: var(--comic-yellow) !important;
+  /* tiny yellow badge = accent pop */
+  color: #000 !important;
+  border: 2px solid #000 !important;
+  border-radius: 0 !important;
+  font-family: var(--font-bangers), cursive !important;
+  letter-spacing: 0.1em !important;
+  font-size: 0.8rem !important;
+  padding: 2px 10px !important;
+  text-transform: uppercase !important;
+  box-shadow: 2px 2px 0 #000 !important;
+  transition: transform 0.1s, box-shadow 0.1s !important;
+  cursor: default;
+}
+
+.theme-1610 .comic-tag:hover {
+  transform: translate(-1px, -1px) !important;
+  box-shadow: 3px 3px 0 #000 !important;
+}
+
+/* Dark variant for non-accent cards */
+.theme-1610 .comic-tag-dark {
+  background: #000 !important;
+  color: var(--comic-yellow) !important;
+  border: 2px solid var(--comic-yellow) !important;
+  border-radius: 0 !important;
+  font-family: var(--font-bangers), cursive !important;
+  letter-spacing: 0.1em !important;
+  font-size: 0.8rem !important;
+  padding: 2px 10px !important;
+  text-transform: uppercase !important;
+  box-shadow: 2px 2px 0 var(--comic-yellow) !important;
+}
+
+/* ═══════════════════════════════════════════════════
+   9. SPEECH BUBBLE — for quotes/bio
+   ═══════════════════════════════════════════════════ */
+.theme-1610 .speech-bubble {
+  background: var(--comic-white) !important;
+  color: #000 !important;
+  border: 4px solid #000 !important;
+  border-radius: 18px 18px 18px 0 !important;
+  padding: 1.25rem 1.5rem !important;
+  position: relative !important;
+  font-family: var(--font-bangers), cursive !important;
+  font-size: 1.1rem !important;
+  letter-spacing: 0.04em !important;
+  line-height: 1.5 !important;
+  box-shadow: 5px 5px 0 #000 !important;
+}
+
+.theme-1610 .speech-bubble::after {
+  content: "";
+  position: absolute;
+  bottom: -20px;
+  left: 28px;
+  width: 0;
+  height: 0;
+  border-left: 16px solid transparent;
+  border-right: 0 solid transparent;
+  border-top: 20px solid #000;
+}
+
+.theme-1610 .speech-bubble::before {
+  content: "";
+  position: absolute;
+  bottom: -14px;
+  left: 30px;
+  width: 0;
+  height: 0;
+  border-left: 13px solid transparent;
+  border-right: 0 solid transparent;
+  border-top: 17px solid var(--comic-white);
+  z-index: 1;
+}
+
+/* ═══════════════════════════════════════════════════
+   10. ACTION CALLOUT — POW! THWIP! BAM!
+       Starburst / splat shapes for decorative accents
+   ═══════════════════════════════════════════════════ */
+.theme-1610 .action-word {
+  display: inline-block;
+  font-family: var(--font-bangers), cursive;
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  letter-spacing: 0.04em;
+  background: var(--comic-yellow);
+  color: #000;
+  border: 4px solid #000;
+  padding: 4px 18px;
+  transform: rotate(-3deg);
+  box-shadow: 5px 5px 0 #000;
+  line-height: 1.2;
+  user-select: none;
+  pointer-events: none;
+  text-transform: uppercase;
+}
+
+.theme-1610 .action-word.red {
+  background: var(--theme-accent);
+  color: #fff;
+  transform: rotate(2deg);
+}
+
+/* ═══════════════════════════════════════════════════
+   11. STATS — Big panel-style counters
+   ═══════════════════════════════════════════════════ */
+.theme-1610 .comic-stat-card {
+  background: var(--comic-yellow) !important;
+  border: 4px solid #000 !important;
+  box-shadow: 5px 5px 0 #000 !important;
+  padding: 12px 20px !important;
+  text-align: center !important;
+  position: relative !important;
+}
+
+.theme-1610 .comic-stat-num {
+  font-family: var(--font-bangers), cursive !important;
+  color: #000 !important;
+  font-size: 3rem !important;
+  line-height: 1 !important;
+  letter-spacing: 0.04em !important;
+}
+
+.theme-1610 .comic-stat-label {
+  font-family: var(--font-bangers), cursive !important;
+  color: #000 !important;
+  font-size: 0.7rem !important;
+  letter-spacing: 0.2em !important;
+  text-transform: uppercase !important;
+  margin-top: 2px !important;
+}
+
+/* ═══════════════════════════════════════════════════
+   12. ABOUT — Bio tag badges
+   ═══════════════════════════════════════════════════ */
+.theme-1610 .about-tag {
+  background: #000 !important;
+  color: var(--comic-yellow) !important;
+  border: 2px solid var(--comic-yellow) !important;
+  border-radius: 0 !important;
+  font-family: var(--font-bangers), cursive !important;
+  font-size: 0.78rem !important;
+  letter-spacing: 0.12em !important;
+  padding: 2px 10px !important;
+  text-transform: uppercase !important;
+  box-shadow: 2px 2px 0 var(--comic-yellow) !important;
+  cursor: default;
+}
+
+/* Watermark number — outline only */
+.theme-1610 .comic-watermark-num {
+  font-family: var(--font-bangers), cursive !important;
+  color: transparent !important;
+  -webkit-text-stroke: 3px rgba(255, 229, 0, 0.3) !important;
+  text-shadow:
+    4px 4px 0 rgba(0, 0, 0, 0.4),
+    -2px -2px 0 rgba(226, 54, 54, 0.15) !important;
+}
+
+/* ═══════════════════════════════════════════════════
+   13. BUTTONS
+   ═══════════════════════════════════════════════════ */
+.theme-1610 .comic-btn-primary {
+  background: var(--theme-accent) !important;
+  color: #fff !important;
+  border: 4px solid #000 !important;
+  border-radius: 0 !important;
+  box-shadow: 5px 5px 0 #000 !important;
+  font-family: var(--font-bangers), cursive !important;
+  font-size: 1.1rem !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.1s !important;
+}
+
+.theme-1610 .comic-btn-primary:hover {
+  transform: translate(-3px, -3px) !important;
+  box-shadow: 8px 8px 0 #000 !important;
+}
+
+.theme-1610 .comic-btn-secondary {
+  background: var(--comic-yellow) !important;
+  color: #000 !important;
+  border: 4px solid #000 !important;
+  border-radius: 0 !important;
+  box-shadow: 5px 5px 0 #000 !important;
+  font-family: var(--font-bangers), cursive !important;
+  font-size: 1.1rem !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.1s !important;
+}
+
+.theme-1610 .comic-btn-secondary:hover {
+  transform: translate(-3px, -3px) !important;
+  box-shadow: 8px 8px 0 #000 !important;
+}
+
+/* ═══════════════════════════════════════════════════
+   14. FOOTER
+   ═══════════════════════════════════════════════════ */
+.theme-1610 footer {
+  background: #000 !important;
+  border-top: 5px solid var(--comic-yellow) !important;
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.theme-1610 footer a:hover {
+  color: var(--comic-yellow) !important;
+}
+
+/* ═══════════════════════════════════════════════════
+   15. THEMED SCROLLBAR
+   ═══════════════════════════════════════════════════ */
+.theme-1610 ::-webkit-scrollbar {
+  width: 6px;
+}
+
+.theme-1610 ::-webkit-scrollbar-track {
+  background: #000;
+}
+
+.theme-1610 ::-webkit-scrollbar-thumb {
+  background: var(--comic-yellow);
+}
+
+/* ═══════════════════════════════════════════════════
+   16. CHROMATIC ABERRATION (SPIDER-VERSE GLITCH) 
+   ═══════════════════════════════════════════════════ */
+@keyframes spiderVerseGlitch {
   0% {
-    text-shadow: 0 0 0 transparent;
-    clip-path: none;
-    transform: none;
+    text-shadow: 2px 0 var(--spiderverse-cyan), -2px 0 var(--spiderverse-magenta);
+    transform: translate(0);
   }
 
-  8% {
-    text-shadow:
-      3px 0 var(--theme-accent-alt),
-      -3px 0 var(--theme-accent);
-    transform: translateX(2px);
+  15% {
+    text-shadow: -4px 0 var(--spiderverse-cyan), 4px 0 var(--spiderverse-magenta);
+    transform: translate(-2px, 1px);
   }
 
-  16% {
-    text-shadow:
-      -3px 0 var(--theme-accent-alt),
-      3px 0 var(--theme-accent);
-    transform: translateX(-2px);
-    clip-path: polygon(0 20%, 100% 20%, 100% 45%, 0 45%);
+  20% {
+    text-shadow: 4px 0 var(--spiderverse-cyan), -4px 0 var(--spiderverse-magenta);
+    transform: translate(2px, -1px);
   }
 
-  24% {
-    text-shadow:
-      2px 2px var(--theme-accent),
-      -2px -2px var(--theme-accent-alt);
-    transform: translateX(1px);
-    clip-path: none;
-  }
-
-  32% {
-    text-shadow:
-      -2px 2px var(--theme-accent-alt),
-      2px -2px var(--theme-accent);
-    transform: translateX(-1px);
-  }
-
-  40% {
-    text-shadow: 0 0 8px var(--theme-accent);
-    transform: none;
+  30% {
+    text-shadow: 2px 0 var(--spiderverse-cyan), -2px 0 var(--spiderverse-magenta);
+    transform: translate(0);
   }
 
   100% {
-    text-shadow: 0 0 6px var(--theme-accent);
-    transform: none;
-    clip-path: none;
+    text-shadow: 2px 0 var(--spiderverse-cyan), -2px 0 var(--spiderverse-magenta);
+    transform: translate(0);
   }
 }
 
-.spidey-glitch {
-  animation: spideyGlitch 0.9s ease forwards;
+@media (prefers-reduced-motion: no-preference) {
+  .hover-glitch {
+    display: inline-block;
+    transition: color 0.1s;
+    /* Default subtle chromatic aberration */
+    text-shadow: 2px 0 var(--spiderverse-cyan), -2px 0 var(--spiderverse-magenta);
+  }
+
+  .hover-glitch:hover {
+    animation: spiderVerseGlitch 0.35s cubic-bezier(.25, .46, .45, .94) both infinite;
+    color: var(--theme-accent);
+  }
 }
 
-.hover-glitch {
-  display: inline-block;
-  transition: color 0.3s ease;
-}
+@media (prefers-reduced-motion: reduce) {
+  .hover-glitch:hover {
+    color: var(--theme-accent);
+  }
 
-.hover-glitch:hover {
-  animation: spideyGlitch 0.4s ease forwards;
-  color: var(--theme-accent);
+  .theme-1610 .comic-title-animated {
+    animation: none !important;
+  }
 }

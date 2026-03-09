@@ -35,16 +35,15 @@ export default function Navbar() {
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      className={`fixed top-0 left-0 right-0 z-50 px-8 py-5 flex items-center justify-between transition-all duration-500 ${
-        scrolled
-          ? "backdrop-blur-xl bg-black/40 border-b border-white/5"
-          : "bg-transparent"
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 px-8 py-5 flex items-center justify-between transition-all duration-500 ${scrolled
+        ? "backdrop-blur-xl bg-black/40 border-b border-white/5"
+        : "bg-transparent"
+        }`}
     >
       {/* Name — clicking scrolls to top */}
       <a
         href="#"
-        onClick={(e) => {
+        onClick={() => {
           const newCount = clickCount + 1;
           setClickCount(newCount);
           if (newCount >= 3) {
@@ -52,10 +51,13 @@ export default function Navbar() {
             setClickCount(0);
           }
         }}
-        className="hover-glitch text-sm font-bold tracking-[0.2em] uppercase text-white"
-        style={{ fontFamily: "var(--font-space-grotesk)" }}
+        className="hover-glitch text-sm tracking-[0.2em] uppercase text-white comic-title"
+        style={{
+          fontFamily: "var(--font-graffiti), var(--font-space-grotesk)",
+          fontSize: "1.5rem"
+        }}
       >
-        Chaitanya<span style={{ color: "var(--theme-accent)" }}>.</span>
+        Chaitanya<span style={{ color: "var(--theme-accent)", fontFamily: "var(--font-bangers)" }}>.</span>
       </a>
 
       {/* Links with active indicator */}
