@@ -51,10 +51,11 @@ export default function Navbar() {
             setClickCount(0);
           }
         }}
-        className="hover-glitch text-sm tracking-[0.2em] uppercase text-white comic-title"
+        className={`hover-glitch text-sm tracking-[0.2em] uppercase text-white comic-title ${clickCount > 0 ? 'animate-pulse' : ''}`}
         style={{
           fontFamily: "var(--font-graffiti), var(--font-space-grotesk)",
-          fontSize: "1.5rem"
+          fontSize: "1.75rem",
+          textShadow: clickCount > 0 ? "2px 0 var(--spiderverse-cyan), -2px 0 var(--spiderverse-magenta)" : "none"
         }}
       >
         Chaitanya<span style={{ color: "var(--theme-accent)", fontFamily: "var(--font-bangers)" }}>.</span>

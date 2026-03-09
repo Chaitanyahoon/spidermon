@@ -307,9 +307,9 @@ export default function Hero() {
           {/* Inner Gradient — stronger at bottom for text legibility */}
           <div className="absolute inset-0 z-[4] bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none" />
 
-          {/* Name Overlay — always visible at bottom-left */}
+          {/* Name Overlay — moved to top-left for better layout balance */}
           <motion.div
-            className="absolute bottom-10 left-10 pointer-events-none"
+            className="absolute top-32 left-10 pointer-events-none"
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
@@ -335,8 +335,8 @@ export default function Hero() {
             <h1
               className={`leading-none uppercase ${theme === "theme-1610" ? "hover-glitch" : ""}`}
               style={{
-                fontFamily: theme === "theme-1610" ? "var(--font-bangers)" : "var(--font-space-grotesk)",
-                fontSize: theme === "theme-1610" ? "clamp(4.5rem, 11vw, 10rem)" : "clamp(3rem, 8vw, 7rem)",
+                fontFamily: theme === "theme-1610" ? "var(--font-graffiti), var(--font-bangers)" : "var(--font-space-grotesk)",
+                fontSize: theme === "theme-1610" ? "clamp(4.5rem, 11vw, 10rem)" : "clamp(3.5rem, 9vw, 8rem)",
                 fontWeight: theme === "theme-1610" ? 400 : 900,
                 letterSpacing: theme === "theme-1610" ? "0.06em" : "-0.02em",
                 color: "#f8fafc",
@@ -349,6 +349,7 @@ export default function Hero() {
               <br />
               <span style={{
                 color: "var(--theme-accent)",
+                fontFamily: theme === "theme-1610" ? "var(--font-graffiti), var(--font-bangers)" : undefined,
                 textShadow: theme === "theme-1610" ? "5px 5px 0 #000, 2px 0 var(--spiderverse-cyan), -2px 0 var(--spiderverse-magenta)" : "0 0 20px rgba(232,0,28,0.5)"
               }}>Patil.</span>
             </h1>
@@ -396,14 +397,14 @@ export default function Hero() {
                 aria-label="View selected works and projects"
                 className="comic-btn-primary group flex items-center gap-3 px-10 py-4"
               >
-                VIEW_SOURCE
+                VIEW PROJECTS
               </a>
               <a
                 href="#contact"
                 aria-label="Send a message or contact me"
                 className="comic-btn-secondary px-10 py-4"
               >
-                S_MESSAGE
+                SAY HELLO
               </a>
             </div>
             <motion.div
