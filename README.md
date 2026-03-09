@@ -3,7 +3,7 @@
 # 🕸️ THE MULTIVERSE IN A BOX
 ### (AKA: Chaitanya's Portfolio)
 
-![Spider-Verse Preview](/demo.gif)
+<img src="public/demo.gif" width="600" alt="Spider-Verse Preview">
 
 ---
 
