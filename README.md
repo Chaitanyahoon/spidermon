@@ -1,52 +1,53 @@
 <div align="center">
 
 # 🕸️ THE MULTIVERSE IN A BOX
-### (AKA: Chaitanya's Portfolio)
+### (A high-stakes portfolio from Earth-1610)
 
 <img src="public/demo.gif" width="300" alt="Spider-Verse Preview">
 
 ---
 
-### "Anyone can wear the mask... but only I had to debug the CSS." 🕷️
+### "Anyone can wear the mask... but it takes a special kind of hero to center a <div> on the first try." 🕷️
 
-Welcome to a portfolio that spans more dimensions than your average browser tab.
-Inspired by **Miles Morales**, built by someone who still thinks centering a div is a superpower.
-
----
-
-## 🎭 WHAT’S GOING ON HERE?
-
-**Dimensional Glitches**<br/>
-If the screen starts shaking, don't worry. It's not your GPU dying; it's a *feature*.
-I call it "Chromatic Aberration," but my laptop calls it "Help."
-
-<br/>
-
-**The Spider-Sense**<br/>
-Click things. Or don't. But if you click the logo three times,
-you might just witness a glitch so powerful it would make Miguel O'Hara nervous.
-
-<br/>
-
-**Ben-Day Dots Everywhere**<br/>
-I used so many halftone patterns that if you squint hard enough,
-you might actually start seeing the world in 1960s comic book print.
+A portfolio that glitches harder than Miles in a collider. 
+Built with 10% skill, 20% concentrated power of will, and 70% pure caffeine. 
 
 ---
 
-## 🎒 WHAT'S IN MY WEB-SHOOTERS?
+## 🎭 THE DIMENSIONAL DEETS
 
-**The "Science" Part:**<br/>
-Next.js (The Brains) • Framer Motion (The Style) • Tailwind (The Suit)
+**Glitching on Purpose**<br/>
+If the screen splits into Cyan and Magenta, don't call tech support. It's called "Aesthetic." 
+My laptop might be screaming, but the UI is *vibing*.
 
 <br/>
 
-**The "Magic" Part:**<br/>
-Excessive Caffeine • Midnight Debug Sessions • Sheer Willpower
+**Spider-Sense UI**<br/>
+Highly interactive elements that react faster than a Spidey-sense in a hallway fight.
+Click the logo three times if you’re brave enough to trigger a total reality collapse.
+
+<br/>
+
+**The Ben-Day Treatment**<br/>
+I pumped so many halftone dots into this project that your monitor might actually 
+start smelling like a vintage comic book shop.
 
 ---
 
-## 🚀 PORTAL SETUP
+## 🎒 THE GEAR
+
+**The Science Side:**<br/>
+Next.js (The Web) • Framer Motion (The Swing) • Tailwind (The Suit)
+
+<br/>
+
+**The Real Talk:**<br/>
+Excessive Caffeine • Midnight Debugging • Sheer Multiversal Will
+
+---
+
+## 🚀 COLLIDER SETUP
+
 </div>
 
 ```bash
