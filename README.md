@@ -1,36 +1,83 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🕸️ SPIDER-VERSE PORTFOLIO | EARTH-1610
 
-## Getting Started
+[![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![Framer Motion](https://img.shields.io/badge/Framer_Motion-11-black?style=for-the-badge&logo=framer)](https://www.framer.com/motion/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-black?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
 
-First, run the development server:
+> "Anyone can wear the mask. You can wear the mask. If you didn't know that before, I hope you do now." — Miles Morales
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Welcome to my personal portfolio, reimagined through the lens of the **Earth-1610 (Miles Morales)** Spider-Verse. This isn't just a website; it's a multi-dimensional experience featuring comic-book aesthetics, glitch effects, and street-art flair.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📽️ PREVIEW
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+<!-- ADD YOUR GIF HERE: Replace the line below with your GIF URL -->
+![Spider-Verse Portfolio Preview](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM2I1ZDUyYjI5ZGY5Zjg5YjU5ZWY5ZWY5ZWY5ZWY5ZWY5ZWY5ZWYmZXA9djFfaW50ZXJuYWxfZ2lmX2J5X2lkJmN0PWc/3o7TKMGV07Y2fGvWCs/giphy.gif)
+*Click anywhere to trigger the Spider-Sense!*
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## ⚡ DIMENSIONAL FEATURES
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Comic-Book Aesthetic**: Custom halftone patterns (Ben-Day dots) and offset CMYK print error effects.
+- **Dynamic Glitch Animations**: Chromatic aberration (Cyan/Magenta) triggered by scroll velocity and interaction.
+- **Multiverse Theme Engine**: Seamlessly switch between Earth-616 (Classic) and Earth-1610 (Miles Morales) modes.
+- **Street-Art Typography**: Unique graffiti-style fonts (`Sedgwick Ave Display`) paired with bold comic markers (`Bangers`).
+- **Interactive Web UI**: A custom "Web Cursor" and "Spider-Sense" transitions that make the UI feel alive.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 🛠️ TECH STACK
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| Layer | Technology |
+| :--- | :--- |
+| **Framework** | Next.js 15 (App Router) |
+| **Styling** | Tailwind CSS 4 + Vanilla CSS |
+| **Animations** | Framer Motion |
+| **Icons** | Lucide React |
+| **Fonts** | Google Fonts (Bangers, Sedgwick Ave Display, Space Grotesk) |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 🚀 GETTING STARTED
+
+1. **Clone the Dimension**:
+   ```bash
+   git clone https://github.com/Chaitanyahoon/spidermon.git
+   ```
+
+2. **Install Dependencies**:
+   ```bash
+   npm install
+   ```
+
+3. **Run the Portal**:
+   ```bash
+   npm run dev
+   ```
+
+4. **View the Multi-verse**:
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+---
+
+## 🎨 DESIGN SYSTEM
+
+The Earth-1610 theme uses a strictly curated color palette:
+- `Spider-Verse Cyan`: `#00e5ff`
+- `Spider-Verse Magenta`: `#ff004d`
+- `Comic Yellow`: `#ffe500`
+- `Deep Void`: `#0d0d0d`
+
+---
+
+## 🤝 CONTRIBUTIONS
+
+Feel free to open an issue or submit a pull request if you have ideas for new dimensions or optimizations!
+
+---
+
+<p align="center">
+  MADE BY <a href="https://github.com/Chaitanyahoon">CHAITANYA PATIL</a>
+</p>

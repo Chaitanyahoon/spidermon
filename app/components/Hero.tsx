@@ -390,12 +390,22 @@ export default function Hero() {
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 1.2 }}
           >
-            <span
-              className="text-[9px] tracking-[0.3em] uppercase text-zinc-500"
-              style={{ fontFamily: "var(--font-space-grotesk)" }}
-            >
-              Scroll
-            </span>
+            <div className="flex flex-wrap items-center justify-center gap-6 relative z-10">
+              <a
+                href="#work"
+                aria-label="View selected works and projects"
+                className="comic-btn-primary group flex items-center gap-3 px-10 py-4"
+              >
+                VIEW_SOURCE
+              </a>
+              <a
+                href="#contact"
+                aria-label="Send a message or contact me"
+                className="comic-btn-secondary px-10 py-4"
+              >
+                S_MESSAGE
+              </a>
+            </div>
             <motion.div
               className="w-px h-12 bg-zinc-700 origin-top"
               animate={{ scaleY: [0, 1, 0] }}

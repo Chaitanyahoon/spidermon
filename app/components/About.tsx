@@ -11,8 +11,8 @@ const tags = [
 
 const stats = [
   { target: 2, suffix: "", label: "Internships" },
-  { target: 7, suffix: "+", label: "Projects Shipped" },
-  { target: 6, suffix: "+", label: "Certificates" },
+  { target: 12, suffix: "+", label: "Projects Shipped" },
+  { target: 8, suffix: "+", label: "Certificates" },
 ];
 
 function AnimatedCounter({ target, suffix }: { target: number; suffix: string }) {
@@ -173,7 +173,7 @@ export default function About() {
             className="flex gap-4 pt-2"
           >
             {stats.map((s) => (
-              <div key={s.label} className="comic-stat-card">
+              <div key={s.label} className="comic-stat-card" aria-label={`${s.target}${s.suffix} ${s.label}`}>
                 <p className="comic-stat-num">
                   <AnimatedCounter target={s.target} suffix={s.suffix} />
                 </p>
