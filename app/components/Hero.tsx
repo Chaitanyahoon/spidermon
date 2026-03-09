@@ -307,9 +307,9 @@ export default function Hero() {
           {/* Inner Gradient — stronger at bottom for text legibility */}
           <div className="absolute inset-0 z-[4] bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none" />
 
-          {/* Name Overlay — moved to top-left for better layout balance */}
+          {/* Name Overlay — always visible at bottom-left */}
           <motion.div
-            className="absolute top-32 left-10 pointer-events-none"
+            className="absolute bottom-10 left-10 pointer-events-none"
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
@@ -386,36 +386,28 @@ export default function Hero() {
 
           {/* Scroll cue */}
           <motion.div
-            className="absolute bottom-10 right-10 flex flex-col items-center gap-2 pointer-events-none"
+            className="absolute bottom-10 right-10 flex flex-col items-center gap-2 pointer-events-none transition-all duration-300"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 1.2 }}
           >
-            <div className="flex flex-wrap items-center justify-center gap-6 relative z-10">
-              <a
-                href="#work"
-                aria-label="View selected works and projects"
-                className="comic-btn-primary group flex items-center gap-3 px-10 py-4"
+            <div className="flex flex-col items-center gap-2">
+              <span
+                className="text-[9px] tracking-[0.3em] uppercase text-zinc-500 mb-1"
+                style={{ fontFamily: "var(--font-space-grotesk)" }}
               >
-                VIEW PROJECTS
-              </a>
-              <a
-                href="#contact"
-                aria-label="Send a message or contact me"
-                className="comic-btn-secondary px-10 py-4"
-              >
-                SAY HELLO
-              </a>
+                Scroll
+              </span>
+              <motion.div
+                className="w-px h-12 bg-zinc-700 origin-top"
+                animate={{ scaleY: [0, 1, 0] }}
+                transition={{
+                  duration: 1.8,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              />
             </div>
-            <motion.div
-              className="w-px h-12 bg-zinc-700 origin-top"
-              animate={{ scaleY: [0, 1, 0] }}
-              transition={{
-                duration: 1.8,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            />
           </motion.div>
 
           {/* Card Text Label — fades in near end of scroll */}
