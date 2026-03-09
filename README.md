@@ -9,38 +9,45 @@
 
 ### "Anyone can wear the mask... but only I had to debug the CSS." 🕷️
 
-Welcome to a portfolio that spans more dimensions than your average browser tab. 
+Welcome to a portfolio that spans more dimensions than your average browser tab.
 Inspired by **Miles Morales**, built by someone who still thinks centering a div is a superpower.
 
 ---
 
 ## 🎭 WHAT’S GOING ON HERE?
 
-**Dimensional Glitches**
-If the screen starts shaking, don't worry. It's not your GPU dying; it's a *feature*. 
+**Dimensional Glitches**<br/>
+If the screen starts shaking, don't worry. It's not your GPU dying; it's a *feature*.
 I call it "Chromatic Aberration," but my laptop calls it "Help."
 
-**The Spider-Sense**
-Click things. Or don't. But if you click the logo three times, 
+<br/>
+
+**The Spider-Sense**<br/>
+Click things. Or don't. But if you click the logo three times,
 you might just witness a glitch so powerful it would make Miguel O'Hara nervous.
 
-**Ben-Day Dots Everywhere**
-I used so many halftone patterns that if you squint hard enough, 
+<br/>
+
+**Ben-Day Dots Everywhere**<br/>
+I used so many halftone patterns that if you squint hard enough,
 you might actually start seeing the world in 1960s comic book print.
 
 ---
 
 ## 🎒 WHAT'S IN MY WEB-SHOOTERS?
 
-**The "Science" Part:**
+**The "Science" Part:**<br/>
 Next.js (The Brains) • Framer Motion (The Style) • Tailwind (The Suit)
 
-**The "Magic" Part:**
+<br/>
+
+**The "Magic" Part:**<br/>
 Excessive Caffeine • Midnight Debug Sessions • Sheer Willpower
 
 ---
 
 ## 🚀 PORTAL SETUP
+</div>
 
 ```bash
 # Clone the dimension
@@ -52,6 +59,8 @@ npm install
 # Open the Multiverse
 npm run dev
 ```
+
+<div align="center">
 
 ---
 
