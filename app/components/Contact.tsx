@@ -5,6 +5,7 @@ import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import SpiderParticleBg from "./SpiderParticleBg";
 import SpiderWebBg from "./SpiderWebBg";
+import { WebShooterForm } from "./WebShooterForm";
 
 export default function Contact() {
   const { theme } = useTheme();
@@ -100,24 +101,8 @@ export default function Contact() {
                 </p>
               </div>
 
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-6 relative z-20">
-                <a
-                  href="mailto:chaitanyapatil700@gmail.com"
-                  aria-label="Send an email to Chaitanya Patil"
-                  className="comic-btn-primary w-full sm:w-auto flex items-center justify-center gap-3 px-12 py-5"
-                >
-                  Shoot a Web
-                </a>
-
-                <a
-                  href="https://linkedin.com/in/chaitanyapatil700"
-                  target="_blank"
-                  aria-label="Visit Chaitanya Patil's LinkedIn profile"
-                  rel="noopener noreferrer"
-                  className="comic-btn-secondary w-full sm:w-auto flex items-center justify-center gap-3 px-12 py-5"
-                >
-                  LinkedIn
-                </a>
+              <div className="relative z-20 w-full mb-4">
+                <WebShooterForm />
               </div>
             </div>
           </motion.div>
@@ -168,39 +153,8 @@ export default function Contact() {
               exciting collaborations. Send a signal!
             </p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-5 relative z-20">
-              <a
-                href="mailto:chaitanyapatil700@gmail.com"
-                aria-label="Send an email to Chaitanya Patil"
-                className="w-full sm:w-auto flex items-center justify-center gap-3 bg-[var(--theme-accent)] text-black font-black text-sm md:text-base tracking-[0.2em] uppercase px-10 py-5 rounded-full hover:scale-105 hover:bg-white hover:shadow-[0_0_30px_rgba(255,255,255,0.6)] transition-all duration-300"
-                style={{ fontFamily: "var(--font-space-grotesk)" }}
-              >
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
-                >
-                  <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-                </svg>
-                Shoot a Web
-              </a>
-
-              <a
-                href="https://linkedin.com/in/chaitanyapatil700"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Visit Chaitanya Patil's LinkedIn profile"
-                className="w-full sm:w-auto flex items-center justify-center gap-3 border-2 border-zinc-700 text-white font-bold text-sm tracking-[0.2em] uppercase px-10 py-5 rounded-full hover:border-white hover:bg-white/5 transition-all duration-300"
-                style={{ fontFamily: "var(--font-space-grotesk)" }}
-              >
-                LinkedIn
-              </a>
+            <div className="relative z-20 w-full mt-4">
+              <WebShooterForm />
             </div>
           </motion.div>
         )}

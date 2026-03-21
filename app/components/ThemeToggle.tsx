@@ -11,14 +11,28 @@ const themes = [
     label: "Earth-616",
     color: "#E8001C",
     icon: Moon,
-    description: "Original Spider-Man",
+    description: "Peter Parker — Classic",
   },
   {
     name: "theme-1610",
     label: "Earth-1610",
     color: "#ff0055",
     icon: Palette,
-    description: "Miles Morales",
+    description: "Miles Morales — Spider-Verse",
+  },
+  {
+    name: "theme-noir",
+    label: "Earth-90214",
+    color: "#c8c8c8",
+    icon: Moon,
+    description: "Spider-Man Noir — 1930s",
+  },
+  {
+    name: "theme-punk",
+    label: "Earth-138",
+    color: "#ff2d00",
+    icon: Palette,
+    description: "Spider-Punk — Anarchic",
   },
 ];
 

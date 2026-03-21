@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, MouseEvent } from "react";
+import { useState, useRef, useEffect, MouseEvent } from "react";
 import Image from "next/image";
 import { useTheme } from "next-themes";
 import {
@@ -13,6 +13,8 @@ import {
   useVelocity,
 } from "framer-motion";
 import SpiderWebBg from "./SpiderWebBg";
+import { WantedPoster } from "./WantedPoster";
+import { DailyBugleBadge } from "./DailyBugleBadge";
 
 /**
  * Background Title
@@ -177,6 +179,7 @@ export default function Hero() {
   const cardRef = useRef<HTMLDivElement>(null);
   const [isMasked, setIsMasked] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const { theme } = useTheme();
 
   // Scroll Progress
@@ -190,46 +193,41 @@ export default function Hero() {
   const borderRadius = useTransform(scrollYProgress, [0.6, 1], [0, 24]);
 
   // --- Hover / Blob Logic (Refined Liquid) ---
-  // Springs for "Floating" feel - Adjusted for "Lag" (20-40ms feel)
-  // Damping 25, Stiffness 120 gives a responsive but smoothed feeling.
   const cursorX = useSpring(0, { stiffness: 120, damping: 25 });
   const cursorY = useSpring(0, { stiffness: 120, damping: 25 });
-
-  // Size spring: Smooth growth/shrink
   const blobSize = useSpring(0, { stiffness: 150, damping: 20 });
-
-  // Generate the Liquid Path
   const blobPath = useLiquidBlob(cursorX, cursorY, blobSize);
+
+  // --- Action word transforms (always called — never conditional!) ---
+  const thwipOpacity = useTransform(scrollYProgress, [0.1, 0.2, 0.35, 0.5], [0, 1, 1, 0]);
+  const thwipScale   = useTransform(scrollYProgress, [0.1, 0.2], [0, 1]);
+  const powOpacity   = useTransform(scrollYProgress, [0.3, 0.45, 0.6, 0.75], [0, 1, 1, 0]);
+  const powScale     = useTransform(scrollYProgress, [0.3, 0.45], [0, 1]);
+  const bamOpacity   = useTransform(scrollYProgress, [0.5, 0.65, 0.8, 0.95], [0, 1, 1, 0]);
+  const bamScale     = useTransform(scrollYProgress, [0.5, 0.65], [0, 1]);
+
+  // Card text fade at scroll end
+  const cardTextOpacity = useTransform(scrollYProgress, [0.8, 1], [0, 1]);
+
+  useEffect(() => { setMounted(true); }, []);
 
   const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
-
-    // Calculate raw position in element
     const rawX = e.clientX - rect.left;
     const rawY = e.clientY - rect.top;
-
-    // Scale Correction
     const scaleFactorX = cardRef.current.offsetWidth / rect.width;
     const scaleFactorY = cardRef.current.offsetHeight / rect.height;
-
     cursorX.set(rawX * scaleFactorX);
     cursorY.set(rawY * scaleFactorY);
   };
 
-  const handleMouseEnter = () => {
-    setIsHovering(true);
-    blobSize.set(160); // Medium organic reveal size
-  };
+  const handleMouseEnter = () => { setIsHovering(true); blobSize.set(160); };
+  const handleMouseLeave = () => { setIsHovering(false); blobSize.set(0); };
+  const handleTap = () => { setIsMasked((prev) => !prev); };
 
-  const handleMouseLeave = () => {
-    setIsHovering(false);
-    blobSize.set(0);
-  };
-
-  const handleTap = () => {
-    setIsMasked((prev) => !prev);
-  };
+  // Use mounted-safe theme value to avoid hydration mismatch
+  const activeTheme = mounted ? theme : "dark";
 
   return (
     <section
@@ -268,40 +266,23 @@ export default function Hero() {
           {/* Speed-Lines — radiates from blob origin in Miles-verse mode */}
           <div className="hero-speedlines" aria-hidden="true" />
 
-          {/* Floating Action Words — immersive Spider-Verse elements */}
-          {theme === "theme-1610" && (
+          {/* Floating Action Words — immersive Spider-Verse elements (always rendered, opacity driven by scroll) */}
+          {activeTheme === "theme-1610" && (
             <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden">
               <motion.div
-                style={{
-                  top: "20%",
-                  left: "15%",
-                  opacity: useTransform(scrollYProgress, [0.1, 0.2, 0.35, 0.5], [0, 1, 1, 0]),
-                  scale: useTransform(scrollYProgress, [0.1, 0.2], [0, 1]),
-                }}
+                style={{ top: "20%", left: "15%", opacity: thwipOpacity, scale: thwipScale }}
                 className="action-word absolute"
               >
                 THWIP!
               </motion.div>
               <motion.div
-                style={{
-                  top: "60%",
-                  right: "10%",
-                  opacity: useTransform(scrollYProgress, [0.3, 0.45, 0.6, 0.75], [0, 1, 1, 0]),
-                  scale: useTransform(scrollYProgress, [0.3, 0.45], [0, 1]),
-                  rotate: 15,
-                }}
+                style={{ top: "60%", right: "10%", opacity: powOpacity, scale: powScale, rotate: 15 }}
                 className="action-word red absolute"
               >
                 POW!
               </motion.div>
               <motion.div
-                style={{
-                  top: "15%",
-                  right: "20%",
-                  opacity: useTransform(scrollYProgress, [0.5, 0.65, 0.8, 0.95], [0, 1, 1, 0]),
-                  scale: useTransform(scrollYProgress, [0.5, 0.65], [0, 1]),
-                  rotate: -10,
-                }}
+                style={{ top: "15%", right: "20%", opacity: bamOpacity, scale: bamScale, rotate: -10 }}
                 className="action-word absolute"
               >
                 BAM!
@@ -311,7 +292,7 @@ export default function Hero() {
 
           <div className="absolute inset-0">
             <Image
-              src={theme === "theme-1610" ? "/Chaitanya_milesmorales.png" : "/Chaitanya.png"}
+              src={activeTheme === "theme-1610" ? "/Chaitanya_milesmorales.png" : "/Chaitanya.png"}
               alt="Portrait"
               fill
               className="object-cover object-center"
@@ -376,8 +357,8 @@ export default function Hero() {
             <h1
               className={`leading-none uppercase ${theme === "theme-1610" ? "hover-glitch" : ""}`}
               style={{
-                fontFamily: theme === "theme-1610" ? "var(--font-graffiti), var(--font-bangers)" : "var(--font-space-grotesk)",
-                fontSize: theme === "theme-1610" ? "clamp(4.5rem, 11vw, 10rem)" : "clamp(3.5rem, 9vw, 8rem)",
+                fontFamily: theme === "theme-1610" ? "var(--font-bangers)" : "var(--font-space-grotesk)",
+                fontSize: theme === "theme-1610" ? "clamp(3.5rem, 9vw, 8rem)" : "clamp(3.5rem, 9vw, 8rem)",
                 fontWeight: theme === "theme-1610" ? 400 : 900,
                 letterSpacing: theme === "theme-1610" ? "0.06em" : "-0.02em",
                 color: "#f8fafc",
@@ -390,39 +371,22 @@ export default function Hero() {
               <br />
               <span style={{
                 color: "var(--theme-accent)",
-                fontFamily: theme === "theme-1610" ? "var(--font-graffiti), var(--font-bangers)" : undefined,
-                textShadow: theme === "theme-1610" ? "5px 5px 0 #000, 2px 0 var(--spiderverse-cyan), -2px 0 var(--spiderverse-magenta)" : "0 0 20px rgba(232,0,28,0.5)"
+                fontFamily: theme === "theme-1610" ? "var(--font-graffiti)" : undefined,
+                textShadow: theme === "theme-1610" ? "5px 5px 0 #000, 2px 0 var(--spiderverse-cyan), -2px 0 var(--spiderverse-magenta)" : "0 0 20px rgba(232,0,28,0.5)",
+                display: "inline-block",
+                transform: theme === "theme-1610" ? "translateY(-5px) rotate(-2deg)" : "none"
               }}>Patil.</span>
             </h1>
 
-            {/* Resume download */}
-            <motion.a
-              href="/resume.pdf"
-              download
+            {/* Resume Download Badge */}
+            <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{
-                duration: 0.8,
-                delay: 0.9,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-              className={`mt-5 inline-flex items-center gap-2 text-[10px] tracking-[0.25em] uppercase px-5 py-2.5 transition-all duration-300 pointer-events-auto ${theme === "theme-1610"
-                ? "border-2 border-[#FFE500] text-[#FFE500] hover:bg-[#FFE500] hover:text-black"
-                : "border border-zinc-700 bg-black/40 text-zinc-300 hover:border-[var(--theme-accent)] hover:text-white hover:shadow-[0_0_15px_rgba(232,0,28,0.3)] rounded-full"
-                }`}
-              style={{ fontFamily: theme === "theme-1610" ? "var(--font-bangers)" : "var(--font-space-grotesk)", letterSpacing: theme === "theme-1610" ? "0.2em" : "0.25em" }}
+              transition={{ duration: 0.8, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}
+              className="mt-5 inline-block pointer-events-auto"
             >
-              <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
-                <path
-                  d="M6 1v7M6 8l-3-3M6 8l3-3M1 11h10"
-                  stroke="currentColor"
-                  strokeWidth="1.4"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              Download CV
-            </motion.a>
+              {activeTheme === "theme-1610" ? <WantedPoster /> : <DailyBugleBadge />}
+            </motion.div>
           </motion.div>
 
           {/* Scroll cue */}
@@ -454,7 +418,7 @@ export default function Hero() {
           {/* Card Text Label — fades in near end of scroll */}
           <motion.div
             className="absolute bottom-8 left-8 text-white pointer-events-none"
-            style={{ opacity: useTransform(scrollYProgress, [0.8, 1], [0, 1]) }}
+            style={{ opacity: cardTextOpacity }}
           >
             <p className="font-mono text-xs tracking-widest uppercase text-zinc-400">
               Selected Works

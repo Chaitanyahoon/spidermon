@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useTheme } from "next-themes";
+import { SpiderSenseRipple } from "./SpiderSenseRipple";
 
 const certs = [
   {
@@ -155,6 +156,7 @@ export default function Certificates() {
                     </a>
                   )}
                 </div>
+                <SpiderSenseRipple />
               </div>
             ) : (
               /* Earth-616: Original card */
@@ -194,6 +196,7 @@ export default function Certificates() {
                     Verified
                   </span>
                 </div>
+                <SpiderSenseRipple />
               </div>
             )}
           </motion.div>

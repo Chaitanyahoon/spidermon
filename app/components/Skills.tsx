@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { useTheme } from "next-themes";
+import { SpiderSenseRipple } from "./SpiderSenseRipple";
 
 const skills = [
   {
@@ -69,44 +70,55 @@ function SkillRow1610({
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, x: -30 }}
-      animate={isInView ? { opacity: 1, x: 0 } : {}}
-      transition={{ duration: 0.5, delay: index * 0.06, ease: [0.16, 1, 0.3, 1] }}
-      className={`p-5 comic-panel ${skill.accent ? "accent-panel" : ""}`}
+      initial={{ opacity: 0, scale: 0.95, y: 20 }}
+      animate={isInView ? { opacity: 1, scale: 1, y: 0 } : {}}
+      transition={{ duration: 0.5, delay: index * 0.08, ease: "backOut" }}
+      className="break-inside-avoid mb-6 relative overflow-hidden"
     >
-      <div className="flex items-start gap-4">
-        {/* Number */}
-        <span
-          className="text-2xl font-bold leading-none shrink-0 mt-0.5 comic-title"
-          style={{
-            fontFamily: "var(--font-bangers)",
-            color: skill.accent ? "rgba(255,255,255,0.3)" : "rgba(255,229,0,0.35)",
-            letterSpacing: "0.04em",
-          }}
-        >
-          {skill.id}
-        </span>
-
-        <div className="flex-1 min-w-0">
-          {/* Category */}
-          <p
-            className="text-[11px] font-bold uppercase mb-3"
-            style={{
-              fontFamily: "var(--font-bangers)",
-              letterSpacing: "0.25em",
-              color: skill.accent ? "rgba(255,255,255,0.85)" : "#FFE500",
-            }}
-          >
-            {skill.category}
-          </p>
-
-          {/* Tags */}
-          <div className="flex flex-wrap gap-2">
-            {skill.items.map((item) => (
-              <span key={item} className="comic-tag">{item}</span>
-            ))}
+      <div 
+        className={`relative z-10 w-full h-full p-6 border-4 border-black transition-transform duration-300 hover:-translate-y-2
+          ${skill.accent ? "bg-[#e53e3e] shadow-[8px_8px_0_#000]" : "bg-[#fffde7] shadow-[6px_6px_0_#000]"}
+        `}
+      >
+        <div className="flex items-start gap-4 mb-4">
+          <div className="flex-1">
+            <h3 
+              className={`text-xl md:text-2xl uppercase font-black tracking-widest leading-none mb-1
+                ${skill.accent ? "text-white" : "text-black"}
+              `}
+              style={{ fontFamily: "var(--font-bangers)", textShadow: skill.accent ? "2px 2px 0 #000" : "none" }}
+            >
+              {skill.category}
+            </h3>
+            <span 
+              className="text-xs font-bold font-mono tracking-[0.2em]"
+              style={{ color: skill.accent ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.5)", fontFamily: "var(--font-space-grotesk)" }}
+            >
+              {skill.id}
+            </span>
           </div>
         </div>
+
+        {/* Tags Array */}
+        <div className="flex flex-wrap gap-2">
+          {skill.items.map((item) => (
+            <span 
+              key={item} 
+              className={`text-xs md:text-sm font-bold px-3 py-1.5 border-2 border-black tracking-wider uppercase
+                ${skill.accent ? "bg-white text-black shadow-[3px_3px_0_#000]" : "bg-[#fcd34d] text-black shadow-[3px_3px_0_#000]"}
+              `}
+              style={{ fontFamily: "var(--font-space-grotesk)" }}
+            >
+              {item}
+            </span>
+          ))}
+        </div>
+        
+        {/* Halftone Overlay for Panel */}
+        <div 
+          className="absolute inset-0 pointer-events-none opacity-10 mix-blend-multiply z-0"
+          style={{ backgroundImage: `radial-gradient(black 1px, transparent 1px)`, backgroundSize: "6px 6px" }}
+        />
       </div>
     </motion.div>
   );
@@ -126,48 +138,56 @@ function SkillCard616({
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 40, scale: 0.97 }}
+      initial={{ opacity: 0, y: 40, scale: 0.95 }}
       animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-      transition={{ duration: 0.65, delay: index * 0.07, ease: [0.16, 1, 0.3, 1] }}
-      className={`group relative flex flex-col justify-between p-6 overflow-hidden bg-gradient-to-br from-zinc-900/40 to-transparent border border-zinc-800/80 rounded-xl transition-all duration-300 hover:bg-zinc-800/30 hover:border-zinc-700 ${skill.accent ? 'hover:shadow-[0_0_25px_rgba(232,0,28,0.1)]' : 'hover:shadow-[0_0_20px_rgba(255,255,255,0.03)]'}`}
+      transition={{ duration: 0.8, delay: index * 0.07, ease: [0.16, 1, 0.3, 1] }}
+      className={`group relative flex flex-col justify-between p-6 md:p-8 overflow-hidden transition-all duration-500 rounded-3xl
+        bg-gradient-to-br from-zinc-900/90 to-[#121c2d]/90 
+        border border-white/5 hover:border-white/15
+        shadow-[inset_0_1px_0_rgba(255,255,255,0.05),_0_20px_40px_-20px_rgba(0,0,0,0.5)]`}
     >
-      {/* Faint category number */}
-      <span
-        aria-hidden="true"
-        className="absolute top-4 right-5 text-[3.5rem] font-bold leading-none select-none pointer-events-none transition-colors duration-300"
-        style={{
-          fontFamily: "var(--font-space-grotesk)",
-          color: skill.accent ? "rgba(232,0,28,0.12)" : "rgba(255,255,255,0.03)",
-        }}
-      >
-        {skill.id}
-      </span>
+      {/* Soft radial glow on hover */}
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 bg-[radial-gradient(circle_at_50%_0%,rgba(29,53,87,0.4)_0%,transparent_70%)] pointer-events-none" />
+      
+      <div className="relative z-10 flex flex-col h-full">
+        {/* Faint category number */}
+        <span
+          aria-hidden="true"
+          className="absolute -top-4 right-0 text-[4rem] md:text-[5rem] font-bold leading-none select-none pointer-events-none transition-all duration-500 group-hover:scale-110 group-hover:-translate-y-2 group-hover:opacity-80"
+          style={{
+            fontFamily: "var(--font-space-grotesk)",
+            color: skill.accent ? "rgba(232,0,28,0.08)" : "rgba(255,255,255,0.02)",
+          }}
+        >
+          {skill.id}
+        </span>
 
-      {/* Category label */}
-      <p
-        className="text-[10px] tracking-[0.3em] uppercase mb-4"
-        style={{
-          fontFamily: "var(--font-space-grotesk)",
-          color: skill.accent ? "var(--theme-accent)" : "#52525b",
-        }}
-      >
-        {skill.category}
-      </p>
+        {/* Category label */}
+        <p
+          className="text-[10px] tracking-[0.3em] uppercase mb-6"
+          style={{
+            fontFamily: "var(--font-space-grotesk)",
+            color: skill.accent ? "var(--theme-accent)" : "#a1a1aa",
+          }}
+        >
+          {skill.category}
+        </p>
 
-      {/* Pill tags */}
-      <div className="flex flex-wrap gap-2 mt-auto">
-        {skill.items.map((item) => (
-          <span
-            key={item}
-            className={`text-xs tracking-wide px-3 py-1.5 rounded-full border transition-all duration-300 ${skill.accent
-              ? "bg-[var(--theme-accent)]/10 text-[var(--theme-accent)] border-[var(--theme-accent)]/20 group-hover:border-[var(--theme-accent)]/40 group-hover:bg-[var(--theme-accent)]/15"
-              : "bg-zinc-800/50 text-zinc-300 border-zinc-700/50 group-hover:border-zinc-600 group-hover:bg-zinc-800/80 group-hover:text-white"
-              }`}
-            style={{ fontFamily: "var(--font-space-grotesk)" }}
-          >
-            {item}
-          </span>
-        ))}
+        {/* Pill tags */}
+        <div className="flex flex-wrap gap-2 mt-auto pt-6">
+          {skill.items.map((item) => (
+            <span
+              key={item}
+              className={`text-[10px] tracking-widest uppercase px-3 py-1.5 rounded-full border transition-all duration-300 ${skill.accent
+                ? "bg-[var(--theme-accent)]/10 text-[var(--theme-accent)] border-[var(--theme-accent)]/20"
+                : "bg-white/5 text-zinc-300 border-white/5"
+                }`}
+              style={{ fontFamily: "var(--font-space-grotesk)" }}
+            >
+              {item}
+            </span>
+          ))}
+        </div>
       </div>
     </motion.div>
   );
@@ -207,8 +227,11 @@ export default function Skills() {
         <motion.h2
           initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }} transition={{ duration: 0.8 }}
-          className="text-5xl md:text-7xl font-bold text-white leading-none uppercase comic-title"
-          style={{ fontFamily: isMiles ? "var(--font-graffiti), var(--font-bangers)" : "var(--font-space-grotesk)" }}
+          className={`text-5xl md:text-7xl font-bold text-white leading-none uppercase ${isMiles ? "tracking-wide" : ""}`}
+          style={{ 
+            fontFamily: isMiles ? "var(--font-bangers)" : "var(--font-space-grotesk)",
+            textShadow: isMiles ? "4px 4px 0 #000" : "none"
+          }}
         >
           Technical
           <br />
@@ -217,23 +240,23 @@ export default function Skills() {
         <motion.p
           initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }} transition={{ duration: 0.7, delay: 0.2 }}
-          className="max-w-xs text-zinc-500 text-sm leading-relaxed md:text-right"
+          className="max-w-xs text-zinc-500 text-sm leading-relaxed md:text-right font-medium"
           style={{ fontFamily: "var(--font-inter)" }}
         >
           Across the full stack — from pixels to packets, schema to server.
         </motion.p>
       </div>
 
-      {/* Earth-1610: Clean 2-column list layout */}
+      {/* Earth-1610: Masonry style panel layout */}
       {isMiles ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
           {skills.map((skill, i) => (
             <SkillRow1610 key={skill.id} skill={skill} index={i} />
           ))}
         </div>
       ) : (
-        /* Earth-616: Original bento grid */
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 auto-rows-[minmax(160px,auto)] gap-4">
+        /* ── Earth-616: Premium Bento Grid ── */
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 auto-rows-[minmax(180px,auto)] gap-6 lg:gap-8 mt-8">
           {skills.map((skill, i) => (
             <SkillCard616 key={skill.id} skill={skill} index={i} />
           ))}

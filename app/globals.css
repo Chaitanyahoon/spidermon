@@ -13,14 +13,14 @@
 }
 
 /* Subtle tech/web grid for Earth-616 background */
-body:not(.theme-1610) {
+html:not(.theme-1610):not(.theme-noir):not(.theme-punk) body {
   background-image:
     linear-gradient(to right, rgba(232, 0, 28, 0.02) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(232, 0, 28, 0.02) 1px, transparent 1px);
   background-size: 60px 60px;
 }
 
-body:not(.theme-1610)::after {
+html:not(.theme-1610):not(.theme-noir):not(.theme-punk) body::after {
   content: "";
   position: fixed;
   inset: 0;
@@ -76,7 +76,10 @@ body {
    1. HALFTONE — Offset CMYK Dots
       Stronger blend mirroring print misregistration
    ═══════════════════════════════════════════════════ */
-.theme-1610 body::before {
+/* ═══════════════════════════════════════════════════
+   HALFTONE FIX: class is on <html>, not <body>
+   ═══════════════════════════════════════════════════ */
+html.theme-1610 body::before {
   content: "";
   position: fixed;
   inset: 0;
@@ -88,7 +91,6 @@ body {
     radial-gradient(circle, rgba(255, 229, 0, 0.05) 1px, transparent 1.5px);
   background-size: 8px 8px;
   background-position: 0 0, 4px 4px, 2px 2px;
-  /* Offset to feel like a printing error */
   mix-blend-mode: screen;
 }
 
@@ -621,4 +623,126 @@ body {
   .theme-1610 .comic-title-animated {
     animation: none !important;
   }
+}
+
+/* ═══════════════════════════════════════════════════
+   EARTH-90214 — SPIDER-MAN NOIR
+   Grayscale newspaper + film noir aesthetic
+   ═══════════════════════════════════════════════════ */
+html.theme-noir {
+  --theme-bg: #0a0a0a;
+  --theme-accent: #c8c8c8;
+  --theme-accent-alt: #888888;
+  --noir-paper: #e8e0d0;
+  --noir-ink: #1a1a1a;
+  --noir-sepia: #8b7355;
+  --noir-shadow: #000000;
+}
+
+html.theme-noir body {
+  filter: grayscale(100%) contrast(1.1);
+}
+
+html.theme-noir body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background-image:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.35;
+  mix-blend-mode: overlay;
+}
+
+html.theme-noir nav {
+  background: #0a0a0a !important;
+  border-bottom: 2px solid #333 !important;
+  backdrop-filter: none !important;
+}
+
+html.theme-noir section {
+  border-top: 2px solid #2a2a2a !important;
+}
+
+html.theme-noir footer {
+  background: #050505 !important;
+  border-top: 2px solid #333 !important;
+}
+
+/* ═══════════════════════════════════════════════════
+   EARTH-138 — SPIDER-PUNK
+   Brutalist zine / punk art aesthetic
+   ═══════════════════════════════════════════════════ */
+html.theme-punk {
+  --theme-bg: #0d0d0d;
+  --theme-accent: #ff2d00;
+  --theme-accent-alt: #ffdd00;
+  --punk-yellow: #ffdd00;
+  --punk-red: #ff2d00;
+  --punk-white: #f0f0f0;
+  --punk-border: 3px solid #ffdd00;
+}
+
+html.theme-punk body {
+  background-color: #0d0d0d;
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10px,
+      rgba(255, 45, 0, 0.03) 10px,
+      rgba(255, 45, 0, 0.03) 20px
+    );
+}
+
+html.theme-punk body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      rgba(255, 221, 0, 0.015) 3px,
+      rgba(255, 221, 0, 0.015) 4px
+    );
+}
+
+html.theme-punk nav {
+  background: #000 !important;
+  border-bottom: 3px solid var(--punk-yellow) !important;
+  border-top: 3px solid var(--punk-red) !important;
+  backdrop-filter: none !important;
+}
+
+html.theme-punk nav a:hover {
+  color: var(--punk-yellow) !important;
+  text-decoration: underline wavy var(--punk-red) !important;
+}
+
+html.theme-punk section {
+  border-top: 3px solid var(--punk-red) !important;
+}
+
+html.theme-punk footer {
+  background: #000 !important;
+  border-top: 3px solid var(--punk-yellow) !important;
+}
+
+/* Punk card style */
+.theme-punk .punk-card {
+  background: #111 !important;
+  border: 3px solid var(--punk-yellow) !important;
+  border-radius: 0 !important;
+  box-shadow: 4px 4px 0 var(--punk-red) !important;
+  transition: transform 0.1s, box-shadow 0.1s !important;
+}
+
+.theme-punk .punk-card:hover {
+  transform: translate(-2px, -2px) !important;
+  box-shadow: 6px 6px 0 var(--punk-red) !important;
 }

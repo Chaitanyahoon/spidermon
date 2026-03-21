@@ -3,6 +3,8 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { useTheme } from "next-themes";
+import { SpiderSenseRipple } from "./SpiderSenseRipple";
+import { MagneticHover } from "./MagneticHover";
 
 const projects = [
   {
@@ -20,33 +22,33 @@ const projects = [
   },
   {
     id: "02",
+    title: "Planthesia",
+    category: "Digital Agency",
+    year: "2025",
+    description:
+      "A concept digital agency blending nature and technology into cohesive, scalable web products. Features a minimal brand identity and intuitive UI, highlighting a balance of aesthetics and growth-driven engineering.",
+    tags: ["Brand Identity", "Next.js", "UI/UX", "Tailwind"],
+    size: "side",
+    accent: false,
+    href: "https://planthesia.in",
+    githubHref: "https://github.com/Chaitanyahoon/Planthesia",
+  },
+  {
+    id: "03",
     title: "Focus Arena",
     category: ".NET Full Stack",
     year: "2025",
     description:
       "Real-time gamified productivity platform with chat, leaderboards, and task mechanics via SignalR. Clean Architecture + Docker.",
     tags: ["ASP.NET Core 8", "React", "SignalR", "MySQL"],
-    size: "side",
+    size: "grid",
     accent: false,
-    href: "https://github.com/Chaitanyahoon",
+    href: "https://focusarenaa.vercel.app/",
     githubHref: "https://github.com/Chaitanyahoon",
   },
   {
-    id: "03",
-    title: "VirtuSpace",
-    category: "AR / WebXR",
-    year: "2025",
-    description:
-      "WebAR furniture visualization platform. Users place and view furniture in real space using augmented reality — transforming how people shop for interiors.",
-    tags: ["Next.js", "Three.js", "WebXR", "TypeScript"],
-    size: "grid",
-    accent: false,
-    href: "https://virtuspace-six.vercel.app/",
-    githubHref: "https://github.com/Chaitanyahoon/Virtuspace",
-  },
-  {
     id: "04",
-    title: "Planthesia",
+    title: "Midori",
     category: "Productivity",
     year: "2025",
     description:
@@ -54,7 +56,7 @@ const projects = [
     tags: ["React", "Express", "PostgreSQL", "Redis"],
     size: "grid",
     accent: false,
-    href: "https://planthesia.vercel.app/dashboard",
+    href: "https://projectmidori.vercel.app/",
     githubHref: "https://github.com/Chaitanyahoon/Planthesia",
   },
   {
@@ -96,48 +98,56 @@ function ProjectCard616({ project, index }: { project: typeof projects[0]; index
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "0px 0px -60px 0px" });
 
-  const isFeatured = project.size === "featured";
-  const isSide = project.size === "side";
+  const isFeatured = index === 0; // StreetBite (top-left wide block)
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 50 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.7, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
-      className={`group relative flex flex-col justify-between h-full p-6 overflow-hidden cursor-pointer transition-all duration-300 bg-zinc-900/40 border-x border-b border-zinc-800/80 hover:bg-zinc-800/40 hover:border-zinc-700 rounded-sm
-        ${isFeatured ? "md:col-span-2 lg:col-span-2 min-h-[380px]" : isSide ? "md:col-span-1 lg:col-span-1 min-h-[380px]" : "md:col-span-1 lg:col-span-1 min-h-[300px]"}
-        ${project.accent ? "border-t-[3px] border-t-[var(--theme-accent)]" : "border-t-[3px] border-t-zinc-800/80 hover:border-t-zinc-600"}`}
+      initial={{ opacity: 0, y: 40, scale: 0.95 }}
+      animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+      transition={{ duration: 0.8, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+      className={`group relative flex flex-col justify-between p-8 overflow-hidden transition-all duration-500 rounded-3xl
+        bg-gradient-to-br from-zinc-900/90 to-[#121c2d]/90 
+        border border-white/5 hover:border-white/15
+        shadow-[inset_0_1px_0_rgba(255,255,255,0.05),_0_20px_40px_-20px_rgba(0,0,0,0.5)]
+        ${isFeatured ? "lg:col-span-2 lg:row-span-1 min-h-[320px]" : "lg:col-span-1 lg:row-span-1 min-h-[320px]"}`}
     >
-      <div className="flex items-start justify-between gap-3">
-        <div>
-          <p className={`text-[10px] tracking-[0.3em] uppercase mb-2 ${project.accent ? 'text-[var(--theme-accent)]' : 'text-zinc-500'}`} style={{ fontFamily: "var(--font-space-grotesk)" }}>
-            {project.category} — {project.year}
-          </p>
-          <h3 className={`${isFeatured ? 'text-4xl md:text-5xl' : 'text-xl md:text-2xl'} font-bold text-white leading-tight transition-colors group-hover:text-zinc-200`} style={{ fontFamily: "var(--font-space-grotesk)" }}>
-            {project.title}
-          </h3>
+      {/* Soft radial glow on hover */}
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 bg-[radial-gradient(circle_at_50%_0%,rgba(29,53,87,0.4)_0%,transparent_70%)] pointer-events-none" />
+
+      <div className="relative z-10 flex flex-col h-full">
+        <div className="flex items-start justify-between gap-4 mb-6">
+          <div>
+            <p className="text-[10px] tracking-[0.25em] uppercase mb-3 text-[var(--theme-accent)]" style={{ fontFamily: "var(--font-space-grotesk)" }}>
+              {project.category} — {project.year}
+            </p>
+            <h3 className={`${isFeatured ? 'text-4xl md:text-5xl' : 'text-2xl md:text-3xl'} font-bold text-white leading-tight tracking-tight mt-1`} style={{ fontFamily: "var(--font-space-grotesk)" }}>
+              {project.title}
+            </h3>
+          </div>
+          
+          <MagneticHover strength={15} className="shrink-0 relative z-20">
+            <a href={project.href} target="_blank" rel="noopener noreferrer" className="block cursor-pointer">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center bg-white/5 border border-white/10 group-hover:bg-white group-hover:border-white transition-all duration-300 shadow-lg cursor-pointer">
+                <svg width="14" height="14" viewBox="0 0 12 12" fill="none" className="text-zinc-400 group-hover:text-black transition-colors duration-300">
+                  <path d="M1 11L11 1M11 1H4M11 1V8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </div>
+            </a>
+          </MagneticHover>
         </div>
-        <span className={`${isFeatured ? 'text-[6rem] -mt-6' : 'text-[3.5rem]'} font-bold leading-none select-none pointer-events-none shrink-0 transition-colors duration-300`} style={{ fontFamily: "var(--font-space-grotesk)", color: project.accent ? "rgba(232,0,28,0.15)" : "rgba(255,255,255,0.06)" }}>
-          {project.id}
-        </span>
-      </div>
 
-      <p className="text-zinc-400 text-sm leading-relaxed mt-4" style={{ fontFamily: "var(--font-inter)" }}>
-        {project.description}
-      </p>
+        <p className={`text-zinc-400 text-sm leading-relaxed mb-8 max-w-md ${isFeatured ? 'text-base' : 'text-sm'}`} style={{ fontFamily: "var(--font-inter)" }}>
+          {project.description}
+        </p>
 
-      <div className="flex items-end justify-between mt-auto pt-6 border-t border-zinc-800/80">
-        <div className="flex flex-wrap gap-2">
+        <div className="mt-auto flex flex-wrap gap-2 pt-6 border-t border-white/5">
           {project.tags.map((tag) => (
-            <span key={tag} className="text-[10px] tracking-[0.15em] uppercase text-zinc-400 font-medium" style={{ fontFamily: "var(--font-space-grotesk)" }}>
+            <span key={tag} className="px-3 py-1.5 rounded-full bg-white/5 text-[10px] tracking-wider uppercase text-zinc-300 font-medium" style={{ fontFamily: "var(--font-space-grotesk)" }}>
               {tag}
-              {/* add dot separator if not last item */}
-              <span className="text-zinc-700 ml-2 mr-0 inline-block align-middle">&bull;</span>
             </span>
           ))}
         </div>
-        <ArrowLink href={project.href} />
       </div>
     </motion.div>
   );
@@ -180,7 +190,7 @@ function FeaturedPanel({ project, index }: { project: typeof projects[0]; index:
         {/* Title */}
         <h3
           style={{
-            fontFamily: "var(--font-graffiti), var(--font-bangers)",
+            fontFamily: "var(--font-bangers)",
             fontSize: "clamp(3rem, 6vw, 5rem)",
             letterSpacing: "0.04em",
             color: "#fff",
@@ -208,6 +218,7 @@ function FeaturedPanel({ project, index }: { project: typeof projects[0]; index:
         </div>
         <ArrowLink href={project.href} dark />
       </div>
+      <SpiderSenseRipple />
     </motion.div>
   );
 }
@@ -245,7 +256,7 @@ function SidePanel({ project, index }: { project: typeof projects[0]; index: num
 
         <h3
           style={{
-            fontFamily: "var(--font-graffiti), var(--font-bangers)",
+            fontFamily: "var(--font-bangers)",
             fontSize: "clamp(2.5rem, 5vw, 4rem)",
             letterSpacing: "0.04em",
             color: "#f0f0f0",
@@ -310,7 +321,7 @@ function GridPanel({ project, index }: { project: typeof projects[0]; index: num
         </span>
         <h3
           style={{
-            fontFamily: "var(--font-graffiti), var(--font-bangers)",
+            fontFamily: "var(--font-bangers)",
             fontSize: "2.25rem",
             letterSpacing: "0.04em",
             color: project.accent ? "#fff" : "#f0f0f0",
@@ -344,6 +355,7 @@ function GridPanel({ project, index }: { project: typeof projects[0]; index: num
         </div>
         <ArrowLink href={project.href} dark={project.accent} />
       </div>
+      <SpiderSenseRipple />
     </motion.div>
   );
 }
@@ -415,8 +427,8 @@ export default function Projects() {
             </div>
           </div>
 
-          {/* Row 2: 4 equal grid panels */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* Row 2: 3 equal grid panels */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {projects.slice(2).map((project, i) => (
               <GridPanel key={project.id} project={project} index={i + 2} />
             ))}
@@ -449,8 +461,8 @@ export default function Projects() {
           </motion.div>
         </div>
       ) : (
-        /* ── Earth-616: Clean masonry grid ── */
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        /* ── Earth-616: Premium Bento-Box Layout ── */
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 auto-rows-[minmax(280px,auto)] gap-6 lg:gap-8">
           {projects.map((project, i) => (
             <ProjectCard616 key={project.id} project={project} index={i} />
           ))}

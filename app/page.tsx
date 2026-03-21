@@ -9,6 +9,7 @@ const Projects = dynamic(() => import("./components/Projects"));
 const About = dynamic(() => import("./components/About"));
 const Experience = dynamic(() => import("./components/Experience"));
 const Certificates = dynamic(() => import("./components/Certificates"));
+const DailyBugle = dynamic(() => import("./components/DailyBugle"));
 const Contact = dynamic(() => import("./components/Contact"));
 const MarqueeTicker = dynamic(() => import("./components/MarqueeTicker"));
 const Footer = dynamic(() => import("./components/Footer"));
@@ -25,6 +26,7 @@ export default function Home() {
       <Experience />
       <About />
       <Certificates />
+      <DailyBugle />
       <Contact />
       <MarqueeTicker />
       <Footer />

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Space_Grotesk, Bangers, Sedgwick_Ave_Display } from "next/font/google";
+import { Inter, Space_Grotesk, Bebas_Neue, Sedgwick_Ave_Display } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "./components/ThemeProvider";
 import { WebCursor } from "./components/WebCursor";
@@ -8,6 +8,9 @@ import { SpiderSenseTransition } from "./components/SpiderSenseTransition";
 import { WebScrollbar } from "./components/WebScrollbar";
 import { WebPullToTop } from "./components/WebPullToTop";
 import { CamoWrapper } from "./components/CamoWrapper";
+import { WebShooterLoader } from "./components/WebShooterLoader";
+import { IdleSpiderMan } from "./components/IdleSpiderMan";
+import { WebSlingTransition } from "./components/WebSlingTransition";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -23,15 +26,15 @@ const spaceGrotesk = Space_Grotesk({
   display: "swap",
 });
 
-// Authentic comic book marker font for Earth-1610 Miles Morales mode
-const bangers = Bangers({
+// Cinematic, sharp header font for Earth-1610 Miles Morales mode (replacing Anton which was too thick)
+const bebas = Bebas_Neue({
   variable: "--font-bangers",
   weight: "400",
   subsets: ["latin"],
   display: "swap",
 });
 
-// Street art/Graffiti font for Earth-1610 Miles Morales accents
+// Authentic street art font for Earth-1610 Miles Morales accents
 const sedgwick = Sedgwick_Ave_Display({
   variable: "--font-graffiti",
   weight: "400",
@@ -62,7 +65,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${inter.variable} ${spaceGrotesk.variable} ${bangers.variable} ${sedgwick.variable} antialiased bg-[var(--theme-bg)]`}
+        className={`${inter.variable} ${spaceGrotesk.variable} ${bebas.variable} ${sedgwick.variable} antialiased bg-[var(--theme-bg)]`}
       >
         <ThemeProvider
           attribute="class"
@@ -70,11 +73,14 @@ export default function RootLayout({
           enableSystem={false}
         >
 
+          <WebShooterLoader />
           <HalftoneOverlay />
           <SpiderSenseTransition />
           <WebScrollbar />
           <WebCursor />
           <WebPullToTop />
+          <IdleSpiderMan />
+          <WebSlingTransition />
           <CamoWrapper>{children}</CamoWrapper>
         </ThemeProvider>
       </body>

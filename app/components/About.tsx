@@ -174,9 +174,9 @@ export default function About() {
           >
             {stats.map((s) => (
               <div key={s.label} className="comic-stat-card" aria-label={`${s.target}${s.suffix} ${s.label}`}>
-                <p className="comic-stat-num">
+                <div className="comic-stat-num">
                   <AnimatedCounter target={s.target} suffix={s.suffix} />
-                </p>
+                </div>
                 <p className="comic-stat-label">{s.label}</p>
               </div>
             ))}
