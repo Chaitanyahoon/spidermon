@@ -110,7 +110,7 @@ export default function Navbar() {
       </div>
 
       {/* Links with active indicator */}
-      <div className="flex items-center gap-2 md:gap-4 bg-white/5 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.1)]">
+      <div className="flex items-center gap-1 sm:gap-2 md:gap-4 bg-white/5 backdrop-blur-md px-2 sm:px-4 py-1.5 md:py-2 rounded-full border border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.1)]">
         {navLinks.map(({ label, href }) => {
           const id = href.replace("#", "");
           const isActive = active === id;
@@ -127,13 +127,13 @@ export default function Navbar() {
                     })
                   );
                 }}
-                className={`flex items-center justify-center px-4 py-2 rounded-full transition-all duration-300 ${isActive ? "bg-[var(--theme-accent)]/10" : "hover:bg-white/5"}`}
+                className={`flex items-center justify-center px-2 sm:px-3 md:px-4 py-1.5 md:py-2 rounded-full transition-all duration-300 ${isActive ? "bg-[var(--theme-accent)]/10" : "hover:bg-white/5"}`}
                 style={{
                   color: isActive ? "var(--theme-accent)" : "#a1a1aa",
                   fontFamily: "var(--font-space-grotesk)",
                 }}
               >
-                <span className="hover-glitch relative text-xs font-bold tracking-[0.15em] uppercase">
+                <span className="hover-glitch relative text-[9px] sm:text-[10px] md:text-xs font-bold tracking-[0.1em] sm:tracking-[0.15em] uppercase">
                   {label}
                   {isActive && (
                     <motion.span
@@ -148,7 +148,7 @@ export default function Navbar() {
           );
         })}
         
-        <div className="w-px h-6 bg-white/10 mx-2" /> {/* Divider */}
+        <div className="w-px h-4 md:h-6 bg-white/10 mx-1 md:mx-2" /> {/* Divider */}
         
         <MagneticHover strength={10}>
           <div>

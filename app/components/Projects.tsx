@@ -241,7 +241,7 @@ function SidePanel({ project, index }: { project: typeof projects[0]; index: num
       <span
         aria-hidden="true"
         className="absolute bottom-3 right-4 leading-none select-none pointer-events-none"
-        style={{ fontFamily: "var(--font-bangers)", fontSize: "8rem", color: "rgba(255,229,0,0.07)", lineHeight: 1 }}
+        style={{ fontFamily: "var(--font-bangers)", fontSize: "clamp(3rem, 12vw, 8rem)", color: "rgba(255,229,0,0.07)", lineHeight: 1 }}
       >
         {project.id}
       </span>
@@ -257,7 +257,7 @@ function SidePanel({ project, index }: { project: typeof projects[0]; index: num
         <h3
           style={{
             fontFamily: "var(--font-bangers)",
-            fontSize: "clamp(2.5rem, 5vw, 4rem)",
+            fontSize: "clamp(1.6rem, 7vw, 4rem)",
             letterSpacing: "0.04em",
             color: "#f0f0f0",
             lineHeight: 1.05,

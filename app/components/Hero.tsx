@@ -331,7 +331,7 @@ export default function Hero() {
 
           {/* Name Overlay — always visible at bottom-left */}
           <motion.div
-            className="absolute bottom-10 left-10 pointer-events-none"
+            className="absolute bottom-6 left-6 md:bottom-10 md:left-10 pointer-events-none z-30"
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
@@ -358,7 +358,7 @@ export default function Hero() {
               className={`leading-none uppercase ${theme === "theme-1610" ? "hover-glitch" : ""}`}
               style={{
                 fontFamily: theme === "theme-1610" ? "var(--font-bangers)" : "var(--font-space-grotesk)",
-                fontSize: theme === "theme-1610" ? "clamp(3.5rem, 9vw, 8rem)" : "clamp(3.5rem, 9vw, 8rem)",
+                fontSize: theme === "theme-1610" ? "clamp(2.5rem, 9vw, 8rem)" : "clamp(2.2rem, 9vw, 8rem)",
                 fontWeight: theme === "theme-1610" ? 400 : 900,
                 letterSpacing: theme === "theme-1610" ? "0.06em" : "-0.02em",
                 color: "#f8fafc",
@@ -389,9 +389,9 @@ export default function Hero() {
             </motion.div>
           </motion.div>
 
-          {/* Scroll cue */}
+          {/* Scroll cue (Hidden on mobile to save vertical space) */}
           <motion.div
-            className="absolute bottom-10 right-10 flex flex-col items-center gap-2 pointer-events-none transition-all duration-300"
+            className="absolute bottom-8 right-8 md:bottom-10 md:right-10 flex flex-col items-center gap-2 pointer-events-none transition-all duration-300 hidden md:flex"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 1.2 }}
@@ -417,7 +417,7 @@ export default function Hero() {
 
           {/* Card Text Label — fades in near end of scroll */}
           <motion.div
-            className="absolute bottom-8 left-8 text-white pointer-events-none"
+            className="absolute top-8 left-6 md:bottom-8 md:left-8 md:top-auto text-white pointer-events-none opacity-0 md:opacity-100 hidden md:block"
             style={{ opacity: cardTextOpacity }}
           >
             <p className="font-mono text-xs tracking-widest uppercase text-zinc-400">
