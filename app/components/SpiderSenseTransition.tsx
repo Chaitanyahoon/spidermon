@@ -2,12 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useTheme } from "next-themes";
 
 export function SpiderSenseTransition() {
   const [isAnimating, setIsAnimating] = useState(false);
-  const { theme } = useTheme();
-  const isMiles = theme === "theme-1610";
 
   useEffect(() => {
     const handleTrigger = () => {
@@ -30,21 +27,19 @@ export function SpiderSenseTransition() {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.15 }}
         >
-          {/* Flashing background burst */}
           <motion.div
             className="absolute inset-0 bg-[var(--theme-accent)]/10"
             animate={{ opacity: [0, 1, 0] }}
             transition={{ duration: 0.4, times: [0, 0.2, 1] }}
           />
 
-          {/* Spider-sense zig-zags (Left) */}
           <motion.svg
             className="absolute left-4 md:left-24 h-[60vh] w-auto drop-shadow-2xl"
             viewBox="0 0 100 200"
             preserveAspectRatio="xMidYMid meet"
-            initial={{ scale: 0.5, x: isMiles ? -80 : -50, opacity: 0 }}
+            initial={{ scale: 0.5, x: -50, opacity: 0 }}
             animate={{ scale: [1, 1.2, 1], x: 0, opacity: [0, 1, 0] }}
-            transition={{ duration: 0.5, ease: isMiles ? "anticipate" : "easeOut" }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
           >
             <path
               d="M 50 10 L 80 50 L 30 100 L 90 150 L 40 190"
@@ -53,18 +48,17 @@ export function SpiderSenseTransition() {
               strokeWidth="8"
               strokeLinecap="round"
               strokeLinejoin="round"
-              style={{ filter: isMiles ? "drop-shadow(3px 3px 0 var(--spiderverse-cyan)) drop-shadow(-3px -3px 0 var(--spiderverse-magenta))" : "drop-shadow(0 0 12px var(--theme-accent))" }}
+              style={{ filter: "drop-shadow(0 0 12px var(--theme-accent))" }}
             />
           </motion.svg>
 
-          {/* Spider-sense zig-zags (Right) */}
           <motion.svg
             className="absolute right-4 md:right-24 h-[60vh] w-auto drop-shadow-2xl"
             viewBox="0 0 100 200"
             preserveAspectRatio="xMidYMid meet"
-            initial={{ scale: 0.5, x: isMiles ? 80 : 50, opacity: 0 }}
+            initial={{ scale: 0.5, x: 50, opacity: 0 }}
             animate={{ scale: [1, 1.2, 1], x: 0, opacity: [0, 1, 0] }}
-            transition={{ duration: 0.5, ease: isMiles ? "anticipate" : "easeOut", delay: 0.05 }}
+            transition={{ duration: 0.5, ease: "easeOut", delay: 0.05 }}
           >
             <path
               d="M 50 10 L 20 50 L 70 100 L 10 150 L 60 190"
@@ -73,10 +67,7 @@ export function SpiderSenseTransition() {
               strokeWidth="8"
               strokeLinecap="round"
               strokeLinejoin="round"
-              style={{
-                filter:
-                  isMiles ? "drop-shadow(3px 3px 0 var(--spiderverse-cyan)) drop-shadow(-3px -3px 0 var(--spiderverse-magenta))" : "drop-shadow(0 0 12px var(--theme-accent-alt, var(--theme-accent)))",
-              }}
+              style={{ filter: "drop-shadow(0 0 12px var(--theme-accent-alt, var(--theme-accent)))" }}
             />
           </motion.svg>
         </motion.div>

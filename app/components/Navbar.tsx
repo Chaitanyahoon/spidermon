@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ThemeToggle } from "./ThemeToggle";
-import { Bug } from "lucide-react"; // Spider-like icon
+import { Bug } from "lucide-react";
+
 const navLinks = [
   { label: "Work", href: "#work" },
   { label: "About", href: "#about-detail" },
@@ -13,7 +13,7 @@ const navLinks = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState("");
-  const [clickCount, setClickCount] = useState(0);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => {
@@ -32,81 +32,158 @@ export default function Navbar() {
   }, []);
 
   return (
-    <motion.nav
-      initial={{ y: -80, opacity: 0 }}
+    <motion.div
+      initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      className={`fixed top-0 left-0 right-0 z-50 px-8 py-5 flex items-center justify-between transition-all duration-500 ${scrolled
-        ? "backdrop-blur-xl bg-black/40 border-b border-white/5"
-        : "bg-transparent"
-        }`}
+      className={`fixed top-0 left-0 right-0 z-50 flex justify-center transition-all duration-500 ${
+        scrolled ? "pt-6 px-4" : "pt-8 px-6"
+      }`}
     >
-      {/* Name — clicking scrolls to top */}
-      <div className="flex items-center gap-3">
-        <motion.div
-          whileHover={{ scale: 1.1, rotate: [0, -10, 10, 0] }}
-          className="text-[var(--theme-accent)]"
-        >
-          <Bug size={24} className={clickCount > 0 ? "animate-pulse" : ""} />
-        </motion.div>
+      <nav
+        className={`w-full max-w-6xl mx-auto flex items-center justify-between px-6 py-4 transition-all duration-500 rounded-full ${
+          scrolled
+            ? "backdrop-blur-xl bg-[#09090b]/70 border border-white/10 shadow-[0_4px_30px_rgba(232,0,28,0.15)]"
+            : "bg-transparent border border-transparent shadow-none"
+        }`}
+      >
+        {/* Logo Section */}
         <a
           href="#"
-          onClick={() => {
-            const newCount = clickCount + 1;
-            setClickCount(newCount);
-            if (newCount >= 3) {
-              window.dispatchEvent(new Event("toggle-camo"));
-              setClickCount(0);
-            }
-          }}
-          className={`group relative text-sm tracking-[0.1em] text-white comic-title transition-all duration-300`}
-          style={{
-            fontFamily: "var(--font-graffiti), var(--font-space-grotesk)",
-            fontSize: "1.85rem",
-            transform: "rotate(-2deg)",
-            textShadow: clickCount > 0
-              ? "3px 3px 0px var(--spiderverse-cyan), -3px -3px 0px var(--spiderverse-magenta)"
-              : "2px 2px 0px #000, 4px 4px 0px rgba(0,0,0,0.2)"
-          }}
+          className="group flex items-center gap-3 relative focus:outline-none"
         >
-          Chaitanya<span style={{ color: "var(--theme-accent)", fontFamily: "var(--font-bangers)", marginLeft: "-2px" }}>.</span>
-          {/* Spray Drip Effect */}
-          <div className="absolute -bottom-2 left-4 w-1 h-4 bg-[var(--theme-accent)] opacity-0 group-hover:opacity-100 transition-opacity rounded-full animate-bounce" />
-          <div className="absolute -bottom-4 left-10 w-1 h-6 bg-[var(--spiderverse-cyan)] opacity-0 group-hover:opacity-100 transition-opacity rounded-full animate-bounce delay-100" />
+          {/* Subtle glow behind the spider */}
+          <div className="absolute left-0 w-8 h-8 rounded-full bg-[var(--theme-accent)] blur-xl opacity-0 group-hover:opacity-60 transition-opacity duration-500" />
+          
+          <motion.div
+            whileHover={{ rotate: 180, scale: 1.1 }}
+            transition={{ type: "spring", stiffness: 200, damping: 10 }}
+            className="text-[var(--theme-accent)] relative z-10"
+          >
+            <Bug size={24} />
+          </motion.div>
+          
+          <div
+            className="relative text-xl tracking-[0.1em] text-white/90 hover:text-white transition-colors duration-300"
+            style={{
+              fontFamily: "var(--font-space-grotesk)",
+              fontWeight: 700,
+            }}
+          >
+            Chaitanya
+            <span className="text-[var(--theme-accent)] absolute -bottom-1 -right-2 text-2xl font-black">.</span>
+            
+            {/* Elegant shine line underneath on hover */}
+            <div className="absolute -bottom-1 left-0 h-[2px] w-0 bg-[var(--theme-accent)] group-hover:w-full transition-all duration-500 ease-out shadow-[0_0_10px_var(--theme-accent)]" />
+          </div>
         </a>
-      </div>
 
-      {/* Links with active indicator */}
-      <div className="flex items-center gap-6">
-        {navLinks.map(({ label, href }) => {
-          const id = href.replace("#", "");
-          const isActive = active === id;
-          return (
-            <a
-              key={label}
-              href={href}
-              onClick={() =>
-                window.dispatchEvent(new Event("trigger-spider-sense"))
-              }
-              className="hover-glitch relative text-xs tracking-widest uppercase transition-colors duration-200"
-              style={{
-                color: isActive ? "var(--theme-accent)" : "#a1a1aa",
-                fontFamily: "var(--font-space-grotesk)",
-              }}
-            >
-              {label}
-              {isActive && (
-                <motion.span
-                  layoutId="nav-indicator"
-                  className="absolute -bottom-1 left-0 right-0 h-px"
-                  style={{ background: "var(--theme-accent)" }}
-                />
+        {/* Desktop links */}
+        <div className="hidden md:flex items-center gap-8 pr-2">
+          {navLinks.map(({ label, href }) => {
+            const id = href.replace("#", "");
+            const isActive = active === id;
+            return (
+              <a
+                key={label}
+                href={href}
+                className="relative group text-sm tracking-widest uppercase transition-all duration-300 overflow-hidden px-2 py-1"
+                style={{
+                  color: isActive ? "white" : "#a1a1aa",
+                  fontFamily: "var(--font-space-grotesk)",
+                  fontWeight: 600,
+                }}
+              >
+                <div className="relative z-10 group-hover:-translate-y-full transition-transform duration-300">
+                  {label}
+                </div>
+                <div className="absolute inset-x-0 bottom-0 text-[var(--theme-accent)] px-2 py-1 translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-10">
+                  {label}
+                </div>
+                {isActive && (
+                  <motion.div
+                    layoutId="nav-glow"
+                    className="absolute inset-0 bg-[var(--theme-accent)]/10 blur-md rounded-md z-0"
+                  />
+                )}
+              </a>
+            );
+          })}
+        </div>
+
+        {/* Mobile menu button — 48x48px Touch Target (Fitts' Law) */}
+        <div className="flex md:hidden items-center">
+          <button
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            onClick={() => setMenuOpen((s) => !s)}
+            className="w-12 h-12 flex items-center justify-center rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all text-white/80 focus:outline-none focus:bg-white/10 active:scale-95"
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              {menuOpen ? (
+                <>
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </>
+              ) : (
+                <>
+                  <line x1="4" y1="6" x2="20" y2="6" />
+                  <line x1="4" y1="12" x2="14" y2="12" />
+                  <line x1="4" y1="18" x2="20" y2="18" />
+                </>
               )}
-            </a>
-          );
-        })}
-        <ThemeToggle />
-      </div>
-    </motion.nav>
+            </svg>
+          </button>
+        </div>
+      </nav>
+
+      {/* Mobile menu overlay */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
+            animate={{ opacity: 1, backdropFilter: "blur(20px)" }}
+            exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-40 bg-[#09090b]/95 flex flex-col items-center justify-center gap-6 md:hidden px-6"
+            onClick={() => setMenuOpen(false)}
+          >
+            {navLinks.map(({ label, href }, i) => (
+              <motion.a
+                key={label}
+                href={href}
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: -20, opacity: 0 }}
+                transition={{ duration: 0.3, delay: i * 0.1 }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setMenuOpen(false);
+                  const target = document.getElementById(href.replace("#", ""));
+                  if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+                }}
+                className="w-full max-w-sm flex items-center justify-center py-4 rounded-2xl bg-white/5 active:bg-[var(--theme-accent)]/20 active:text-[var(--theme-accent)] transition-all min-h-[60px]"
+              >
+                <span 
+                  className="text-2xl font-black tracking-widest text-white/90 uppercase"
+                  style={{ fontFamily: "var(--font-space-grotesk)" }}
+                >
+                  {label}
+                </span>
+              </motion.a>
+            ))}
+            
+            {/* Let's drop a small touch-friendly deco here */}
+            <motion.div
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 0.5 }}
+              transition={{ delay: 0.5, duration: 0.4 }}
+              className="mt-8 opacity-50"
+            >
+               <Bug size={32} className="text-white/20" />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
 }

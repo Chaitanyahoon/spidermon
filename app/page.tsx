@@ -1,7 +1,14 @@
-import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import dynamic from 'next/dynamic';
+"use client";
 
+import { useState, useCallback } from "react";
+import dynamic from "next/dynamic";
+import Navbar from "./components/Navbar";
+import LoadingScreen from "./components/LoadingScreen";
+
+/* Hero — client only, no SSR (heaviest component) */
+const Hero = dynamic(() => import("./components/Hero"), { ssr: false });
+
+/* Below-fold sections — code-split */
 const Introduction = dynamic(() => import("./components/Introduction"));
 const Skills = dynamic(() => import("./components/Skills"));
 const Expertise = dynamic(() => import("./components/Expertise"));
@@ -14,20 +21,35 @@ const MarqueeTicker = dynamic(() => import("./components/MarqueeTicker"));
 const Footer = dynamic(() => import("./components/Footer"));
 
 export default function Home() {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  const handleLoadComplete = useCallback(() => {
+    setIsLoaded(true);
+  }, []);
+
   return (
-    <main className="bg-[var(--theme-bg)]">
-      <Navbar />
-      <Hero />
-      <Introduction />
-      <Skills />
-      <Expertise />
-      <Projects />
-      <Experience />
-      <About />
-      <Certificates />
-      <Contact />
-      <MarqueeTicker />
-      <Footer />
-    </main>
+    <>
+      {/* Loading screen — always renders on mount, self-manages its exit */}
+      {!isLoaded && <LoadingScreen onComplete={handleLoadComplete} />}
+
+      {/* Site content — renders in background (invisible until loader finishes) */}
+      <main
+        className="bg-[var(--theme-bg)] transition-opacity duration-500"
+        style={{ opacity: isLoaded ? 1 : 0 }}
+      >
+        <Navbar />
+        <Hero />
+        <Introduction />
+        <Skills />
+        <Expertise />
+        <Projects />
+        <Experience />
+        <About />
+        <Certificates />
+        <Contact />
+        <MarqueeTicker />
+        <Footer />
+      </main>
+    </>
   );
 }

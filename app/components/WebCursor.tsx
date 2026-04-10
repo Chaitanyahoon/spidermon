@@ -95,6 +95,12 @@ export function WebCursor() {
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
+    // Disable on touch / coarse-pointer devices to preserve battery/performance
+    if (typeof window !== "undefined" && window.matchMedia && window.matchMedia("(pointer: coarse)").matches) {
+      // Do not enable cursor or handlers on touch devices
+      setIsReady(false);
+      return;
+    }
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsReady(true);
     const handleMouseMove = (e: MouseEvent) => {
