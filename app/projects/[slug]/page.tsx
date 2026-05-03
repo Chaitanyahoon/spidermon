@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Code2, ExternalLink } from "lucide-react";
+import { ArrowLeft, ExternalLink } from "lucide-react";
 import { getProject, projects } from "../../data/projects";
 import styles from "./project.module.css";
 
@@ -65,7 +65,6 @@ export default async function ProjectPage({ params }: Props) {
     name: project.title,
     description: project.description,
     url: `https://www.chaitanyapatil.online/projects/${project.slug}/`,
-    codeRepository: project.githubHref,
     programmingLanguage: project.stack,
     author: {
       "@type": "Person",
@@ -101,12 +100,7 @@ export default async function ProjectPage({ params }: Props) {
             <ExternalLink size={17} aria-hidden="true" />
             Live Project
           </a>
-          {project.githubHref && (
-            <a href={project.githubHref} target="_blank" rel="noopener noreferrer">
-              <Code2 size={17} aria-hidden="true" />
-              Source Code
-            </a>
-          )}
+
         </div>
       </section>
 
@@ -140,11 +134,7 @@ export default async function ProjectPage({ params }: Props) {
             <a href={project.href} target="_blank" rel="noopener noreferrer">
               Production URL
             </a>
-            {project.githubHref && (
-              <a href={project.githubHref} target="_blank" rel="noopener noreferrer">
-                GitHub Repository
-              </a>
-            )}
+
           </div>
         </article>
       </section>

@@ -12,7 +12,6 @@ export type Project = {
   size: "featured" | "side";
   accent: boolean;
   href: string;
-  githubHref?: string;
   previewLabel: string;
   currentlyBuilding?: string;
 };
@@ -38,7 +37,6 @@ export const projects: Project[] = [
     size: "featured",
     accent: true,
     href: "https://streetbitego.vercel.app/",
-    githubHref: "https://github.com/Chaitanyahoon/StreetBite",
     previewLabel: "Live vendor discovery flow",
     currentlyBuilding: "Vendor analytics, richer map filters, and cleaner mobile onboarding.",
   },
@@ -62,7 +60,6 @@ export const projects: Project[] = [
     size: "side",
     accent: false,
     href: "https://focusarenaa.vercel.app/dashboard",
-    githubHref: "https://github.com/Chaitanyahoon/focusarena",
     previewLabel: "Live productivity dashboard",
     currentlyBuilding: "Guild activity history, notification polish, and ranked productivity seasons.",
   },
