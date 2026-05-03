@@ -13,6 +13,8 @@ export type Project = {
   accent: boolean;
   href: string;
   githubHref?: string;
+  previewLabel: string;
+  currentlyBuilding?: string;
 };
 
 export const projects: Project[] = [
@@ -37,6 +39,8 @@ export const projects: Project[] = [
     accent: true,
     href: "https://streetbitego.vercel.app/",
     githubHref: "https://github.com/Chaitanyahoon/StreetBite",
+    previewLabel: "Live vendor discovery flow",
+    currentlyBuilding: "Vendor analytics, richer map filters, and cleaner mobile onboarding.",
   },
   {
     slug: "focus-arena",
@@ -59,6 +63,8 @@ export const projects: Project[] = [
     accent: false,
     href: "https://focusarenaa.vercel.app/dashboard",
     githubHref: "https://github.com/Chaitanyahoon/focusarena",
+    previewLabel: "Live productivity dashboard",
+    currentlyBuilding: "Guild activity history, notification polish, and ranked productivity seasons.",
   },
   {
     slug: "scam-sentry",
@@ -80,6 +86,8 @@ export const projects: Project[] = [
     size: "side",
     accent: false,
     href: "https://scam-sentry.vercel.app/",
+    previewLabel: "Live reporting map",
+    currentlyBuilding: "Report credibility scoring and faster moderation queues.",
   },
   {
     slug: "planthesia",
@@ -101,6 +109,8 @@ export const projects: Project[] = [
     size: "featured",
     accent: true,
     href: "https://planthesia.in",
+    previewLabel: "Live studio landing page",
+    currentlyBuilding: "Case-study pages, inquiry routing, and more polished motion states.",
   },
 ];
 

@@ -216,7 +216,7 @@ export default function Introduction() {
             href="/resume"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover-glitch group flex items-center gap-3 text-xs tracking-[0.25em] uppercase text-[var(--theme-accent)] transition-colors"
+            className="spider-sense-pulse hover-glitch group flex items-center gap-3 text-xs tracking-[0.25em] uppercase text-[var(--theme-accent)] transition-colors"
           >
             <span className="w-12 h-px bg-[var(--theme-accent)]/50 group-hover:w-16 group-hover:bg-[var(--theme-accent)] transition-all duration-500 ease-out" />
             Resume

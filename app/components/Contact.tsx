@@ -69,7 +69,7 @@ export default function Contact() {
             <a
               href="mailto:chaitanyapatil700@gmail.com"
               aria-label="Send an email to Chaitanya Patil"
-              className="w-full sm:w-auto flex items-center justify-center gap-3 bg-[var(--theme-accent)] text-black font-black text-sm md:text-base tracking-[0.2em] uppercase px-10 py-5 rounded-full hover:scale-105 hover:bg-white hover:shadow-[0_0_30px_rgba(255,255,255,0.6)] transition-all duration-300"
+              className="spider-sense-pulse w-full sm:w-auto flex items-center justify-center gap-3 bg-[var(--theme-accent)] text-black font-black text-sm md:text-base tracking-[0.2em] uppercase px-10 py-5 rounded-full hover:scale-105 hover:bg-white hover:shadow-[0_0_30px_rgba(255,255,255,0.6)] transition-all duration-300"
               style={{ fontFamily: "var(--font-space-grotesk)" }}
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

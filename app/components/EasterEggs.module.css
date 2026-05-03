@@ -5,6 +5,34 @@
   pointer-events: none;
 }
 
+.collector {
+  position: fixed;
+  left: max(14px, env(safe-area-inset-left));
+  top: max(92px, env(safe-area-inset-top));
+  z-index: 4;
+  padding: 8px 11px;
+  border: 1px solid rgba(232, 0, 28, 0.45);
+  border-radius: 999px;
+  background: rgba(9, 9, 11, 0.72);
+  color: rgba(255, 255, 255, 0.72);
+  font-family: var(--font-space-grotesk), sans-serif;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  backdrop-filter: blur(14px);
+  box-shadow: 0 0 22px rgba(232, 0, 28, 0.14);
+  animation: collectorIn 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.complete {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.52);
+  box-shadow:
+    0 0 26px rgba(232, 0, 28, 0.32),
+    inset 0 0 20px rgba(232, 0, 28, 0.12);
+}
+
 .sticker {
   position: fixed;
   width: clamp(112px, 15vw, 178px);
@@ -131,6 +159,18 @@
   100% {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
+}
+
+@keyframes collectorIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 

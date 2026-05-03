@@ -86,14 +86,24 @@ export function SupportPayment() {
         <div className={styles.panelEyebrow}>UPI Web Shooter</div>
         <h2>Scan and support</h2>
         <div className={styles.qrFrame}>
-          {qrSrc ? <img src={qrSrc} alt="UPI QR code for Chaitanya Patil" /> : <div className={styles.qrLoading} />}
+          {qrSrc ? (
+            <Image
+              src={qrSrc}
+              alt="UPI QR code for Chaitanya Patil"
+              width={252}
+              height={252}
+              unoptimized
+            />
+          ) : (
+            <div className={styles.qrLoading} />
+          )}
         </div>
         <button className={styles.upiId} type="button" onClick={copyUpiId}>
           <span>{upiId}</span>
           {copied ? <Check size={16} aria-hidden="true" /> : <Copy size={16} aria-hidden="true" />}
         </button>
         <div className={styles.actionRow}>
-          <a className={styles.primaryAction} href={upiUrl}>
+          <a className={`${styles.primaryAction} spider-sense-pulse`} href={upiUrl}>
             <Smartphone size={17} aria-hidden="true" />
             Open UPI
           </a>

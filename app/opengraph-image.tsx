@@ -2,6 +2,8 @@ import { ImageResponse } from 'next/og';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
+/* eslint-disable @next/next/no-img-element, jsx-a11y/alt-text */
+
 export const alt = 'Chaitanya Patil - Full Stack Developer';
 export const size = {
   width: 1200,

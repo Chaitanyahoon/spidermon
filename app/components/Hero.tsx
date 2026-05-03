@@ -275,7 +275,7 @@ export default function Hero() {
 
           <div className="absolute inset-0">
             <Image
-              src="/Chaitanya.png"
+              src="/Chaitanya.webp"
               alt="Portrait"
               fill
               className="object-cover object-center"
@@ -292,7 +292,7 @@ export default function Hero() {
             }}
           >
             <Image
-              src="/Chaitanya_spiderman.png"
+              src="/Chaitanya_spiderman.webp"
               alt="Spider Reveal"
               fill
               className="object-cover object-center"
@@ -337,7 +337,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}
-              className="mt-5 inline-flex items-center gap-2 text-[10px] tracking-[0.25em] uppercase px-5 py-2.5 transition-all duration-300 pointer-events-auto border border-zinc-700 bg-black/40 text-zinc-300 hover:border-[var(--theme-accent)] hover:text-white hover:shadow-[0_0_15px_rgba(232,0,28,0.3)] rounded-full"
+              className="spider-sense-pulse mt-5 inline-flex items-center gap-2 text-[10px] tracking-[0.25em] uppercase px-5 py-2.5 transition-all duration-300 pointer-events-auto border border-zinc-700 bg-black/40 text-zinc-300 hover:border-[var(--theme-accent)] hover:text-white hover:shadow-[0_0_15px_rgba(232,0,28,0.3)] rounded-full"
               style={{ fontFamily: "var(--font-space-grotesk)" }}
             >
               <svg width="11" height="11" viewBox="0 0 12 12" fill="none">

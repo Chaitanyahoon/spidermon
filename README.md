@@ -2,6 +2,8 @@
 
 Spider-Man inspired portfolio for Chaitanya Patil, built with Next.js, React, Tailwind CSS, and Framer Motion.
 
+![Portfolio preview](public/readme/portfolio-preview.webp)
+
 ## Overview
 
 This site is a personal developer portfolio with an interactive hero, project pages, resume route, support page, animated overlays, custom cursor effects, and hidden easter eggs.
@@ -12,10 +14,13 @@ Live site: https://www.chaitanyapatil.online
 
 - Interactive hero with portrait-to-Spider-Man reveal
 - Project showcase with generated static project routes
+- Live project preview cards with GitHub repository stats
+- Currently building section for active project work
 - Resume page with downloadable PDF
 - UPI support page with dynamic QR generation
 - SEO metadata, sitemap, robots route, Open Graph image generation
-- Spider-themed UI overlays, mascot artwork, loading screen, and hidden easter eggs
+- Spider-themed UI overlays, collectible easter eggs, loading screen, and CTA pulse effects
+- GitHub Actions build validation
 
 ## Tech Stack
 
@@ -56,9 +61,12 @@ app/
   support/           UPI support page
 public/
   easter-eggs/       Hidden sticker assets
-  Chaitanya*.png     Portfolio image assets
+  readme/            Static README preview
+  Chaitanya*.webp    Optimized portfolio image assets
 ```
 
 ## Notes
 
-`npm run build` is the primary validation command. If lint fails with an ESLint plugin compatibility issue, update the lint dependency set before treating it as an application error.
+`npm run lint` and `npm run build` are the primary validation commands.
+
+Latest local Lighthouse check on `/support`: Performance 93, Accessibility 100, Best Practices 100, SEO 100.

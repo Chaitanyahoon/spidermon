@@ -25,6 +25,19 @@ const eggs: Record<EggId, { src: string; alt: string; className: string }> = {
 };
 
 const spellCode = "spidey";
+const storageKey = "spidey-eggs-found";
+const eggIds = Object.keys(eggs) as EggId[];
+
+function readFoundEggs() {
+  if (typeof window === "undefined") return [];
+
+  try {
+    const parsed = JSON.parse(window.localStorage.getItem(storageKey) ?? "[]");
+    return Array.isArray(parsed) ? parsed.filter((id): id is EggId => id in eggs) : [];
+  } catch {
+    return [];
+  }
+}
 
 export function EasterEggs() {
   const [visible, setVisible] = useState<Record<EggId, boolean>>({
@@ -32,18 +45,26 @@ export function EasterEggs() {
     swinging: false,
     upsideDown: false,
   });
-  const [tapCounts, setTapCounts] = useState<Record<EggId, number>>({
+  const [, setTapCounts] = useState<Record<EggId, number>>({
     cute: 0,
     swinging: 0,
     upsideDown: 0,
   });
-  const [typed, setTyped] = useState("");
+  const [, setTyped] = useState("");
   const [burst, setBurst] = useState<EggId | null>(null);
+  const [found, setFound] = useState<EggId[]>(() => readFoundEggs());
 
   const burstEgg = useMemo(() => (burst ? eggs[burst] : null), [burst]);
+  const allFound = found.length === eggIds.length;
 
   const reveal = useCallback((id: EggId) => {
     setVisible((current) => ({ ...current, [id]: true }));
+    setFound((current) => {
+      if (current.includes(id)) return current;
+      const next = [...current, id];
+      window.localStorage.setItem(storageKey, JSON.stringify(next));
+      return next;
+    });
   }, []);
 
   const handleHotspot = useCallback(
@@ -82,8 +103,7 @@ export function EasterEggs() {
         const next = `${current}${event.key.toLowerCase()}`.slice(-spellCode.length);
 
         if (next === spellCode) {
-          const allEggs = Object.keys(eggs) as EggId[];
-          const randomEgg = allEggs[Math.floor(Math.random() * allEggs.length)];
+          const randomEgg = eggIds[Math.floor(Math.random() * eggIds.length)];
           setBurst(randomEgg);
           reveal(randomEgg);
         }
@@ -102,7 +122,13 @@ export function EasterEggs() {
 
   return (
     <div className={styles.layer}>
-      {(Object.keys(eggs) as EggId[]).map((id) => {
+      {found.length > 0 && (
+        <div className={`${styles.collector} ${allFound ? styles.complete : ""}`}>
+          <span>{found.length}/{eggIds.length} found</span>
+        </div>
+      )}
+
+      {eggIds.map((id) => {
         const egg = eggs[id];
         if (!visible[id]) return null;
 

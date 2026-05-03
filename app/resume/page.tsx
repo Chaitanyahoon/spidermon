@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import styles from "./resume.module.css";
 
 const resumePdf = "/ChaitanyaPatil.pdf";
@@ -46,9 +47,9 @@ export default function ResumePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       <header className={styles.toolbar}>
-        <a className={styles.homeLink} href="/">
+        <Link className={styles.homeLink} href="/">
           Back to Home
-        </a>
+        </Link>
         <div className={styles.actions}>
           <a className={styles.secondaryButton} href={resumePdf} target="_blank" rel="noopener noreferrer">
             Open PDF

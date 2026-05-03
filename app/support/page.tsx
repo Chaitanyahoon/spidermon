@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { Bug, Home } from "lucide-react";
 import { SupportPayment } from "./SupportPayment";
 import styles from "./support.module.css";
@@ -54,10 +55,10 @@ export default function SupportPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       <header className={styles.header}>
-        <a className={styles.home} href="/">
+        <Link className={styles.home} href="/">
           <Home size={16} aria-hidden="true" />
           Home
-        </a>
+        </Link>
         <div className={styles.brand}>
           <Bug size={20} aria-hidden="true" />
           <span>Support Signal</span>

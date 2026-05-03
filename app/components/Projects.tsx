@@ -1,9 +1,114 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { motion, useInView } from "framer-motion";
 import { projects, type Project } from "../data/projects";
+
+type RepoStats = {
+  stars: number;
+  language: string | null;
+  updatedAt: string;
+};
+
+function repoPathFromUrl(url?: string) {
+  if (!url) return null;
+
+  try {
+    const parsed = new URL(url);
+    const [owner, repo] = parsed.pathname.replace(/^\/|\/$/g, "").split("/");
+    if (!owner || !repo) return null;
+    return `${owner}/${repo}`;
+  } catch {
+    return null;
+  }
+}
+
+function formatUpdated(date: string) {
+  return new Intl.DateTimeFormat("en", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  }).format(new Date(date));
+}
+
+function GitHubStats({ project }: { project: Project }) {
+  const repoPath = useMemo(() => repoPathFromUrl(project.githubHref), [project.githubHref]);
+  const [stats, setStats] = useState<RepoStats | null>(null);
+  const [failed, setFailed] = useState(false);
+
+  useEffect(() => {
+    if (!repoPath) return;
+
+    let cancelled = false;
+    fetch(`https://api.github.com/repos/${repoPath}`, {
+      headers: { Accept: "application/vnd.github+json" },
+    })
+      .then((response) => {
+        if (!response.ok) throw new Error("GitHub stats unavailable");
+        return response.json();
+      })
+      .then((data) => {
+        if (cancelled) return;
+        setStats({
+          stars: data.stargazers_count ?? 0,
+          language: data.language ?? null,
+          updatedAt: data.updated_at,
+        });
+      })
+      .catch(() => {
+        if (!cancelled) setFailed(true);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [repoPath]);
+
+  if (!repoPath) {
+    return <span>Live build</span>;
+  }
+
+  if (failed) {
+    return <span>{repoPath}</span>;
+  }
+
+  if (!stats) {
+    return <span>Loading repo stats</span>;
+  }
+
+  return (
+    <>
+      <span>{stats.stars} stars</span>
+      <span>{stats.language ?? "Code"}</span>
+      <span>Updated {formatUpdated(stats.updatedAt)}</span>
+    </>
+  );
+}
+
+function LivePreview({ project }: { project: Project }) {
+  return (
+    <div className="relative mt-5 overflow-hidden rounded-sm border border-zinc-800 bg-[#111827] aspect-[16/9]">
+      <div className="absolute inset-x-0 top-0 z-10 flex h-7 items-center gap-1.5 border-b border-zinc-800 bg-black/70 px-3">
+        <span className="h-2 w-2 rounded-full bg-[var(--theme-accent)]" />
+        <span className="h-2 w-2 rounded-full bg-zinc-600" />
+        <span className="h-2 w-2 rounded-full bg-[#2563eb]" />
+        <span className="ml-2 truncate text-[9px] uppercase tracking-[0.18em] text-zinc-500" style={{ fontFamily: "var(--font-space-grotesk)" }}>
+          {project.previewLabel}
+        </span>
+      </div>
+      <iframe
+        title={`${project.title} live preview`}
+        src={project.href}
+        loading="lazy"
+        sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+        className="absolute left-0 top-7 h-[calc(100%-1.75rem)] w-full origin-top scale-[0.74] border-0 bg-zinc-950 opacity-75 transition duration-500 group-hover:scale-[0.78] group-hover:opacity-100"
+        style={{ width: "135%", height: "135%" }}
+      />
+      <div className="absolute inset-0 z-20 bg-gradient-to-t from-zinc-950 via-transparent to-transparent pointer-events-none" />
+    </div>
+  );
+}
 
 /* ── Arrow button ── */
 function ArrowLink({ href, label }: { href: string; label: string }) {
@@ -27,7 +132,6 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
   const isInView = useInView(ref, { once: true, margin: "0px 0px -60px 0px" });
 
   const isFeatured = project.size === "featured";
-  const isSide = project.size === "side";
 
   return (
     <motion.div
@@ -60,6 +164,12 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
         {project.description}
       </p>
 
+      <LivePreview project={project} />
+
+      <div className="relative z-10 mt-4 flex flex-wrap gap-x-3 gap-y-1 text-[10px] uppercase tracking-[0.15em] text-zinc-500" style={{ fontFamily: "var(--font-space-grotesk)" }}>
+        <GitHubStats project={project} />
+      </div>
+
       <div className="flex items-end justify-between mt-auto pt-6 border-t border-zinc-800/80">
         <div className="flex flex-wrap gap-2">
           {project.tags.map((tag) => (
@@ -72,7 +182,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
         <div className="flex items-center gap-2">
           <Link
             href={`/projects/${project.slug}`}
-            className="text-[10px] tracking-[0.18em] uppercase text-zinc-500 hover:text-white transition-colors"
+            className="spider-sense-pulse text-[10px] tracking-[0.18em] uppercase text-zinc-500 hover:text-white transition-colors"
             style={{ fontFamily: "var(--font-space-grotesk)" }}
           >
             Details
@@ -84,6 +194,66 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
         </div>
       </div>
     </motion.div>
+  );
+}
+
+function CurrentlyBuilding() {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+      className="mt-16 border border-zinc-800 bg-zinc-950/40 p-6 rounded-sm"
+    >
+      <div className="mb-5 flex items-center justify-between gap-4">
+        <h3 className="text-2xl md:text-3xl font-black uppercase text-white" style={{ fontFamily: "var(--font-space-grotesk)" }}>
+          Currently Building
+        </h3>
+        <span className="hidden sm:inline text-[10px] uppercase tracking-[0.22em] text-[var(--theme-accent)]" style={{ fontFamily: "var(--font-space-grotesk)" }}>
+          Active Webs
+        </span>
+      </div>
+      <div className="grid gap-3 md:grid-cols-2">
+        {projects.filter((project) => project.currentlyBuilding).map((project) => (
+          <div key={project.slug} className="border border-zinc-800/80 bg-black/20 p-4 rounded-sm">
+            <div className="mb-2 flex items-center justify-between gap-3">
+              <strong className="text-sm uppercase tracking-[0.18em] text-zinc-200" style={{ fontFamily: "var(--font-space-grotesk)" }}>
+                {project.title}
+              </strong>
+              <span className="h-2 w-2 shrink-0 rounded-full bg-[var(--theme-accent)] shadow-[0_0_16px_rgba(232,0,28,0.7)]" />
+            </div>
+            <p className="text-sm leading-relaxed text-zinc-500" style={{ fontFamily: "var(--font-inter)" }}>
+              {project.currentlyBuilding}
+            </p>
+          </div>
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
+function LighthouseBadges() {
+  const scores = [
+    { label: "Performance", value: 93 },
+    { label: "Accessibility", value: 100 },
+    { label: "Best Practices", value: 100 },
+    { label: "SEO", value: 100 },
+  ];
+
+  return (
+    <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      {scores.map((score) => (
+        <div key={score.label} className="flex items-center justify-between border border-zinc-800 bg-black/20 px-4 py-3 rounded-sm">
+          <span className="text-[10px] uppercase tracking-[0.18em] text-zinc-500" style={{ fontFamily: "var(--font-space-grotesk)" }}>
+            {score.label}
+          </span>
+          <strong className="text-lg text-white" style={{ fontFamily: "var(--font-space-grotesk)" }}>
+            {score.value}
+          </strong>
+        </div>
+      ))}
+    </div>
   );
 }
 
@@ -130,6 +300,8 @@ export default function Projects() {
           <ProjectCard key={project.id} project={project} index={i} />
         ))}
       </div>
+      <CurrentlyBuilding />
+      <LighthouseBadges />
     </section>
   );
 }
