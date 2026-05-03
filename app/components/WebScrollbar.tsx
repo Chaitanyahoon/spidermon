@@ -1,12 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useScroll, useSpring, motion, useTransform } from "framer-motion";
+import { useSpring, motion, useTransform } from "framer-motion";
+import { useSmoothScroll } from "./SmoothScrollProvider";
 
 export function WebScrollbar() {
-  const { scrollYProgress } = useScroll();
+  const { scrollYProgress } = useSmoothScroll();
   const [mounted, setMounted] = useState(false);
 
+  // Note: framer-motion useSpring and useTransform use requestAnimationFrame internally
   // Smooth out the scroll progress for natural trailing physics
   const smoothProgress = useSpring(scrollYProgress, {
     stiffness: 150,
@@ -29,8 +31,8 @@ export function WebScrollbar() {
   });
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setMounted(true);
+    const t = setTimeout(() => setMounted(true), 0);
+    return () => clearTimeout(t);
   }, []);
 
   if (!mounted) return null;

@@ -6,23 +6,21 @@ import SpiderWebBg from "./SpiderWebBg";
 
 const experiences = [
   {
-    period: "Jan 2025 – May 2025 · 5 months",
-    role: "Full-Stack Developer Intern",
+    period: "Jan 2025 – May 2025",
+    role: "Full Stack Developer",
     company: "Softweb IT Services",
     location: "Vapi, Gujarat",
-    description:
-      "Developed scalable web applications using React and Node.js, implemented microservices architecture, and optimised database performance for enterprise clients.",
-    tags: ["React", "Node.js", "MongoDB", "AWS", "Docker", "Microservices"],
+    description: "Built and maintained client-facing web pages using HTML, CSS, JavaScript, PHP, and MySQL. Implemented secure authentication and responsive UI layouts across multiple Agile client projects.",
+    tags: ["HTML", "CSS", "JavaScript", "PHP", "MySQL"],
     accent: true,
   },
   {
-    period: "Jun 2024 – Jul 2024 · 2 months",
-    role: "React Developer Intern",
+    period: "Jun 2024 – Jul 2024",
+    role: "React Developer",
     company: "InfoLabz IT Services",
-    location: "Ahmedabad, India",
-    description:
-      "Built responsive user interfaces and optimised application performance. Collaborated with the design team to implement pixel-perfect designs and improve user experience.",
-    tags: ["React", "JavaScript", "CSS", "Redux", "Jest", "Figma"],
+    location: "Ahmedabad, Gujarat",
+    description: "Developed modular UI components using React.js to improve reusability. Implemented SPA navigation with React Router and ensured responsive user interfaces across all devices.",
+    tags: ["React.js", "React Router", "CSS"],
     accent: false,
   },
 ];
@@ -50,6 +48,7 @@ function RoleCard({ exp, index }: { exp: (typeof experiences)[0]; index: number 
       </div>
 
       <div
+        aria-label="Experience Card"
         className="rounded-2xl border p-6 md:p-8 transition-colors duration-300 hover:border-zinc-600"
         style={{
           background: exp.accent ? "rgba(232,0,28,0.05)" : "rgba(255,255,255,0.02)",
@@ -154,8 +153,7 @@ export default function Experience() {
               className="mt-8 text-zinc-500 text-sm leading-relaxed max-w-xs"
               style={{ fontFamily: "var(--font-inter)" }}
             >
-              Production experience across full-stack Java, .NET, and React
-              ecosystems — building at Softweb IT & InfoLabz IT.
+              Building scalable web applications and intuitive interfaces at Softweb IT Services & InfoLabz IT Services.
             </motion.p>
           </div>
 

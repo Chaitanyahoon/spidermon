@@ -2,23 +2,19 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useSmoothScroll } from "./SmoothScrollProvider";
 
 export function WebPullToTop() {
+  const { scrollTo, scrollY } = useSmoothScroll();
   const [isVisible, setIsVisible] = useState(false);
   const [isShooting, setIsShooting] = useState(false);
 
   useEffect(() => {
-    const toggleVisibility = () => {
-      if (window.scrollY > 500) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
-    };
-
-    window.addEventListener("scroll", toggleVisibility);
-    return () => window.removeEventListener("scroll", toggleVisibility);
-  }, []);
+    const unsub = scrollY.on("change", (y) => {
+      setIsVisible(y > 500);
+    });
+    return unsub;
+  }, [scrollY]);
 
   const handleScrollToTop = () => {
     if (isShooting) return;
@@ -26,10 +22,7 @@ export function WebPullToTop() {
 
     // Wait for web to shoot up before pulling
     setTimeout(() => {
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
+      scrollTo(0);
 
       // Allow animation to finish
       setTimeout(() => {

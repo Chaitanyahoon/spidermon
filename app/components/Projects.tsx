@@ -1,80 +1,14 @@
 "use client";
 
 import { useRef } from "react";
+import Link from "next/link";
 import { motion, useInView } from "framer-motion";
-
-const projects = [
-  {
-    id: "01",
-    title: "StreetBite",
-    category: "Food Tech",
-    year: "2024",
-    description:
-      "Street food discovery platform with location-based vendor search, JWT auth, vendor dashboards, menu management, and real-time analytics. Deployed on Vercel + Render.",
-    tags: ["Spring Boot", "Next.js", "Firebase", "Tailwind"],
-    size: "featured",
-    accent: true,
-    href: "https://streetbitego.vercel.app/",
-    githubHref: "https://github.com/Chaitanyahoon/StreetBite",
-  },
-  {
-    id: "02",
-    title: "Focus Arena",
-    category: ".NET Full Stack",
-    year: "2025",
-    description:
-      "Real-time gamified productivity platform with chat, leaderboards, and task mechanics via SignalR. Clean Architecture + Docker.",
-    tags: ["ASP.NET Core 8", "React", "SignalR", "MySQL"],
-    size: "side",
-    accent: false,
-    href: "https://github.com/Chaitanyahoon",
-    githubHref: "https://github.com/Chaitanyahoon",
-  },
-  {
-    id: "03",
-    title: "VirtuSpace",
-    category: "AR / WebXR",
-    year: "2025",
-    description:
-      "WebAR furniture visualization platform. Users place and view furniture in real space using augmented reality — transforming how people shop for interiors.",
-    tags: ["Next.js", "Three.js", "WebXR", "TypeScript"],
-    size: "grid",
-    accent: false,
-    href: "https://virtuspace-six.vercel.app/",
-    githubHref: "https://github.com/Chaitanyahoon/Virtuspace",
-  },
-  {
-    id: "04",
-    title: "Planthesia",
-    category: "Productivity",
-    year: "2025",
-    description:
-      "Time and task management platform. Calculates insights, streamlines workflow, and tracks progress to improve work efficiency.",
-    tags: ["React", "Express", "PostgreSQL", "Redis"],
-    size: "grid",
-    accent: false,
-    href: "https://planthesia.vercel.app/dashboard",
-    githubHref: "https://github.com/Chaitanyahoon/Planthesia",
-  },
-  {
-    id: "05",
-    title: "GhostFrame",
-    category: "Game Dev",
-    year: "2024",
-    description:
-      "Single-player glitch horror web game with psychological puzzles and code-based riddles in a haunted digital world.",
-    tags: ["Next.js", "Canvas API", "CSS Effects"],
-    size: "grid",
-    accent: true,
-    href: "https://ghostframe-seven.vercel.app",
-    githubHref: "https://github.com/Chaitanyahoon/ghostframe",
-  },
-];
+import { projects, type Project } from "../data/projects";
 
 /* ── Arrow button ── */
-function ArrowLink({ href }: { href: string }) {
+function ArrowLink({ href, label }: { href: string; label: string }) {
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer">
+    <a href={href} target="_blank" rel="noopener noreferrer" aria-label={label}>
       <motion.div
         className="w-9 h-9 flex items-center justify-center border transition-all duration-200"
         style={{ borderColor: "#3f3f46", background: "transparent" }}
@@ -88,7 +22,7 @@ function ArrowLink({ href }: { href: string }) {
   );
 }
 
-function ProjectCard({ project, index }: { project: typeof projects[0]; index: number }) {
+function ProjectCard({ project, index }: { project: Project; index: number }) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "0px 0px -60px 0px" });
 
@@ -101,16 +35,19 @@ function ProjectCard({ project, index }: { project: typeof projects[0]; index: n
       initial={{ opacity: 0, y: 50 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.7, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
-      className={`group relative flex flex-col justify-between h-full p-6 overflow-hidden cursor-pointer transition-all duration-300 bg-zinc-900/40 border-x border-b border-zinc-800/80 hover:bg-zinc-800/40 hover:border-zinc-700 rounded-sm
-        ${isFeatured ? "md:col-span-2 lg:col-span-2 min-h-[380px]" : isSide ? "md:col-span-1 lg:col-span-1 min-h-[380px]" : "md:col-span-1 lg:col-span-1 min-h-[300px]"}
+      aria-label={`Project: ${project.title}`}
+      className={`group relative flex flex-col justify-between h-full p-6 overflow-hidden cursor-pointer transition-all duration-500 bg-zinc-900/40 border-x border-b border-zinc-800/80 hover:bg-zinc-800/40 hover:border-zinc-700 rounded-sm hover:-translate-y-1
+        ${isFeatured ? "md:col-span-2 lg:col-span-2 min-h-[380px]" : "md:col-span-1 lg:col-span-1 min-h-[380px]"}
         ${project.accent ? "border-t-[3px] border-t-[var(--theme-accent)]" : "border-t-[3px] border-t-zinc-800/80 hover:border-t-zinc-600"}`}
     >
-      <div className="flex items-start justify-between gap-3">
+      {/* Web-thread overlay glow */}
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(232,0,28,0.08)_0%,_transparent_50%)]" />
+      <div className="flex items-start justify-between gap-3 relative z-10">
         <div>
           <p className={`text-[10px] tracking-[0.3em] uppercase mb-2 ${project.accent ? 'text-[var(--theme-accent)]' : 'text-zinc-500'}`} style={{ fontFamily: "var(--font-space-grotesk)" }}>
             {project.category} — {project.year}
           </p>
-          <h3 className={`${isFeatured ? 'text-4xl md:text-5xl' : 'text-xl md:text-2xl'} font-bold text-white leading-tight transition-colors group-hover:text-zinc-200`} style={{ fontFamily: "var(--font-space-grotesk)" }}>
+          <h3 className={`${isFeatured ? 'text-4xl md:text-5xl' : 'text-3xl md:text-4xl'} font-bold text-white leading-tight transition-colors group-hover:text-[var(--theme-accent)]`} style={{ fontFamily: "var(--font-space-grotesk)" }}>
             {project.title}
           </h3>
         </div>
@@ -132,7 +69,19 @@ function ProjectCard({ project, index }: { project: typeof projects[0]; index: n
             </span>
           ))}
         </div>
-        <ArrowLink href={project.href} />
+        <div className="flex items-center gap-2">
+          <Link
+            href={`/projects/${project.slug}`}
+            className="text-[10px] tracking-[0.18em] uppercase text-zinc-500 hover:text-white transition-colors"
+            style={{ fontFamily: "var(--font-space-grotesk)" }}
+          >
+            Details
+          </Link>
+          {project.githubHref && (
+            <ArrowLink href={project.githubHref} label={`${project.title} source code`} />
+          )}
+          <ArrowLink href={project.href} label={`${project.title} live project`} />
+        </div>
       </div>
     </motion.div>
   );
@@ -163,7 +112,7 @@ export default function Projects() {
         >
           Selected
           <br />
-          <span style={{ color: "var(--theme-accent)" }}>Projects.</span>
+          <span className="hover-glitch inline-block" style={{ color: "var(--theme-accent)" }}>Projects.</span>
         </motion.h2>
         <motion.p
           initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}

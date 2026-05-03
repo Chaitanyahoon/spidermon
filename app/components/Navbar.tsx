@@ -1,35 +1,63 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Bug } from "lucide-react";
+import { useSmoothScroll } from "./SmoothScrollProvider";
 
 const navLinks = [
   { label: "Work", href: "#work" },
   { label: "About", href: "#about-detail" },
   { label: "Contact", href: "#contact" },
+  { label: "Resume", href: "/resume", accent: true },
+  { label: "Support", href: "/support", accent: true },
 ];
 
 export default function Navbar() {
+  const { scrollTo, scrollY } = useSmoothScroll();
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
 
+  /* ── Derive scrolled state from virtual scroll (throttled section detection) ── */
   useEffect(() => {
-    const onScroll = () => {
-      setScrolled(window.scrollY > 40);
-      const sections = navLinks.map((l) => l.href.replace("#", ""));
-      for (const id of [...sections].reverse()) {
-        const el = document.getElementById(id);
-        if (el && window.scrollY >= el.offsetTop - 120) {
-          setActive(id);
-          break;
+    let sectionCheckTimer: ReturnType<typeof setTimeout> | null = null;
+
+    const unsub = scrollY.on("change", (y) => {
+      setScrolled(y > 40);
+
+      // Throttle section detection to every 100ms
+      if (sectionCheckTimer) return;
+      sectionCheckTimer = setTimeout(() => {
+        sectionCheckTimer = null;
+        const sections = navLinks.filter((l) => l.href.startsWith("#")).map((l) => l.href.replace("#", ""));
+        for (const id of [...sections].reverse()) {
+          const el = document.getElementById(id);
+          if (el) {
+            const elTop = el.getBoundingClientRect().top + y;
+            if (y >= elTop - 120) {
+              setActive(id);
+              break;
+            }
+          }
         }
-      }
+      }, 100);
+    });
+
+    return () => {
+      unsub();
+      if (sectionCheckTimer) clearTimeout(sectionCheckTimer);
     };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [scrollY]);
+
+  const handleNavClick = useCallback(
+    (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+      e.preventDefault();
+      setMenuOpen(false);
+      scrollTo(href);
+    },
+    [scrollTo],
+  );
 
   return (
     <motion.div
@@ -50,6 +78,7 @@ export default function Navbar() {
         {/* Logo Section */}
         <a
           href="#"
+          onClick={(e) => handleNavClick(e, "#")}
           className="group flex items-center gap-3 relative focus:outline-none"
         >
           {/* Subtle glow behind the spider */}
@@ -80,16 +109,19 @@ export default function Navbar() {
 
         {/* Desktop links */}
         <div className="hidden md:flex items-center gap-8 pr-2">
-          {navLinks.map(({ label, href }) => {
+          {navLinks.map(({ label, href, accent }) => {
             const id = href.replace("#", "");
-            const isActive = active === id;
+            const isActive = href.startsWith("#") && active === id;
             return (
               <a
                 key={label}
                 href={href}
+                onClick={(e) => {
+                  if (href.startsWith("#")) handleNavClick(e, href);
+                }}
                 className="relative group text-sm tracking-widest uppercase transition-all duration-300 overflow-hidden px-2 py-1"
                 style={{
-                  color: isActive ? "white" : "#a1a1aa",
+                  color: isActive ? "white" : (accent ? "var(--theme-accent)" : "#a1a1aa"),
                   fontFamily: "var(--font-space-grotesk)",
                   fontWeight: 600,
                 }}
@@ -147,7 +179,7 @@ export default function Navbar() {
             className="fixed inset-0 z-40 bg-[#09090b]/95 flex flex-col items-center justify-center gap-6 md:hidden px-6"
             onClick={() => setMenuOpen(false)}
           >
-            {navLinks.map(({ label, href }, i) => (
+            {navLinks.map(({ label, href, accent }, i) => (
               <motion.a
                 key={label}
                 href={href}
@@ -156,15 +188,12 @@ export default function Navbar() {
                 exit={{ y: -20, opacity: 0 }}
                 transition={{ duration: 0.3, delay: i * 0.1 }}
                 onClick={(e) => {
-                  e.preventDefault();
-                  setMenuOpen(false);
-                  const target = document.getElementById(href.replace("#", ""));
-                  if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+                  if (href.startsWith("#")) handleNavClick(e, href);
                 }}
-                className="w-full max-w-sm flex items-center justify-center py-4 rounded-2xl bg-white/5 active:bg-[var(--theme-accent)]/20 active:text-[var(--theme-accent)] transition-all min-h-[60px]"
+                className={`w-full max-w-sm flex items-center justify-center py-4 rounded-2xl active:bg-[var(--theme-accent)]/20 active:text-[var(--theme-accent)] transition-all min-h-[60px] ${accent ? 'bg-[var(--theme-accent)]/10 text-[var(--theme-accent)]' : 'bg-white/5 text-white/90'}`}
               >
                 <span 
-                  className="text-2xl font-black tracking-widest text-white/90 uppercase"
+                  className="text-2xl font-black tracking-widest uppercase"
                   style={{ fontFamily: "var(--font-space-grotesk)" }}
                 >
                   {label}

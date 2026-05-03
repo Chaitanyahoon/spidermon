@@ -1,8 +1,9 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import { motion, useInView, useScroll, useTransform } from "framer-motion";
+import { motion, useInView, useTransform, useMotionValue, type MotionValue } from "framer-motion";
 import SpiderWebBg from "./SpiderWebBg";
+import { useSmoothScroll } from "./SmoothScrollProvider";
 
 /* ─── Glitch accent span ────────────────────────────────── */
 function GlitchWord({ text }: { text: string }) {
@@ -36,7 +37,7 @@ function ParallaxLine({
 }: {
   segments: { text: string; accent?: boolean }[];
   index: number;
-  scrollYProgress: ReturnType<typeof useScroll>["scrollYProgress"];
+  scrollYProgress: MotionValue<number>;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "0px 0px -60px 0px" });
@@ -46,14 +47,14 @@ function ParallaxLine({
   const x = useTransform(scrollYProgress, [0, 1], ["0%", `${speed * 100}%`]);
 
   return (
-    <div ref={ref} className="overflow-hidden">
+    <div ref={ref} className="overflow-hidden -mx-[10vw] px-[10vw]">
       <motion.div
-        initial={{ y: "110%", opacity: 0 }}
-        animate={isInView ? { y: "0%", opacity: 1 } : {}}
+        initial={{ y: "110%", rotateX: -40, rotateY: 5, opacity: 0, transformOrigin: "bottom center" }}
+        animate={isInView ? { y: "0%", rotateX: 0, rotateY: 0, opacity: 1 } : {}}
         transition={{
-          duration: 0.85,
-          delay: index * 0.07,
-          ease: [0.16, 1, 0.3, 1],
+          duration: 1.2,
+          delay: index * 0.1,
+          ease: [0.16, 1, 0.3, 1], // Premium Expo Out
         }}
         style={{ x }}
         className="flex flex-wrap will-change-transform"
@@ -85,10 +86,45 @@ const lines: { text: string; accent?: boolean }[][] = [
 /* ─── Main section ─────────────────────────────────────── */
 export default function Introduction() {
   const sectionRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
+  const { scrollY } = useSmoothScroll();
+
+  /* ── Compute section-relative scroll progress ─────── */
+  // Note: framer-motion useMotionValue automatically uses requestAnimationFrame under the hood
+  const scrollYProgress = useMotionValue(0);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    let sectionTop = 0;
+    let sectionEnd = 1000;
+    let viewH = 800;
+
+    const updateBounds = () => {
+      const currentY = scrollY.get();
+      const rect = section.getBoundingClientRect();
+      sectionTop = currentY + rect.top;
+      sectionEnd = sectionTop + section.offsetHeight;
+      viewH = window.innerHeight;
+    };
+
+    updateBounds();
+    window.addEventListener("resize", updateBounds);
+
+    const unsub = scrollY.on("change", (y) => {
+      // Progress: 0 when section enters viewport bottom, 1 when section top exits viewport top
+      const progress = Math.max(
+        0,
+        Math.min(1, (y + viewH - sectionTop) / (sectionEnd - sectionTop + viewH)),
+      );
+      scrollYProgress.set(progress);
+    });
+
+    return () => {
+      unsub();
+      window.removeEventListener("resize", updateBounds);
+    };
+  }, [scrollY, scrollYProgress]);
 
   return (
     <section
@@ -99,22 +135,26 @@ export default function Introduction() {
       {/* Spider web — stronger now */}
       <SpiderWebBg className="absolute inset-0" opacity={0.11} />
 
-      {/* Radial red glow behind the text */}
-      <div
+      {/* Pulsing "Spider-Sense" radial red glow behind the text */}
+      <motion.div
         className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse 70% 50% at 30% 60%, rgba(232,0,28,0.07) 0%, transparent 70%)",
+        animate={{
+          background: [
+            "radial-gradient(ellipse 70% 50% at 30% 60%, rgba(232,0,28,0.04) 0%, transparent 70%)",
+            "radial-gradient(ellipse 70% 50% at 30% 60%, rgba(232,0,28,0.12) 0%, transparent 70%)",
+            "radial-gradient(ellipse 70% 50% at 30% 60%, rgba(232,0,28,0.04) 0%, transparent 70%)"
+          ]
         }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      {/* Vertical rule */}
+      {/* Vertical web thread dropping down */}
       <motion.div
         initial={{ scaleY: 0, opacity: 0 }}
         whileInView={{ scaleY: 1, opacity: 1 }}
         viewport={{ once: true }}
-        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-        className="absolute left-6 md:left-16 lg:left-24 top-0 w-px h-24 bg-gradient-to-b from-transparent to-zinc-700 origin-top"
+        transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+        className="absolute left-6 md:left-16 lg:left-24 top-0 w-px h-[120%] bg-gradient-to-b from-transparent via-zinc-700 to-transparent origin-top z-0"
       />
 
       {/* Badge */}
@@ -171,13 +211,24 @@ export default function Introduction() {
           Developer based in India — building products that live at the edge of
           design and engineering.
         </p>
-        <a
-          href="#work"
-          className="hover-glitch group flex items-center gap-3 text-xs tracking-[0.25em] uppercase text-zinc-400 hover:text-white transition-colors"
-        >
-          <span className="w-8 h-px bg-zinc-700 group-hover:w-12 group-hover:bg-[var(--theme-accent)] transition-all duration-300" />
-          View Work
-        </a>
+        <div className="flex flex-col sm:flex-row gap-6 sm:gap-12 items-start md:items-end">
+          <a
+            href="/resume"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover-glitch group flex items-center gap-3 text-xs tracking-[0.25em] uppercase text-[var(--theme-accent)] transition-colors"
+          >
+            <span className="w-12 h-px bg-[var(--theme-accent)]/50 group-hover:w-16 group-hover:bg-[var(--theme-accent)] transition-all duration-500 ease-out" />
+            Resume
+          </a>
+          <a
+            href="#work"
+            className="hover-glitch group flex items-center gap-3 text-xs tracking-[0.25em] uppercase text-zinc-400 hover:text-[var(--theme-accent)] transition-colors"
+          >
+            <span className="w-8 h-px bg-zinc-700 group-hover:w-16 group-hover:bg-[var(--theme-accent)] transition-all duration-500 ease-out" />
+            View Work
+          </a>
+        </div>
       </motion.div>
     </section>
   );

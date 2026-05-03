@@ -2,18 +2,103 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import SpiderWebBg from "./SpiderWebBg";
 
-const skills = [
-  { id: "01", category: "Languages", items: ["Java", "C#", "JavaScript", "TypeScript", "PHP", "C++"], accent: false },
-  { id: "02", category: "Frontend", items: ["React.js", "Next.js", "HTML5", "CSS3", "Tailwind CSS"], accent: true },
-  { id: "03", category: "Backend", items: ["Spring Boot", ".NET Core", "Hibernate", "JPA", "REST APIs"], accent: false },
-  { id: "04", category: "Database & Cloud", items: ["MySQL", "SQL Server", "MongoDB", "Firestore", "Firebase"], accent: false },
-  { id: "05", category: "DevOps", items: ["Docker", "Linux", "CI/CD", "Vercel", "Netlify"], accent: false },
-  { id: "06", category: "Tools", items: ["Git", "GitHub", "Postman", "VS Code", "Visual Studio"], accent: false },
-  { id: "07", category: "Testing", items: ["Selenium WebDriver", "API Testing"], accent: false },
-  { id: "08", category: "Architecture", items: ["OOP", "SOLID", "MVC", "Repository Pattern", "Clean Architecture", "DSA"], accent: true },
+/* ─── Skills data — narrative order: Code → UI → Server → Data → Patterns → Ops → Tools ─── */
+const skills: {
+  id: string;
+  category: string;
+  items: string[];
+  accent: boolean;
+  featured: boolean;
+}[] = [
+  {
+    id: "01",
+    category: "Backend",
+    items: ["Spring Boot", ".NET Core", "Hibernate", "JPA", "REST APIs", "SignalR"],
+    accent: true,
+    featured: true,
+  },
+  {
+    id: "02",
+    category: "Languages",
+    items: ["Java", "C#", "JavaScript", "TypeScript", "PHP", "C++"],
+    accent: false,
+    featured: false,
+  },
+  {
+    id: "03",
+    category: "Database & Cloud",
+    items: ["MySQL", "SQL Server", "MongoDB", "Firestore", "Firebase"],
+    accent: false,
+    featured: false,
+  },
+  {
+    id: "04",
+    category: "Frontend Frameworks",
+    items: ["React.js", "Next.js", "Redux", "Zustand"],
+    accent: true,
+    featured: true,
+  },
+  {
+    id: "05",
+    category: "UI & Motion",
+    items: ["Tailwind CSS", "Framer Motion", "HTML5", "CSS3"],
+    accent: false,
+    featured: false,
+  },
+  {
+    id: "06",
+    category: "Architecture",
+    items: ["OOP", "SOLID", "MVC", "Repository Pattern", "Clean Architecture", "DSA"],
+    accent: false,
+    featured: false,
+  },
+  {
+    id: "07",
+    category: "DevOps",
+    items: ["Docker", "Linux", "CI/CD", "Vercel", "Netlify"],
+    accent: false,
+    featured: false,
+  },
+  {
+    id: "08",
+    category: "Testing",
+    items: ["Selenium WebDriver", "API Testing", "Postman", "JUnit"],
+    accent: false,
+    featured: false,
+  },
+  {
+    id: "09",
+    category: "Version Control",
+    items: ["Git", "GitHub", "GitLab"],
+    accent: false,
+    featured: false,
+  },
+  {
+    id: "10",
+    category: "IDE & Tooling",
+    items: ["VS Code", "Visual Studio", "IntelliJ IDEA"],
+    accent: false,
+    featured: false,
+  },
+  {
+    id: "11",
+    category: "Domains",
+    items: ["Enterprise Apps", "SaaS Architecture", "RESTful Systems", "Full-Stack Integration"],
+    accent: false,
+    featured: false,
+  },
+  {
+    id: "✦",
+    category: "Currently Exploring",
+    items: ["Kubernetes", "AWS", "GraphQL", "Redis", "Kafka", "Microservices"],
+    accent: true,
+    featured: true,
+  },
 ];
 
+/* ─── Skill Card ─── */
 function SkillCard({ skill, index }: { skill: typeof skills[0]; index: number }) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "0px 0px -40px 0px" });
@@ -21,33 +106,72 @@ function SkillCard({ skill, index }: { skill: typeof skills[0]; index: number })
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 40, scale: 0.97 }}
-      animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-      transition={{ duration: 0.65, delay: index * 0.07, ease: [0.16, 1, 0.3, 1] }}
-      className={`group relative flex flex-col justify-between p-6 overflow-hidden bg-gradient-to-br from-zinc-900/40 to-transparent border border-zinc-800/80 rounded-xl transition-all duration-300 hover:bg-zinc-800/30 hover:border-zinc-700 ${skill.accent ? 'hover:shadow-[0_0_25px_rgba(232,0,28,0.1)]' : 'hover:shadow-[0_0_20px_rgba(255,255,255,0.03)]'}`}
+      initial={{ opacity: 0, y: 60, rotateX: -20, scale: 0.9 }}
+      animate={isInView ? { opacity: 1, y: 0, rotateX: 0, scale: 1 } : {}}
+      transition={{
+        type: "spring",
+        stiffness: 120,
+        damping: 14,
+        mass: 0.8,
+        delay: index * 0.06,
+      }}
+      aria-label="Skill Card"
+      className={`group relative flex flex-col justify-between p-6 overflow-hidden bg-gradient-to-br from-zinc-900/40 to-transparent border rounded-xl transition-all duration-500 hover:-translate-y-2
+        ${skill.featured ? "md:col-span-2 min-h-[200px]" : "min-h-[160px]"}
+        ${skill.accent
+          ? "border-[var(--theme-accent)]/20 hover:border-[var(--theme-accent)]/40 hover:bg-zinc-800/30 hover:shadow-[0_0_30px_rgba(232,0,28,0.15)]"
+          : "border-zinc-800/80 hover:border-zinc-600 hover:bg-zinc-800/30 hover:shadow-[0_0_20px_rgba(255,255,255,0.03)]"
+        }`}
     >
+      {/* Web thread dropping in on hover */}
+      <span className="absolute top-0 left-6 w-px h-0 bg-gradient-to-b from-transparent to-[var(--theme-accent)] group-hover:h-16 transition-all duration-500 ease-out opacity-0 group-hover:opacity-100" />
+
+      {/* Accent glow overlay for featured cards */}
+      {skill.accent && (
+        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none bg-[radial-gradient(ellipse_at_top_right,_rgba(232,0,28,0.08)_0%,_transparent_60%)]" />
+      )}
+
       <span
         aria-hidden="true"
-        className="absolute top-4 right-5 text-[3.5rem] font-bold leading-none select-none pointer-events-none transition-colors duration-300"
-        style={{ fontFamily: "var(--font-space-grotesk)", color: skill.accent ? "rgba(232,0,28,0.12)" : "rgba(255,255,255,0.03)" }}
+        className={`absolute top-4 right-5 font-bold leading-none select-none pointer-events-none transition-colors duration-300 ${skill.featured ? "text-[5rem]" : "text-[3.5rem]"}`}
+        style={{
+          fontFamily: "var(--font-space-grotesk)",
+          color: skill.accent ? "rgba(232,0,28,0.12)" : "rgba(255,255,255,0.03)",
+        }}
       >
         {skill.id}
       </span>
 
-      <p
-        className="text-[10px] tracking-[0.3em] uppercase mb-4"
-        style={{ fontFamily: "var(--font-space-grotesk)", color: skill.accent ? "var(--theme-accent)" : "#52525b" }}
-      >
-        {skill.category}
-      </p>
+      <div>
+        <p
+          className="text-[10px] tracking-[0.3em] uppercase mb-1"
+          style={{
+            fontFamily: "var(--font-space-grotesk)",
+            color: skill.accent ? "var(--theme-accent)" : "#52525b",
+          }}
+        >
+          {skill.category}
+        </p>
+        {skill.featured && (
+          <p
+            className="text-zinc-500 text-xs leading-relaxed mt-1 max-w-md"
+            style={{ fontFamily: "var(--font-inter)" }}
+          >
+            {skill.accent && skill.category === "Backend"
+              ? "Core strength — building scalable APIs, microservices, and enterprise-grade server systems."
+              : "Crafting responsive, animated, and pixel-perfect interfaces with modern frameworks."}
+          </p>
+        )}
+      </div>
 
-      <div className="flex flex-wrap gap-2 mt-auto">
+      <div className="flex flex-wrap gap-2 mt-auto pt-4">
         {skill.items.map((item) => (
           <span
             key={item}
-            className={`text-xs tracking-wide px-3 py-1.5 rounded-full border transition-all duration-300 ${skill.accent
-              ? "bg-[var(--theme-accent)]/10 text-[var(--theme-accent)] border-[var(--theme-accent)]/20 group-hover:border-[var(--theme-accent)]/40 group-hover:bg-[var(--theme-accent)]/15"
-              : "bg-zinc-800/50 text-zinc-300 border-zinc-700/50 group-hover:border-zinc-600 group-hover:bg-zinc-800/80 group-hover:text-white"
+            className={`text-xs tracking-wide px-3 py-1.5 rounded-full border transition-all duration-300
+              ${skill.accent
+                ? "bg-[var(--theme-accent)]/10 text-[var(--theme-accent)] border-[var(--theme-accent)]/20 group-hover:border-[var(--theme-accent)]/40 group-hover:bg-[var(--theme-accent)]/15"
+                : "bg-zinc-800/50 text-zinc-300 border-zinc-700/50 group-hover:border-zinc-600 group-hover:bg-zinc-800/80 group-hover:text-white"
               }`}
             style={{ fontFamily: "var(--font-space-grotesk)" }}
           >
@@ -59,14 +183,26 @@ function SkillCard({ skill, index }: { skill: typeof skills[0]; index: number })
   );
 }
 
+/* ─── Main Section ─── */
 export default function Skills() {
   return (
-    <section id="skills" className="bg-[var(--theme-bg)] border-t border-zinc-800/60 px-6 md:px-16 lg:px-24 py-24">
+    <section
+      id="skills"
+      className="relative bg-[var(--theme-bg)] border-t border-zinc-800/60 px-6 md:px-16 lg:px-24 py-24 overflow-hidden"
+    >
+      {/* Background Web */}
+      <SpiderWebBg className="absolute inset-0 pointer-events-none z-0" opacity={0.06} />
+
       <motion.div
-        initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
         className="flex items-center gap-6 mb-6"
       >
-        <span className="text-[11px] tracking-[0.3em] uppercase text-zinc-600" style={{ fontFamily: "var(--font-space-grotesk)" }}>
+        <span
+          className="text-[11px] tracking-[0.3em] uppercase text-zinc-600"
+          style={{ fontFamily: "var(--font-space-grotesk)" }}
+        >
           01 / Skills
         </span>
         <div className="flex-1 h-px bg-zinc-800" />
@@ -74,17 +210,24 @@ export default function Skills() {
 
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
         <motion.h2
-          initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }} transition={{ duration: 0.8 }}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
           className="text-5xl md:text-7xl font-bold text-white leading-none uppercase"
           style={{ fontFamily: "var(--font-space-grotesk)" }}
         >
-          Technical<br />
-          <span style={{ color: "var(--theme-accent)" }}>Stack.</span>
+          Technical
+          <br />
+          <span className="hover-glitch inline-block" style={{ color: "var(--theme-accent)" }}>
+            Stack.
+          </span>
         </motion.h2>
         <motion.p
-          initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }} transition={{ duration: 0.7, delay: 0.2 }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, delay: 0.2 }}
           className="max-w-xs text-zinc-500 text-sm leading-relaxed md:text-right"
           style={{ fontFamily: "var(--font-inter)" }}
         >

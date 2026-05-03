@@ -23,6 +23,10 @@ const WebPullToTop = dynamic(
   () => import("./WebPullToTop").then((m) => ({ default: m.WebPullToTop })),
   { ssr: false }
 );
+const EasterEggs = dynamic(
+  () => import("./EasterEggs").then((m) => ({ default: m.EasterEggs })),
+  { ssr: false }
+);
 
 export function LayoutOverlays() {
   return (
@@ -32,6 +36,7 @@ export function LayoutOverlays() {
       <WebScrollbar />
       <WebCursor />
       <WebPullToTop />
+      <EasterEggs />
     </>
   );
 }

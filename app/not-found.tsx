@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import SpiderWebBg from "./components/SpiderWebBg";
 
 export default function NotFound() {
@@ -30,8 +31,15 @@ export default function NotFound() {
         </p>
 
         <div className="-mt-8 mb-8">
-          {/* Spider drop */}
-          <p className="text-5xl mb-2">🕷️</p>
+          <div className="relative mx-auto mb-5 h-36 w-36 overflow-hidden rounded-full border-4 border-black bg-white shadow-[0_22px_48px_rgba(0,0,0,0.42)] sm:h-44 sm:w-44">
+            <Image
+              src="/easter-eggs/upsidedown.jpg"
+              alt="Upside-down Spider-Man"
+              fill
+              sizes="176px"
+              className="object-cover"
+            />
+          </div>
           <h1
             className="text-3xl sm:text-4xl md:text-[clamp(2.5rem,5vw,4rem)] font-black uppercase text-white tracking-tight"
             style={{ fontFamily: "var(--font-space-grotesk)", letterSpacing: "-0.03em" }}

@@ -1,22 +1,16 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useSmoothScroll } from "./SmoothScrollProvider";
 
 const links = [
   { label: "GitHub", href: "https://github.com/Chaitanyahoon" },
   { label: "LinkedIn", href: "https://linkedin.com/in/chaitanyapatil700" },
   { label: "Email", href: "mailto:chaitanyapatil700@gmail.com" },
 ];
-
-const nav = [
-  { label: "Work", href: "#work" },
-  { label: "Skills", href: "#skills" },
-  { label: "About", href: "#about-detail" },
-  { label: "Contact", href: "#contact" },
-];
-
 export default function Footer() {
   const year = new Date().getFullYear();
+  const { scrollTo } = useSmoothScroll();
 
   return (
     <footer className="bg-[var(--theme-bg)] border-t border-zinc-800/60 px-6 md:px-16 lg:px-24 py-12">
@@ -98,10 +92,21 @@ export default function Footer() {
           className="flex flex-wrap gap-6"
           aria-label="Footer navigation"
         >
-          {nav.map((item) => (
+          {[
+            { label: "Work", href: "#work" },
+            { label: "Skills", href: "#skills" },
+            { label: "About", href: "#about-detail" },
+            { label: "Contact", href: "#contact" },
+          ].map((item) => (
             <a
               key={item.label}
               href={item.href}
+              onClick={(e) => {
+                if (item.href.startsWith("#")) {
+                  e.preventDefault();
+                  scrollTo(item.href);
+                }
+              }}
               className="text-[11px] tracking-widest uppercase text-zinc-500 hover:text-white transition-colors"
               style={{ fontFamily: "var(--font-space-grotesk)" }}
             >

@@ -98,11 +98,10 @@ export function WebCursor() {
     // Disable on touch / coarse-pointer devices to preserve battery/performance
     if (typeof window !== "undefined" && window.matchMedia && window.matchMedia("(pointer: coarse)").matches) {
       // Do not enable cursor or handlers on touch devices
-      setIsReady(false);
-      return;
+      const t = setTimeout(() => setIsReady(false), 0);
+      return () => clearTimeout(t);
     }
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setIsReady(true);
+    const t = setTimeout(() => setIsReady(true), 0);
     const handleMouseMove = (e: MouseEvent) => {
       setCursorPos({ x: e.clientX, y: e.clientY });
     };
@@ -151,6 +150,7 @@ export function WebCursor() {
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mousedown", handleMouseDown);
+      clearTimeout(t);
     };
   }, []);
 

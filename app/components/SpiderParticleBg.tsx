@@ -21,7 +21,8 @@ export default function SpiderParticleBg({
   useEffect(() => {
     // Only enable on non-touch devices
     if (window.matchMedia && window.matchMedia("(pointer: coarse)").matches) return;
-    setEnabled(true);
+    const t = setTimeout(() => setEnabled(true), 0);
+    return () => clearTimeout(t);
   }, []);
 
   useEffect(() => {
@@ -83,8 +84,10 @@ export default function SpiderParticleBg({
     };
 
     const pullRadius = 300;
+    const pullRadiusSq = pullRadius * pullRadius;
     const springForce = 0.05;
     const damping = 0.85;
+    const TWO_PI = Math.PI * 2;
 
     const animate = () => {
       ctx.clearRect(0, 0, width, height);
@@ -104,7 +107,8 @@ export default function SpiderParticleBg({
           // Physics update inline (avoids function call overhead per node)
           const dxMouse = mouseX - node.x;
           const dyMouse = mouseY - node.y;
-          const distMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
+          const distMouseSq = dxMouse * dxMouse + dyMouse * dyMouse;
+          const distMouse = distMouseSq < pullRadiusSq ? Math.sqrt(distMouseSq) : pullRadius + 1;
 
           let targetX = node.baseX;
           let targetY = node.baseY;
@@ -146,7 +150,7 @@ export default function SpiderParticleBg({
           const node = nodeGrid[r]?.[s];
           if (!node) continue;
           ctx.beginPath();
-          ctx.arc(node.x, node.y, 1.5, 0, Math.PI * 2);
+          ctx.arc(node.x, node.y, 1.5, 0, TWO_PI);
           ctx.fill();
         }
       }
@@ -157,11 +161,21 @@ export default function SpiderParticleBg({
     init();
     animate();
 
-    const handleResize = () => init();
+    let resizeTimer: ReturnType<typeof setTimeout> | null = null;
+    const handleResize = () => {
+      if (resizeTimer) clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(init, 150);
+    };
+
+    let moveRaf = 0;
     const handleMouseMove = (e: MouseEvent) => {
-      const rect = canvas.getBoundingClientRect();
-      mouseX = e.clientX - rect.left;
-      mouseY = e.clientY - rect.top;
+      if (moveRaf) return;
+      moveRaf = requestAnimationFrame(() => {
+        const rect = canvas.getBoundingClientRect();
+        mouseX = e.clientX - rect.left;
+        mouseY = e.clientY - rect.top;
+        moveRaf = 0;
+      });
     };
     const handleMouseLeave = () => { mouseX = -1000; mouseY = -1000; };
 
@@ -174,6 +188,8 @@ export default function SpiderParticleBg({
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseout", handleMouseLeave);
       cancelAnimationFrame(animationFrameId);
+      if (resizeTimer) clearTimeout(resizeTimer);
+      if (moveRaf) cancelAnimationFrame(moveRaf);
     };
   }, [enabled, color, opacity, particleCount]);
 

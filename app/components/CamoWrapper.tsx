@@ -13,7 +13,7 @@ export function CamoWrapper({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <div className="relative w-full min-h-screen">
+    <div className="relative w-full">
       <AnimatePresence>
         {isCamo && (
           <motion.div

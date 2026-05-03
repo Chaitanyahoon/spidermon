@@ -3,19 +3,19 @@
 import { motion } from "framer-motion";
 
 const NEWS_ITEMS = [
-  "SPIDER-MENACE SPOTTED IN THE CITY!",
-  "NEW NEXT.JS APP DEPLOYED FASTER THAN A SPEEDING WEB",
-  "IS CHAITANYA PATIL THE BEST FULL-STACK DEVELOPER?",
-  "LOCAL HERO FIXES 99 BUGS IN PRODUCTION",
-  "OSBORN INDUSTRIES STOCK PLUMMETS AFTER LATEST REACT UPDATE",
-  "DAILY BUGLE EXCLUSIVE: HOW TO BUILD A MODERN PORTFOLIO",
-  "AVENGERS TOWER STILL UNDER CONSTRUCTION",
-  "MYSTERIO CLAIMS CREDIT FOR CASCADING STYLE SHEETS",
+  "CHAITANYA PATIL DEPLOYS NEW FULL-STACK APP IN RECORD TIME",
+  "BREAKING: 100% LIGHTHOUSE SCORE ACHIEVED ON LATEST NEXT.JS BUILD",
+  "STREETBITE PLATFORM GOES LIVE WITH REAL-TIME GEOLOCATION",
+  "LOCAL DEVELOPER FIXES 99 BUGS IN PRODUCTION BEFORE LUNCH",
+  "FOCUS ARENA GAMIFIED DASHBOARD REACHES NEW HEIGHTS",
+  "DAILY BUGLE TECH: SPRING BOOT & .NET CORE ARCHITECTURES SCALED",
+  "SCAMSENTRY HEATMAPS PROTECTING THE NEIGHBORHOOD",
+  "AVAILABLE FOR REMOTE FREELANCE AND FULL-TIME OPPORTUNITIES",
 ];
 
 export default function MarqueeTicker() {
   return (
-    <div className="comic-ticker w-full bg-[var(--theme-accent)] py-3 overflow-hidden border-y border-black relative z-20 flex flex-col justify-center">
+    <div aria-label="Marquee Ticker" className="comic-ticker w-full bg-[var(--theme-accent)] py-3 overflow-hidden border-y border-black relative z-20 flex flex-col justify-center">
       <div className="flex whitespace-nowrap">
         <motion.div
           className="flex items-center gap-8 whitespace-nowrap"

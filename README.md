@@ -1,76 +1,64 @@
-<div align="center">
+# Chaitanya Patil Portfolio
 
-# 🕸️ THE MULTIVERSE IN A BOX
-### (A high-stakes portfolio from Earth-1610)
+Spider-Man inspired portfolio for Chaitanya Patil, built with Next.js, React, Tailwind CSS, and Framer Motion.
 
-<img src="public/demo.gif" width="300" alt="Spider-Verse Preview">
+## Overview
 
----
+This site is a personal developer portfolio with an interactive hero, project pages, resume route, support page, animated overlays, custom cursor effects, and hidden easter eggs.
 
-### "Anyone can wear the mask... but it takes a special kind of hero to center a <div> on the first try." 🕷️
+Live site: https://www.chaitanyapatil.online
 
-A portfolio that glitches harder than Miles in a collider. 
-Built with 10% skill, 20% concentrated power of will, and 70% pure caffeine. 
+## Features
 
----
+- Interactive hero with portrait-to-Spider-Man reveal
+- Project showcase with generated static project routes
+- Resume page with downloadable PDF
+- UPI support page with dynamic QR generation
+- SEO metadata, sitemap, robots route, Open Graph image generation
+- Spider-themed UI overlays, mascot artwork, loading screen, and hidden easter eggs
 
-## 🎭 THE DIMENSIONAL DEETS
+## Tech Stack
 
-**Glitching on Purpose**<br/>
-If the screen splits into Cyan and Magenta, don't call tech support. It's called "Aesthetic." 
-My laptop might be screaming, but the UI is *vibing*.
+- Next.js 16
+- React 19
+- TypeScript
+- Tailwind CSS
+- Framer Motion
+- Lucide React
+- QRCode
 
-<br/>
-
-**Spider-Sense UI**<br/>
-Highly interactive elements that react faster than a Spidey-sense in a hallway fight.
-Click the logo three times if you’re brave enough to trigger a total reality collapse.
-
-<br/>
-
-**The Ben-Day Treatment**<br/>
-I pumped so many halftone dots into this project that your monitor might actually 
-start smelling like a vintage comic book shop.
-
----
-
-## 🎒 THE GEAR
-
-**The Science Side:**<br/>
-Next.js (The Web) • Framer Motion (The Swing) • Tailwind (The Suit)
-
-<br/>
-
-**The Real Talk:**<br/>
-Excessive Caffeine • Midnight Debugging • Sheer Multiversal Will
-
----
-
-## 🚀 COLLIDER SETUP
-
-</div>
+## Getting Started
 
 ```bash
-# Clone the dimension
-git clone https://github.com/Chaitanyahoon/spidermon.git
-
-# Feed the spiders
 npm install
-
-# Open the Multiverse
 npm run dev
 ```
 
-<div align="center">
+Open `http://localhost:3000`.
 
----
+## Scripts
 
-### 🕸️ Swing by and say hi!
-[LinkedIn](https://linkedin.com/in/chaitanyapatil700) • [GitHub](https://github.com/Chaitanyahoon)
+```bash
+npm run dev      # Start local development server
+npm run build    # Create production build
+npm run start    # Start production server
+npm run lint     # Run ESLint
+```
 
----
+## Project Structure
 
-#### *No spiders were harmed in the making of this website.*
-*(Except the one in the corner of my room. He knows what he did.)*
+```text
+app/
+  components/        Shared UI and interactive effects
+  data/              Project data
+  projects/[slug]/   Static project detail pages
+  resume/            Resume page
+  support/           UPI support page
+public/
+  easter-eggs/       Hidden sticker assets
+  Chaitanya*.png     Portfolio image assets
+```
 
-</div>
+## Notes
+
+`npm run build` is the primary validation command. If lint fails with an ESLint plugin compatibility issue, update the lint dependency set before treating it as an application error.

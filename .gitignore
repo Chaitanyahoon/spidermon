@@ -40,5 +40,11 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# reports
+lighthouse-*.json
+
+# design system
+/design-system
+
 # agent
 .agent

@@ -4,14 +4,16 @@ import { useState, useRef, useEffect, MouseEvent } from "react";
 import Image from "next/image";
 import {
   motion,
-  useScroll,
+  HTMLMotionProps,
   useTransform,
   MotionValue,
   useSpring,
   useTime,
   useVelocity,
+  useMotionValue,
 } from "framer-motion";
 import SpiderWebBg from "./SpiderWebBg";
+import { useSmoothScroll } from "./SmoothScrollProvider";
 
 /**
  * Background Title
@@ -30,6 +32,8 @@ function BackgroundTitle({ progress }: { progress: MotionValue<number> }) {
 
   const copiesA = Array(8).fill("CHAITANYA");
   const copiesB = Array(8).fill("PATIL");
+  const doubledA = [...copiesA, ...copiesA];
+  const doubledB = [...copiesB, ...copiesB];
 
   return (
     <motion.div
@@ -42,7 +46,7 @@ function BackgroundTitle({ progress }: { progress: MotionValue<number> }) {
           animate={{ x: ["0%", "-50%"] }}
           transition={{ duration: 18, ease: "linear", repeat: Infinity }}
         >
-          {[...copiesA, ...copiesA].map((name, i) => (
+          {doubledA.map((name, i) => (
             <motion.span
               key={i}
               className="text-[13vw] font-bold leading-none tracking-tighter text-[#e8e8e8] select-none"
@@ -64,7 +68,7 @@ function BackgroundTitle({ progress }: { progress: MotionValue<number> }) {
           animate={{ x: ["-50%", "0%"] }}
           transition={{ duration: 14, ease: "linear", repeat: Infinity }}
         >
-          {[...copiesB, ...copiesB].map((name, i) => (
+          {doubledB.map((name, i) => (
             <motion.span
               key={i}
               className="text-[13vw] font-bold leading-none tracking-tighter select-none"
@@ -147,25 +151,65 @@ function useLiquidBlob(
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
   const [isMasked, setIsMasked] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
-  const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  const { scrollY } = useSmoothScroll();
 
   useEffect(() => {
-    setIsTouchDevice(
-      typeof window !== "undefined" &&
-      !!window.matchMedia &&
-      window.matchMedia("(pointer: coarse)").matches
-    );
+    const t = setTimeout(() => {
+      setIsTouchDevice(
+        typeof window !== "undefined" &&
+        !!window.matchMedia &&
+        window.matchMedia("(pointer: coarse)").matches
+      );
+    }, 0);
+    return () => clearTimeout(t);
   }, []);
 
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
+  /* ── Compute scroll progress relative to this section ── */
+  // Note: framer-motion useMotionValue automatically uses requestAnimationFrame under the hood
+  /* ── Compute scroll progress relative to this section ── */
+  // Note: framer-motion useMotionValue automatically uses requestAnimationFrame under the hood
+  const scrollYProgress = useMotionValue(0);
 
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.45]);
-  const borderRadius = useTransform(scrollYProgress, [0.6, 1], [0, 24]);
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    let sectionTop = 0;
+    let sectionHeight = 1;
+
+    const updateBounds = () => {
+      // Get current virtual scroll position
+      const currentY = scrollY.get();
+      // Calculate true absolute top by undoing the current scroll transform
+      const rect = container.getBoundingClientRect();
+      sectionTop = currentY + rect.top;
+      sectionHeight = container.offsetHeight - window.innerHeight;
+    };
+
+    updateBounds();
+    window.addEventListener("resize", updateBounds);
+
+    const unsub = scrollY.on("change", (y) => {
+      if (sectionHeight <= 0) return;
+      const progress = Math.max(0, Math.min(1, (y - sectionTop) / sectionHeight));
+      scrollYProgress.set(progress);
+    });
+
+    return () => {
+      unsub();
+      window.removeEventListener("resize", updateBounds);
+    };
+  }, [scrollY, scrollYProgress]);
+
+  /* Immediate, clean zoom-out effect (no downward translation) */
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.4]);
+  const cardOpacity = useTransform(scrollYProgress, [0.8, 1], [1, 0]); // Fade out only at the very end
+  const borderRadius = useTransform(scrollYProgress, [0, 1], [0, 48]);
+  const selectedWorksOpacity = useTransform(scrollYProgress, [0.5, 1], [0, 1]);
 
   const cursorX = useSpring(0, { stiffness: 120, damping: 25 });
   const cursorY = useSpring(0, { stiffness: 120, damping: 25 });
@@ -197,23 +241,24 @@ export default function Hero() {
     setIsMasked((prev) => !prev);
   };
 
-  const mouseHandlers: any = !isTouchDevice
+  const mouseHandlers: HTMLMotionProps<"div"> = !isTouchDevice
     ? { onMouseMove: handleMouseMove, onMouseEnter: handleMouseEnter, onMouseLeave: handleMouseLeave }
     : {};
 
   return (
     <section
       ref={containerRef}
-      className="relative h-[300vh] w-full bg-[var(--theme-bg)]"
+      className="relative h-[150vh] w-full bg-[var(--theme-bg)]"
     >
       <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
         {!isTouchDevice && <BackgroundTitle progress={scrollYProgress} />}
         {!isTouchDevice && <SpiderWebBg className="absolute inset-0 z-[5]" opacity={0.18} />}
 
         <motion.div
+          aria-label="Hero Card"
           ref={cardRef}
           className={`relative z-20 h-full w-full overflow-hidden bg-zinc-800 shadow-2xl ${!isTouchDevice ? "cursor-none" : ""} transition-all duration-300`}
-          style={{ scale, borderRadius }}
+          style={{ scale, opacity: cardOpacity, borderRadius, transformOrigin: "center" }}
           {...mouseHandlers}
           onTouchStart={handleTap}
         >
@@ -287,7 +332,7 @@ export default function Hero() {
             </h1>
 
             <motion.a
-              href="/resume.pdf"
+              href="/ChaitanyaPatil.pdf"
               download
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -322,7 +367,7 @@ export default function Hero() {
 
           <motion.div
             className="absolute bottom-8 left-8 text-white pointer-events-none"
-            style={{ opacity: useTransform(scrollYProgress, [0.8, 1], [0, 1]) }}
+            style={{ opacity: selectedWorksOpacity }}
           >
             <p className="font-mono text-xs tracking-widest uppercase text-zinc-400">Selected Works</p>
             <p className="text-xl font-bold">2024 — 2025</p>
