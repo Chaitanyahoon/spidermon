@@ -9,6 +9,45 @@
   --theme-accent-alt: #2563eb;
 }
 
+/* ═══════════════════════════════════════════════════
+   EARTH-199999 — "Me" / Professional Theme
+   ═══════════════════════════════════════════════════ */
+html.theme-me {
+  --theme-accent: #14b8a6;
+  --theme-accent-alt: #8b5cf6;
+}
+
+html.theme-me body {
+  background-image:
+    linear-gradient(to right, rgba(20, 184, 166, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(20, 184, 166, 0.02) 1px, transparent 1px);
+}
+
+html.theme-me body::after {
+  background: radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.06) 0%, transparent 60%);
+}
+
+/* Hide spider-specific decorations in "me" mode */
+html.theme-me .spider-web-bg-element {
+  opacity: 0 !important;
+}
+
+html.theme-me .spider-sense-pulse::before {
+  animation: none;
+  display: none;
+}
+
+/* ═══════════════════════════════════════════════════
+   CUSTOM CURSOR — Hide native cursor for custom one
+   ═══════════════════════════════════════════════════ */
+@media (pointer: fine) {
+  html:not(.standalone-document) *,
+  html:not(.standalone-document) a,
+  html:not(.standalone-document) button {
+    cursor: none !important;
+  }
+}
+
 html {
   /* scroll-behavior handled by SmoothScrollProvider */
   overflow: hidden;

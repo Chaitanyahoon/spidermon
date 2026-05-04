@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Bug, Terminal } from "lucide-react";
+import { useTheme } from "./ThemeProvider";
 
 // Helper function to generate a classic, recognizable spider web SVG path
 function generateClassicWebSplat(
@@ -93,6 +95,7 @@ export function WebCursor() {
   const [shots, setShots] = useState<WebShot[]>([]);
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
   const [isReady, setIsReady] = useState(false);
+  const { theme } = useTheme();
 
   useEffect(() => {
     // Disable on touch / coarse-pointer devices to preserve battery/performance
@@ -107,8 +110,8 @@ export function WebCursor() {
     };
 
     const handleMouseDown = (e: MouseEvent) => {
-      // Ignore if clicking clickable elements
-      if ((e.target as HTMLElement).closest("button, a")) return;
+      // If we are in "Me" theme, don't shoot Spidey webs
+      if (document.documentElement.classList.contains("theme-me")) return;
 
       const targetX = e.clientX;
       const targetY = e.clientY;
@@ -159,12 +162,15 @@ export function WebCursor() {
   return (
     <>
       <div
-        className="fixed top-0 left-0 w-3 h-3 rounded-full pointer-events-none z-[100] mix-blend-difference"
+        className="fixed top-0 left-0 pointer-events-none z-[100]"
         style={{
-          transform: `translate(${cursorPos.x - 6}px, ${cursorPos.y - 6}px)`,
-          backgroundColor: "white",
+          transform: `translate(${cursorPos.x - 12}px, ${cursorPos.y - 12}px)`,
+          color: theme === "spiderman" ? "white" : "var(--theme-accent)",
+          filter: theme === "spiderman" ? "drop-shadow(0 0 4px rgba(255,255,255,0.8))" : "none",
         }}
-      />
+      >
+        {theme === "spiderman" ? <Bug size={24} strokeWidth={2.5} /> : <Terminal size={24} strokeWidth={2.5} />}
+      </div>
 
       <svg className="fixed inset-0 w-full h-full pointer-events-none z-[99]">
         <AnimatePresence>

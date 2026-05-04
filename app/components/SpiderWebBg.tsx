@@ -13,7 +13,7 @@ export default function SpiderWebBg({
 }) {
   return (
     <svg
-      className={`pointer-events-none ${className}`}
+      className={`pointer-events-none spider-web-bg-element transition-opacity duration-700 ${className}`}
       viewBox="0 0 1200 800"
       preserveAspectRatio="xMidYMid slice"
       fill="none"

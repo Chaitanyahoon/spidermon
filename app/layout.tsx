@@ -148,6 +148,8 @@ const portfolioJsonLd = {
   })),
 };
 
+import { ThemeProvider } from "./components/ThemeProvider";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -162,7 +164,9 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify([personJsonLd, websiteJsonLd, portfolioJsonLd]) }}
         />
-        <AppChrome>{children}</AppChrome>
+        <ThemeProvider>
+          <AppChrome>{children}</AppChrome>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -2,8 +2,9 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Bug } from "lucide-react";
+import { Bug, Terminal, User } from "lucide-react";
 import { useSmoothScroll } from "./SmoothScrollProvider";
+import { useTheme } from "./ThemeProvider";
 
 const navLinks = [
   { label: "Work", href: "#work" },
@@ -18,6 +19,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
+  const { theme, toggleTheme } = useTheme();
 
   /* ── Derive scrolled state from virtual scroll (throttled section detection) ── */
   useEffect(() => {
@@ -89,7 +91,7 @@ export default function Navbar() {
             transition={{ type: "spring", stiffness: 200, damping: 10 }}
             className="text-[var(--theme-accent)] relative z-10"
           >
-            <Bug size={24} />
+            {theme === "spiderman" ? <Bug size={24} /> : <Terminal size={24} />}
           </motion.div>
           
           <div
@@ -141,6 +143,30 @@ export default function Navbar() {
               </a>
             );
           })}
+          
+          <div className="w-px h-4 bg-zinc-800 mx-2" />
+          
+          <button
+            onClick={toggleTheme}
+            className="relative group flex items-center gap-2 text-[10px] tracking-widest uppercase transition-all duration-300 px-3 py-1.5 border border-zinc-800 rounded-full hover:border-[var(--theme-accent)] hover:bg-[var(--theme-accent)]/10"
+            style={{
+              fontFamily: "var(--font-space-grotesk)",
+              fontWeight: 600,
+              color: "var(--theme-accent)",
+            }}
+          >
+            {theme === "spiderman" ? (
+              <>
+                <User size={12} />
+                <span>BECOME ME</span>
+              </>
+            ) : (
+              <>
+                <Bug size={12} />
+                <span>BECOME SPIDEY</span>
+              </>
+            )}
+          </button>
         </div>
 
         {/* Mobile menu button — 48x48px Touch Target (Fitts' Law) */}
@@ -200,6 +226,26 @@ export default function Navbar() {
                 </span>
               </motion.a>
             ))}
+
+            <motion.button
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -20, opacity: 0 }}
+              transition={{ duration: 0.3, delay: navLinks.length * 0.1 }}
+              onClick={toggleTheme}
+              className="w-full max-w-sm flex items-center justify-center py-4 rounded-2xl border border-zinc-800 active:bg-[var(--theme-accent)]/20 transition-all min-h-[60px]"
+            >
+              <span 
+                className="text-xl font-black tracking-widest uppercase text-[var(--theme-accent)] flex items-center gap-3"
+                style={{ fontFamily: "var(--font-space-grotesk)" }}
+              >
+                {theme === "spiderman" ? (
+                  <><User size={20} /> BECOME ME</>
+                ) : (
+                  <><Bug size={20} /> BECOME SPIDEY</>
+                )}
+              </span>
+            </motion.button>
             
             {/* Let's drop a small touch-friendly deco here */}
             <motion.div
@@ -208,7 +254,7 @@ export default function Navbar() {
               transition={{ delay: 0.5, duration: 0.4 }}
               className="mt-8 opacity-50"
             >
-               <Bug size={32} className="text-white/20" />
+               {theme === "spiderman" ? <Bug size={32} className="text-white/20" /> : <Terminal size={32} className="text-white/20" />}
             </motion.div>
           </motion.div>
         )}
