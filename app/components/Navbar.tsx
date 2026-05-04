@@ -91,7 +91,7 @@ export default function Navbar() {
             transition={{ type: "spring", stiffness: 200, damping: 10 }}
             className="text-[var(--theme-accent)] relative z-10"
           >
-            {theme === "spiderman" ? <Bug size={24} /> : <Terminal size={24} />}
+            <Bug size={24} />
           </motion.div>
           
           <div

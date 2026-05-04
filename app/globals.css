@@ -10,34 +10,6 @@
 }
 
 /* ═══════════════════════════════════════════════════
-   EARTH-199999 — "Me" / Professional Theme
-   ═══════════════════════════════════════════════════ */
-html.theme-me {
-  --theme-accent: #ffffff;
-  --theme-accent-alt: #71717a;
-}
-
-html.theme-me body {
-  background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-}
-
-html.theme-me body::after {
-  background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.05) 0%, transparent 60%);
-}
-
-/* Hide spider-specific decorations in "me" mode */
-html.theme-me .spider-web-bg-element {
-  opacity: 0 !important;
-}
-
-html.theme-me .spider-sense-pulse::before {
-  animation: none;
-  display: none;
-}
-
-/* ═══════════════════════════════════════════════════
    CUSTOM CURSOR — Hide native cursor for custom one
    ═══════════════════════════════════════════════════ */
 @media (pointer: fine) {

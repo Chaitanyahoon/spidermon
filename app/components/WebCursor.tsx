@@ -110,9 +110,6 @@ export function WebCursor() {
     };
 
     const handleMouseDown = (e: MouseEvent) => {
-      // If we are in "Me" theme, don't shoot Spidey webs
-      if (document.documentElement.classList.contains("theme-me")) return;
-
       const targetX = e.clientX;
       const targetY = e.clientY;
 
@@ -165,11 +162,11 @@ export function WebCursor() {
         className="fixed top-0 left-0 pointer-events-none z-[100]"
         style={{
           transform: `translate(${cursorPos.x - 12}px, ${cursorPos.y - 12}px)`,
-          color: theme === "spiderman" ? "white" : "var(--theme-accent)",
-          filter: theme === "spiderman" ? "drop-shadow(0 0 4px rgba(255,255,255,0.8))" : "none",
+          color: "white",
+          filter: "drop-shadow(0 0 4px rgba(255,255,255,0.8))",
         }}
       >
-        {theme === "spiderman" ? <Bug size={24} strokeWidth={2.5} /> : <Terminal size={24} strokeWidth={2.5} />}
+        <Bug size={24} strokeWidth={2.5} />
       </div>
 
       <svg className="fixed inset-0 w-full h-full pointer-events-none z-[99]">

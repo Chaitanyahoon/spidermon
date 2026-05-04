@@ -12,7 +12,7 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("spiderman");
+  const [theme, setTheme] = useState<Theme>("me");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -20,7 +20,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const saved = localStorage.getItem("spidermonn-theme") as Theme;
     if (saved) {
       setTheme(saved);
-      document.documentElement.classList.toggle("theme-me", saved === "me");
     }
   }, []);
 
@@ -28,7 +27,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setTheme((prev) => {
       const next = prev === "spiderman" ? "me" : "spiderman";
       localStorage.setItem("spidermonn-theme", next);
-      document.documentElement.classList.toggle("theme-me", next === "me");
       return next;
     });
   };
@@ -45,7 +43,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-const FALLBACK: ThemeContextType = { theme: "spiderman", toggleTheme: () => {} };
+const FALLBACK: ThemeContextType = { theme: "me", toggleTheme: () => {} };
 
 export function useTheme(): ThemeContextType {
   const context = useContext(ThemeContext);
