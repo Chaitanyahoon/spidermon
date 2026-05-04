@@ -14,6 +14,7 @@ import {
 } from "framer-motion";
 import SpiderWebBg from "./SpiderWebBg";
 import { useSmoothScroll } from "./SmoothScrollProvider";
+import { useTheme } from "./ThemeProvider";
 
 /**
  * Background Title
@@ -156,6 +157,10 @@ export default function Hero() {
   const [isHovering, setIsHovering] = useState(false);
 
   const { scrollY } = useSmoothScroll();
+  const { theme } = useTheme();
+
+  const baseImage = theme === "spiderman" ? "/Chaitanya_spiderman.webp" : "/Chaitanya.webp";
+  const revealImage = theme === "spiderman" ? "/Chaitanya.webp" : "/Chaitanya_spiderman.webp";
 
   useEffect(() => {
     const t = setTimeout(() => {
@@ -275,8 +280,8 @@ export default function Hero() {
 
           <div className="absolute inset-0">
             <Image
-              src="/Chaitanya.webp"
-              alt="Portrait"
+              src={baseImage}
+              alt="Portrait Base"
               fill
               className="object-cover object-center"
               priority
@@ -292,8 +297,8 @@ export default function Hero() {
             }}
           >
             <Image
-              src="/Chaitanya_spiderman.webp"
-              alt="Spider Reveal"
+              src={revealImage}
+              alt="Portrait Reveal"
               fill
               className="object-cover object-center"
               quality={isTouchDevice ? 60 : 100}
