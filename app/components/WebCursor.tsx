@@ -2,7 +2,27 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useTheme } from "./ThemeProvider";
+
+const SpiderSVG = ({ size = 28 }: { size?: number }) => (
+  <svg 
+    width={size} 
+    height={size} 
+    viewBox="0 0 100 100" 
+    fill="currentColor" 
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M 50 25 C 45 25 40 30 40 40 C 40 50 45 55 50 55 C 55 55 60 50 60 40 C 60 30 55 25 50 25 Z" />
+    <path d="M 50 50 C 40 50 35 60 35 75 C 35 85 45 90 50 90 C 55 90 65 85 65 75 C 65 60 60 50 50 50 Z" />
+    <path d="M 45 35 L 20 20 L 10 30" stroke="currentColor" strokeWidth="5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M 55 35 L 80 20 L 90 30" stroke="currentColor" strokeWidth="5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M 42 45 L 15 40 L 5 50" stroke="currentColor" strokeWidth="5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M 58 45 L 85 40 L 95 50" stroke="currentColor" strokeWidth="5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M 42 60 L 15 70 L 5 60" stroke="currentColor" strokeWidth="5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M 58 60 L 85 70 L 95 60" stroke="currentColor" strokeWidth="5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M 45 75 L 25 95 L 30 100" stroke="currentColor" strokeWidth="5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M 55 75 L 75 95 L 70 100" stroke="currentColor" strokeWidth="5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
 
 // Helper function to generate a classic, recognizable spider web SVG path
 function generateClassicWebSplat(
@@ -94,7 +114,6 @@ export function WebCursor() {
   const [shots, setShots] = useState<WebShot[]>([]);
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
   const [isReady, setIsReady] = useState(false);
-  const { theme } = useTheme();
 
   useEffect(() => {
     // Disable on touch / coarse-pointer devices to preserve battery/performance
@@ -158,19 +177,16 @@ export function WebCursor() {
   return (
     <>
       <div
-        className="fixed top-0 left-0 pointer-events-none z-[100] flex items-center justify-center mix-blend-screen"
+        className="fixed top-0 left-0 pointer-events-none z-[100] flex items-center justify-center"
         style={{
-          width: 32,
-          height: 32,
-          transform: `translate(${cursorPos.x - 16}px, ${cursorPos.y - 16}px)`,
+          width: 28,
+          height: 28,
+          transform: `translate(${cursorPos.x - 14}px, ${cursorPos.y - 14}px)`,
+          color: "white",
           filter: "drop-shadow(0 0 6px rgba(255,255,255,0.8))",
         }}
       >
-        <img 
-          src="/spidey_cursor.png" 
-          alt="Spider Cursor" 
-          className="w-full h-full object-contain pointer-events-none opacity-90"
-        />
+        <SpiderSVG size={28} />
       </div>
 
       <svg className="fixed inset-0 w-full h-full pointer-events-none z-[99]">
