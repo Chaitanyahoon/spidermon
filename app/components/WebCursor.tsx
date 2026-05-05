@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Bug, Terminal } from "lucide-react";
 import { useTheme } from "./ThemeProvider";
 
 // Helper function to generate a classic, recognizable spider web SVG path
@@ -159,14 +158,19 @@ export function WebCursor() {
   return (
     <>
       <div
-        className="fixed top-0 left-0 pointer-events-none z-[100]"
+        className="fixed top-0 left-0 pointer-events-none z-[100] flex items-center justify-center mix-blend-screen"
         style={{
-          transform: `translate(${cursorPos.x - 12}px, ${cursorPos.y - 12}px)`,
-          color: "white",
-          filter: "drop-shadow(0 0 4px rgba(255,255,255,0.8))",
+          width: 32,
+          height: 32,
+          transform: `translate(${cursorPos.x - 16}px, ${cursorPos.y - 16}px)`,
+          filter: "drop-shadow(0 0 6px rgba(255,255,255,0.8))",
         }}
       >
-        <Bug size={24} strokeWidth={2.5} />
+        <img 
+          src="/spidey_cursor.png" 
+          alt="Spider Cursor" 
+          className="w-full h-full object-contain pointer-events-none opacity-90"
+        />
       </div>
 
       <svg className="fixed inset-0 w-full h-full pointer-events-none z-[99]">
