@@ -28,8 +28,7 @@ export function AppChrome({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <SmoothScrollProvider>
-      <LayoutOverlays />
+    <SmoothScrollProvider overlays={<LayoutOverlays />}>
       <CamoWrapper>{children}</CamoWrapper>
     </SmoothScrollProvider>
   );

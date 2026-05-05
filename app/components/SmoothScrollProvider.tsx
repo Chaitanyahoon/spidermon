@@ -34,7 +34,7 @@ export const useSmoothScroll = () => {
 /* ═══════════════════════════════════════════════════════════
    Provider — two‑layer virtual scroll with Lerp engine
    ═══════════════════════════════════════════════════════════ */
-export function SmoothScrollProvider({ children }: { children: React.ReactNode }) {
+export function SmoothScrollProvider({ children, overlays }: { children: React.ReactNode; overlays?: React.ReactNode }) {
   const outerRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
 
@@ -202,6 +202,7 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
 
   return (
     <SmoothScrollContext.Provider value={api.current}>
+      {overlays}
       <div
         ref={outerRef}
         className="fixed inset-0 w-full h-[100dvh] overflow-hidden overscroll-none z-0 bg-[var(--theme-bg)]"
