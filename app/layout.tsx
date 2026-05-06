@@ -164,6 +164,23 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify([personJsonLd, websiteJsonLd, portfolioJsonLd]) }}
         />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                  navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                    for (let registration of registrations) {
+                      registration.unregister();
+                    }
+                  }).catch(function(err) {
+                    console.log('Service Worker registration failed: ', err);
+                  });
+                });
+              }
+            `,
+          }}
+        />
         <ThemeProvider>
           <AppChrome>{children}</AppChrome>
         </ThemeProvider>
